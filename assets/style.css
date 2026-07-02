@@ -39,12 +39,13 @@ body {
   border-bottom: 1px solid var(--border);
 }
 .nav-inner {
-  max-width: 1080px; margin: 0 auto; padding: 0 24px;
-  display: flex; align-items: center; gap: 8px; height: 60px;
+  max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+  display: flex; align-items: flex-start; gap: 8px; min-height: 60px;
 }
 .nav-logo {
   font-weight: 700; font-size: 17px; color: var(--text);
   text-decoration: none; margin-right: auto; white-space: nowrap;
+  line-height: 32px;
 }
 .nav-logo span { color: var(--accent); }
 .nav a.nav-link {
@@ -58,8 +59,23 @@ body {
   font-size: 14px; padding: 8px 16px; border-radius: 999px; white-space: nowrap;
 }
 .nav .nav-cta:hover { background: var(--accent-dark); }
-/* 桌面版單一版型（無手機版） */
-.nav-menu { display: flex; align-items: center; gap: 4px; }
+/* 桌面版單一版型（無手機版）
+   選單格線：第一列 = 概念學習/引導式學習/任務實作 + CTA，
+   協作資源/網站地圖/使用說明 各自一列，起點 X 與概念學習切齊 */
+.nav-menu {
+  display: grid;
+  grid-template-columns: repeat(3, auto) auto;
+  gap: 2px 4px;
+  align-items: center;
+  justify-items: start;
+}
+.nav-menu > a:nth-child(1) { grid-row: 1; grid-column: 1; } /* 概念學習 */
+.nav-menu > a:nth-child(2) { grid-row: 1; grid-column: 2; } /* 引導式學習 */
+.nav-menu > a:nth-child(3) { grid-row: 1; grid-column: 3; } /* 任務實作 */
+.nav-menu > a:nth-child(4) { grid-row: 2; grid-column: 1; } /* 協作資源 */
+.nav-menu > a:nth-child(5) { grid-row: 3; grid-column: 1; } /* 網站地圖 */
+.nav-menu > a:nth-child(6) { grid-row: 4; grid-column: 1; } /* 使用說明 */
+.nav-menu > .nav-cta      { grid-row: 1; grid-column: 4; margin-left: 8px; }
 /* 導覽項目等寬：以最寬的「引導式學習」(5 字) 為基準，
    文字用分散對齊撐滿整個寬度，讓 4 字項目與 5 字項目視覺同寬 */
 .nav a.nav-link {
