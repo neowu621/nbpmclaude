@@ -72,8 +72,14 @@ body {
 }
 @media (min-width: 861px) {
   .nav-menu { display: flex; align-items: center; gap: 4px; }
-  /* 導覽項目等寬：以最寬的「引導式學習」(5 字) 為基準 */
-  .nav a.nav-link { min-width: 94px; text-align: center; }
+  /* 導覽項目等寬：以最寬的「引導式學習」(5 字) 為基準，
+     文字用分散對齊撐滿整個寬度，讓 4 字項目與 5 字項目視覺同寬 */
+  .nav a.nav-link {
+    display: inline-block;
+    min-width: 94px;
+    text-align: justify;
+    text-align-last: justify;
+  }
 }
 
 /* ---------- 版面 ---------- */
