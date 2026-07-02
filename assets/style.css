@@ -72,9 +72,11 @@ body {
 .nav-menu > a:nth-child(1) { grid-row: 1; grid-column: 1; } /* 概念學習 */
 .nav-menu > a:nth-child(2) { grid-row: 1; grid-column: 2; } /* 引導式學習 */
 .nav-menu > a:nth-child(3) { grid-row: 1; grid-column: 3; } /* 任務實作 */
-.nav-menu > a:nth-child(4) { grid-row: 2; grid-column: 1; } /* 協作資源 */
-.nav-menu > a:nth-child(5) { grid-row: 3; grid-column: 1; } /* 網站地圖 */
-.nav-menu > a:nth-child(6) { grid-row: 4; grid-column: 1; } /* 使用說明 */
+/* 協作資源/網站地圖/使用說明：橫跨第 1~3 欄，
+   X 軸長度 = 上排「概念學習→任務實作」的完整範圍 */
+.nav-menu > a:nth-child(4) { grid-row: 2; grid-column: 1 / 4; justify-self: stretch; } /* 協作資源 */
+.nav-menu > a:nth-child(5) { grid-row: 3; grid-column: 1 / 4; justify-self: stretch; } /* 網站地圖 */
+.nav-menu > a:nth-child(6) { grid-row: 4; grid-column: 1 / 4; justify-self: stretch; } /* 使用說明 */
 .nav-menu > .nav-cta      { grid-row: 1; grid-column: 4; margin-left: 8px; }
 /* 導覽項目等寬：以最寬的「引導式學習」(5 字) 為基準，
    文字用分散對齊撐滿整個寬度，讓 4 字項目與 5 字項目視覺同寬 */
