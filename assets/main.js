@@ -1,15 +1,6 @@
 /* Claude PM 入門手冊 — 共用互動腳本 */
 
-/* 手機版導覽開合 */
 document.addEventListener('DOMContentLoaded', function () {
-  var toggle = document.querySelector('.nav-toggle');
-  var menu = document.querySelector('.nav-menu');
-  if (toggle && menu) {
-    toggle.addEventListener('click', function () {
-      menu.classList.toggle('open');
-    });
-  }
-
   /* 複製按鈕：把最近的 pre 內容複製到剪貼簿 */
   document.querySelectorAll('.copy-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {

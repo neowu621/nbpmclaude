@@ -58,28 +58,15 @@ body {
   font-size: 14px; padding: 8px 16px; border-radius: 999px; white-space: nowrap;
 }
 .nav .nav-cta:hover { background: var(--accent-dark); }
-.nav-toggle { display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text); }
-
-@media (max-width: 860px) {
-  .nav-toggle { display: block; }
-  .nav-menu {
-    display: none; position: absolute; top: 60px; left: 0; right: 0;
-    background: var(--bg); border-bottom: 1px solid var(--border);
-    flex-direction: column; padding: 12px 24px; gap: 4px;
-  }
-  .nav-menu.open { display: flex; }
-  .nav-menu a { display: block; }
-}
-@media (min-width: 861px) {
-  .nav-menu { display: flex; align-items: center; gap: 4px; }
-  /* 導覽項目等寬：以最寬的「引導式學習」(5 字) 為基準，
-     文字用分散對齊撐滿整個寬度，讓 4 字項目與 5 字項目視覺同寬 */
-  .nav a.nav-link {
-    display: inline-block;
-    min-width: 94px;
-    text-align: justify;
-    text-align-last: justify;
-  }
+/* 桌面版單一版型（無手機版） */
+.nav-menu { display: flex; align-items: center; gap: 4px; }
+/* 導覽項目等寬：以最寬的「引導式學習」(5 字) 為基準，
+   文字用分散對齊撐滿整個寬度，讓 4 字項目與 5 字項目視覺同寬 */
+.nav a.nav-link {
+  display: inline-block;
+  min-width: 94px;
+  text-align: justify;
+  text-align-last: justify;
 }
 
 /* ---------- 版面 ---------- */
@@ -125,8 +112,6 @@ section.block { padding: 48px 0; }
 .grid-2 { grid-template-columns: repeat(2, 1fr); }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
-@media (max-width: 860px) { .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
 
 .card {
   background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
