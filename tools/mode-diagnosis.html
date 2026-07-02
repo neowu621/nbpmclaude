@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模式診斷 | Claude PM 入門手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <button class="nav-toggle" aria-label="選單">☰</button>
+    <div class="nav-menu">
+      <a class="nav-link" href="../learn/index.html">概念學習</a>
+      <a class="nav-link active" href="index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container narrow">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">引導式學習</a> / 模式診斷</div>
+  <h1>模式診斷 🧭</h1>
+  <p class="lead">想著你手上的一個真實任務，回答三個問題，我們幫你判斷該用哪種模式。</p>
+
+  <div class="tool-panel">
+    <h3>Q1. 這個任務需要多少「公司或產品的內部脈絡」？</h3>
+    <div class="choice-row" data-q="q1">
+      <button class="choice" data-v="0">幾乎不用——通用知識就能回答</button>
+      <button class="choice" data-v="1">需要——得先了解我們的產品、用戶或文件</button>
+    </div>
+
+    <h3 style="margin-top:24px">Q2. 這是一次性的，還是會反覆做？</h3>
+    <div class="choice-row" data-q="q2">
+      <button class="choice" data-v="0">一次性，做完就結束</button>
+      <button class="choice" data-v="1">會反覆做（每週/每月/每個 sprint）</button>
+    </div>
+
+    <h3 style="margin-top:24px">Q3. 產出的形式是什麼？</h3>
+    <div class="choice-row" data-q="q3">
+      <button class="choice" data-v="0">文字或想法（我看完自己再處理）</button>
+      <button class="choice" data-v="1">結構化的檔案或大量資料處理（表格、報表、批次作業、原型）</button>
+    </div>
+
+    <div style="margin-top:24px">
+      <button class="btn btn-accent" id="diagnose" style="border:none">診斷結果</button>
+    </div>
+
+    <div class="result-box hidden" id="result"></div>
+  </div>
+
+  <div class="chapter">
+    <h2>診斷邏輯說明</h2>
+    <ul>
+      <li>需要<strong>大量資料處理或檔案產出</strong> → 優先考慮 <span class="tag tag-code">Code</span></li>
+      <li>需要<strong>內部脈絡</strong>或<strong>反覆進行</strong> → 建立 Project，用 <span class="tag tag-cowork">Cowork</span></li>
+      <li>通用知識、一次性、純文字 → <span class="tag tag-chat">Chat</span> 最快</li>
+    </ul>
+    <p>完整說明見 <a href="../learn/modes.html">三種工作模式指南</a>。</p>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 引導式學習</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+<script>
+(function () {
+  var answers = {};
+  document.querySelectorAll('.choice-row').forEach(function (row) {
+    row.querySelectorAll('.choice').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        row.querySelectorAll('.choice').forEach(function (b) { b.classList.remove('sel'); });
+        btn.classList.add('sel');
+        answers[row.dataset.q] = parseInt(btn.dataset.v, 10);
+      });
+    });
+  });
+
+  document.getElementById('diagnose').addEventListener('click', function () {
+    var box = document.getElementById('result');
+    if (!('q1' in answers) || !('q2' in answers) || !('q3' in answers)) {
+      box.classList.remove('hidden');
+      box.innerHTML = '<h4>請先回答完三個問題</h4>';
+      return;
+    }
+    var html = '';
+    if (answers.q3 === 1) {
+      html = '<h4>建議模式：Code（代理執行）</h4>' +
+        '<p>你的任務涉及結構化檔案產出或大量資料處理——這正是 Code 模式的強項。' +
+        '記得：先請 Claude 說明計畫、用小樣本試跑、要求處理摘要。</p>' +
+        '<p>' + (answers.q2 === 1 ? '而且這是反覆性任務——跑順三次之後，考慮把它自動化（見第 7 章）。' : '') + '</p>' +
+        '<p><a href="../learn/modes.html">看 Code 模式的驗收清單 →</a></p>';
+    } else if (answers.q1 === 1 || answers.q2 === 1) {
+      html = '<h4>建議模式：Cowork（協作專案）</h4>' +
+        '<p>' + (answers.q1 === 1 ? '你的任務需要內部脈絡——建立一個 Claude Project，放入產品簡介、用戶描述與相關文件，讓每次對話自帶背景。' : '這是反覆性任務——建立 Project 存放固定指令與文件，之後每次只要丟新資料進去。') + '</p>' +
+        '<p><a href="../learn/modes.html">看 Project 的三個建立要素 →</a></p>';
+    } else {
+      html = '<h4>建議模式：Chat（快速對話）</h4>' +
+        '<p>一次性、通用知識、純文字產出——直接開一個對話問就好，不用做任何準備。' +
+        '但仍建議用四元素（角色/任務/脈絡/格式）組織你的提問。</p>' +
+        '<p><a href="prompt-builder.html">用 Prompt 組裝器練一次 →</a></p>';
+    }
+    box.classList.remove('hidden');
+    box.innerHTML = html;
+  });
+})();
+</script>
+</body>
+</html>

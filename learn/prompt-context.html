@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt 與脈絡 | Claude PM 入門手冊</title>
+<meta name="description" content="PM 的 Prompt 寫作指南：角色、任務、脈絡、格式四元素，迭代技巧與實戰範例。">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <button class="nav-toggle" aria-label="選單">☰</button>
+    <div class="nav-menu">
+      <a class="nav-link active" href="index.html">概念學習</a>
+      <a class="nav-link" href="../tools/index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container narrow">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">概念學習</a> / Prompt 與脈絡</div>
+  <h1>Prompt 與脈絡完整指南</h1>
+  <p class="lead">
+    好消息：寫好 Prompt 需要的能力——釐清目標、給足脈絡、定義驗收標準——正是 PM 每天在做的事。
+    你不是在學一項新技能，是在把「寫需求」的能力用在新對象上。
+  </p>
+
+  <div class="chapter">
+    <h2>核心觀念：Prompt 是給 AI 的需求單</h2>
+    <p>想像你把任務交給一位第一天到職、能力很強但完全不了解公司的新同事。你會怎麼交代？</p>
+    <ul>
+      <li>你不會只說「幫我寫個 PRD」——你會說清楚是什麼功能、給誰用、解決什麼問題。</li>
+      <li>你不會假設他知道你們的用戶是誰——你會給他背景資料。</li>
+      <li>你不會不講交付格式——你會說「用我們的 PRD 模板，兩頁以內」。</li>
+    </ul>
+    <p>對 Claude 也一樣。<strong>模糊的輸入，只會得到通用的輸出。</strong></p>
+  </div>
+
+  <div class="chapter">
+    <h2>四元素拆解（含 PM 實例）</h2>
+    <h4>1. 角色 Role — 設定視角與專業水準</h4>
+    <div class="prompt-box"><button class="copy-btn">複製</button><pre>你是一位有 10 年經驗的 B2B SaaS 資深產品經理，擅長把模糊的商業需求轉成可執行的規格。</pre></div>
+    <h4>2. 任務 Task — 動詞明確、範圍清楚、有驗收標準</h4>
+    <div class="prompt-box"><button class="copy-btn">複製</button><pre>請閱讀以下 5 份用戶訪談摘要，萃取出前 5 大痛點，按「提及人數」排序，每個痛點附上一句最有代表性的原話。</pre></div>
+    <h4>3. 脈絡 Context — 產出品質的天花板</h4>
+    <div class="prompt-box"><button class="copy-btn">複製</button><pre>背景：我們是一個給中小企業用的排班 SaaS，主要用戶是餐飲業店長，付費方案月費 $990。
+這次訪談的目的是驗證「員工臨時請假造成排班混亂」是否為付費升級的關鍵動機。
+已知限制：本季工程資源只剩 3 人週，方案必須輕量。</pre></div>
+    <h4>4. 格式 Format — 決定產出可不可以直接用</h4>
+    <div class="prompt-box"><button class="copy-btn">複製</button><pre>輸出格式：
+- 用表格呈現：痛點 | 提及人數 | 代表原話 | 對付費動機的影響（高/中/低）
+- 表格後面用 3 句話總結「對本季 roadmap 的建議」
+- 繁體中文，總長度不超過 400 字</pre></div>
+  </div>
+
+  <div class="chapter">
+    <h2>進階技巧：讓產出再上一層</h2>
+    <ul>
+      <li><strong>給範例（Few-shot）</strong>：附上一份「你覺得寫得好的 PRD」，說「照這個水準和結構寫」。一個好範例勝過十行形容詞。</li>
+      <li><strong>要求先思考再回答</strong>：「先列出你的分析步驟，確認後再執行」——複雜任務的品質會明顯提升，你也能在方向錯誤時及早修正。</li>
+      <li><strong>指定不確定時的行為</strong>：「資料不足以下結論時，直接說『證據不足』，不要猜」——這是對抗幻覺最有效的一句話。</li>
+      <li><strong>反向提問</strong>：「開始之前，先問我 3 個能讓產出更精準的問題」——讓 AI 幫你發現自己漏給的脈絡。</li>
+      <li><strong>迭代而非重來</strong>：第一版產出後，用具體的修改指令收斂：「第二段太籠統，改成引用實際數據」比「寫好一點」有效得多。</li>
+    </ul>
+  </div>
+
+  <div class="chapter">
+    <h2>對照：同一個任務的兩種問法</h2>
+    <table>
+      <tr><th>❌ 模糊版</th><th>✓ 專業版</th></tr>
+      <tr>
+        <td>「幫我寫一份深色模式的 PRD」</td>
+        <td>角色：資深 PM。任務：為行動端 App 撰寫深色模式 PRD 初稿。脈絡：用戶調查中 34% 主動提及、競品 A/B 均已支援、設計系統已有色彩 token、本季只能投入 2 人月。格式：含問題陳述、目標與非目標、成功指標、分階段範圍，兩頁內。</td>
+      </tr>
+    </table>
+    <p>
+      模糊版會得到一份「教科書式」的通用 PRD；專業版會得到一份可以直接進評審會修改的初稿。
+      差別不在 AI，在輸入。
+    </p>
+    <p>現在就動手練：<a href="../tools/prompt-builder.html">用 Prompt 組裝器組出你的第一個專業 Prompt →</a></p>
+  </div>
+
+  <div style="text-align:center;margin-top:36px">
+    <a class="btn btn-outline" href="modes.html">← 上一篇：三種工作模式</a>
+    <a class="btn btn-accent" href="agentic.html">下一篇：Agentic 工作流 →</a>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 概念學習</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>

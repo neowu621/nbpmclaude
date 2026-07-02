@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三種工作模式 | Claude PM 入門手冊</title>
+<meta name="description" content="Chat、Cowork、Code 三種 Claude 使用模式的 PM 選擇指南：適用場景、實例與常見誤區。">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <button class="nav-toggle" aria-label="選單">☰</button>
+    <div class="nav-menu">
+      <a class="nav-link active" href="index.html">概念學習</a>
+      <a class="nav-link" href="../tools/index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container narrow">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">概念學習</a> / 三種工作模式</div>
+  <h1>三種工作模式完整指南</h1>
+  <p class="lead">Chat 是問路，Cowork 是共事，Code 是派工。選對模式，同一件事的效率可以差十倍。</p>
+
+  <div class="chapter">
+    <span class="tag tag-chat">Chat 對話</span>
+    <h2>模式一：Chat — 快問快答與發想</h2>
+    <p><strong>本質：</strong>一次性的對話。沒有長期記憶、不掛載你的文件，開新對話就從零開始。</p>
+    <h4>PM 適用場景</h4>
+    <ul>
+      <li>快速解釋：「用非工程師聽得懂的話解釋什麼是 webhook」</li>
+      <li>文案打磨：改寫推播通知、命名腦力激盪、調整郵件語氣</li>
+      <li>思考對手：「我想砍掉這個功能，幫我列出反方會提出的五個論點」</li>
+      <li>框架套用：「用 RICE 幫我粗排這四個需求」（把需求貼進去）</li>
+    </ul>
+    <h4>常見誤區</h4>
+    <ul>
+      <li>❌ 在 Chat 裡處理需要大量背景的任務（每次都要重新解釋產品是什麼）→ 該用 Cowork</li>
+      <li>❌ 把 Chat 當搜尋引擎查即時資訊（注意知識截止日，重要事實要查證）</li>
+    </ul>
+    <div class="checkpoint"><strong>✓ 判斷口訣：</strong>5 分鐘內能解決、不需要公司脈絡 → Chat。</div>
+  </div>
+
+  <div class="chapter">
+    <span class="tag tag-cowork">Cowork 協作</span>
+    <h2>模式二：Cowork — 帶著文件的深度協作</h2>
+    <p>
+      <strong>本質：</strong>建立一個「專案空間」（Claude Projects），放入你的產品文件、用戶研究、
+      指標定義與自訂指令，之後每次對話 Claude 都自帶這些脈絡——像一位真的了解你產品的同事。
+    </p>
+    <h4>PM 適用場景</h4>
+    <ul>
+      <li><strong>PRD 工作區</strong>：放入產品策略、設計規範、既有規格，之後所有需求文件都在同一脈絡下產出</li>
+      <li><strong>研究彙整</strong>：上傳 10 份訪談逐字稿，跨文件萃取主題、比對矛盾點</li>
+      <li><strong>指標分析</strong>：放入指標定義與歷史數據，每週丟新數據進去做趨勢比對</li>
+      <li><strong>會議支援</strong>：長期累積會議紀錄，隨時問「上次跟設計團隊對 onboarding 的結論是什麼？」</li>
+    </ul>
+    <h4>建立 Project 的三個要素</h4>
+    <ol>
+      <li><strong>知識文件</strong>：產品一頁簡介、目標用戶描述、目前的 OKR、術語表</li>
+      <li><strong>自訂指令</strong>：「你是本產品團隊的協作夥伴。輸出一律繁體中文。引用數據時注明來源文件。不確定時明說。」</li>
+      <li><strong>維護節奏</strong>：文件過期比沒有文件更危險——設一個每月更新的提醒</li>
+    </ol>
+    <div class="checkpoint"><strong>✓ 判斷口訣：</strong>需要公司/產品脈絡、會反覆進行 → Cowork。</div>
+  </div>
+
+  <div class="chapter">
+    <span class="tag tag-code">Code 代理</span>
+    <h2>模式三：Code — 讓 AI 動手執行</h2>
+    <p>
+      <strong>本質：</strong>Claude 不只給建議，還實際操作：讀寫檔案、執行程式、批次處理資料、
+      產出可互動的原型。PM 不需要看懂每一行程式碼，但需要會下規格、驗收結果。
+    </p>
+    <h4>PM 適用場景</h4>
+    <ul>
+      <li><strong>資料處理</strong>：「把這份 3000 筆的客訴 CSV 依問題類型分類，產出統計表和圖」</li>
+      <li><strong>可互動原型</strong>：「做一個能點擊的 onboarding 流程 demo，給明天的評審會用」</li>
+      <li><strong>報表自動化</strong>：「每週從這個資料夾讀取匯出檔，產出固定格式的週報」</li>
+      <li><strong>文件批次作業</strong>：「把這 20 份規格文件統一改成新模板格式」</li>
+    </ul>
+    <h4>PM 的驗收清單</h4>
+    <ul>
+      <li>先要求 Claude <strong>說明計畫</strong>再動手（就像請工程師先給技術方案）</li>
+      <li>用小樣本先跑一次（10 筆資料驗證邏輯，再跑 3000 筆）</li>
+      <li>要求產出「處理摘要」：處理了幾筆、跳過幾筆、為什麼</li>
+    </ul>
+    <div class="checkpoint"><strong>✓ 判斷口訣：</strong>量大、重複、需要實際檔案產出 → Code。</div>
+  </div>
+
+  <div class="chapter">
+    <h2>一張表看懂怎麼選</h2>
+    <table>
+      <tr><th>情境</th><th>建議模式</th><th>原因</th></tr>
+      <tr><td>幫這個功能想 10 個名字</td><td><span class="tag tag-chat">Chat</span></td><td>一次性、不需脈絡</td></tr>
+      <tr><td>依產品策略寫一份新功能 PRD</td><td><span class="tag tag-cowork">Cowork</span></td><td>需要產品脈絡、多回合修改</td></tr>
+      <tr><td>15 份訪談逐字稿萃取痛點</td><td><span class="tag tag-cowork">Cowork</span></td><td>多文件、需交叉比對</td></tr>
+      <tr><td>3000 筆工單自動分類統計</td><td><span class="tag tag-code">Code</span></td><td>量大、需結構化處理</td></tr>
+      <tr><td>解釋一個技術名詞</td><td><span class="tag tag-chat">Chat</span></td><td>通用知識即可</td></tr>
+      <tr><td>每週自動產出指標週報</td><td><span class="tag tag-code">Code</span></td><td>重複、格式固定、可排程</td></tr>
+    </table>
+    <p>還是不確定？用互動工具直接診斷：<a href="../tools/mode-diagnosis.html">模式診斷 →</a></p>
+  </div>
+
+  <div style="text-align:center;margin-top:36px">
+    <a class="btn btn-outline" href="index.html">← 回概念學習</a>
+    <a class="btn btn-accent" href="prompt-context.html">下一篇：Prompt 與脈絡 →</a>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 概念學習</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>

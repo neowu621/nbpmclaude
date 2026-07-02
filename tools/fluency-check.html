@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 協作成熟度自評 | Claude PM 入門手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <button class="nav-toggle" aria-label="選單">☰</button>
+    <div class="nav-menu">
+      <a class="nav-link" href="../learn/index.html">概念學習</a>
+      <a class="nav-link active" href="index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container narrow">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">引導式學習</a> / 4D 自評</div>
+  <h1>AI 協作成熟度自評 📊</h1>
+  <p class="lead">
+    回想你<strong>最近一次</strong>用 AI 完成的工作任務，對四個維度誠實打分（1～5）。
+    分數不是重點，重點是找出最弱的維度和下一步行動。
+  </p>
+
+  <div class="tool-panel">
+    <h3>Delegation 委派 — 我把「對的任務」交給了 AI</h3>
+    <p style="font-size:13.5px;color:var(--text-muted)">5 分：任務適合 AI（產出型、有明確驗收）；1 分：我把該自己判斷的事丟給了 AI，或該交給 AI 的事還在手工做。</p>
+    <input type="range" id="d1" min="1" max="5" value="3" oninput="document.getElementById('v1').textContent=this.value">
+    <div style="text-align:right;font-weight:700;color:var(--accent-dark)"><span id="v1">3</span> / 5</div>
+
+    <h3 style="margin-top:20px">Description 描述 — 我給了 AI 足夠的脈絡與明確的要求</h3>
+    <p style="font-size:13.5px;color:var(--text-muted)">5 分：角色、任務、脈絡、格式四元素齊備；1 分：一句話丟過去，期待它讀心。</p>
+    <input type="range" id="d2" min="1" max="5" value="3" oninput="document.getElementById('v2').textContent=this.value">
+    <div style="text-align:right;font-weight:700;color:var(--accent-dark)"><span id="v2">3</span> / 5</div>
+
+    <h3 style="margin-top:20px">Discernment 辨別 — 我有能力評估產出的品質與錯誤</h3>
+    <p style="font-size:13.5px;color:var(--text-muted)">5 分：我查證了關鍵事實、發現並修正了產出的問題；1 分：看起來通順就直接用了。</p>
+    <input type="range" id="d3" min="1" max="5" value="3" oninput="document.getElementById('v3').textContent=this.value">
+    <div style="text-align:right;font-weight:700;color:var(--accent-dark)"><span id="v3">3</span> / 5</div>
+
+    <h3 style="margin-top:20px">Diligence 盡責 — 我為這份產出負起了完整責任</h3>
+    <p style="font-size:13.5px;color:var(--text-muted)">5 分：對外內容人工複核、資料合規、必要時標注 AI 參與；1 分：出了錯打算怪 AI。</p>
+    <input type="range" id="d4" min="1" max="5" value="3" oninput="document.getElementById('v4').textContent=this.value">
+    <div style="text-align:right;font-weight:700;color:var(--accent-dark)"><span id="v4">3</span> / 5</div>
+
+    <div style="margin-top:20px">
+      <button class="btn btn-accent" id="fc-eval" style="border:none">看評估結果</button>
+    </div>
+    <div class="result-box hidden" id="fc-result"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 引導式學習</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+<script>
+(function () {
+  var advice = {
+    d1: { name: 'Delegation 委派', tip: '回到<a href="../learn/index.html#ch2">第 2 章的「產出 ↔ 判斷」光譜</a>，把本週工作放上去分類一次。從純產出型任務開始委派，判斷型任務讓 AI 當「思考對手」而不是「決策者」。' },
+    d2: { name: 'Description 描述', tip: '下次提問前，強制自己填滿四元素——直接用 <a href="prompt-builder.html">Prompt 組裝器</a>。最容易漏的是「脈絡」：產品背景、目標受眾、限制條件。' },
+    d3: { name: 'Discernment 辨別', tip: '養成三個習慣：要求 AI 列出資料來源與信心程度；抽查 2～3 個關鍵數字；問自己「如果這個結論是錯的，最可能錯在哪」。' },
+    d4: { name: 'Diligence 盡責', tip: '建立你的個人檢核清單：對外文件人工複核了嗎？貼進去的資料合規嗎？接收者知道 AI 的參與程度嗎？參考<a href="../learn/index.html#ch8">第 8 章</a>。' }
+  };
+  document.getElementById('fc-eval').addEventListener('click', function () {
+    var scores = {
+      d1: +document.getElementById('d1').value,
+      d2: +document.getElementById('d2').value,
+      d3: +document.getElementById('d3').value,
+      d4: +document.getElementById('d4').value
+    };
+    var total = scores.d1 + scores.d2 + scores.d3 + scores.d4;
+    var weakest = Object.keys(scores).reduce(function (a, b) { return scores[a] <= scores[b] ? a : b; });
+    var level = total >= 17 ? '成熟協作者 — 你已經在用專業的方式與 AI 共事，考慮把經驗做成團隊規範。'
+      : total >= 12 ? '進階使用者 — 基礎穩固，補強最弱維度就能明顯升級。'
+      : '起步階段 — 很正常，多數人從這裡開始。先聚焦一個維度改善。';
+    var html = '<h4>總分：' + total + ' / 20 — ' + level + '</h4>';
+    html += '<div style="margin:12px 0">';
+    ['d1','d2','d3','d4'].forEach(function (k) {
+      html += '<div style="font-size:13.5px;font-weight:600">' + advice[k].name + '：' + scores[k] + ' / 5</div>' +
+        '<div class="score-bar"><div class="score-fill" style="width:' + (scores[k] * 20) + '%"></div></div>';
+    });
+    html += '</div>';
+    html += '<h4>優先補強：' + advice[weakest].name + '</h4><p style="font-size:14.5px">' + advice[weakest].tip + '</p>';
+    var box = document.getElementById('fc-result');
+    box.innerHTML = html;
+    box.classList.remove('hidden');
+  });
+})();
+</script>
+</body>
+</html>

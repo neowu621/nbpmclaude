@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic 流程模擬器 | Claude PM 入門手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <button class="nav-toggle" aria-label="選單">☰</button>
+    <div class="nav-menu">
+      <a class="nav-link" href="../learn/index.html">概念學習</a>
+      <a class="nav-link active" href="index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container narrow">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">引導式學習</a> / Agentic 模擬器</div>
+  <h1>Agentic 流程模擬器 ⚙️</h1>
+  <p class="lead">
+    情境：你委託 Claude Code「分析本季客訴資料並產出洞察報告」。
+    按「下一步」，看 Agent 在每個階段實際做什麼、以及 PM 在哪裡介入。
+  </p>
+
+  <div class="tool-panel">
+    <div class="sim-steps">
+      <div class="sim-step" id="s0">① Explore<br>探索</div>
+      <div class="sim-step" id="s1">② Plan<br>規劃</div>
+      <div class="sim-step" id="s2">③ Execute<br>執行</div>
+      <div class="sim-step" id="s3">④ Verify<br>驗證</div>
+    </div>
+    <div class="sim-log" id="sim-log">按下「開始模擬」，觀察 Agent 的工作循環。</div>
+    <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-accent" id="sim-next" style="border:none">開始模擬</button>
+      <button class="btn btn-outline" id="sim-reset">重來</button>
+    </div>
+    <div class="result-box hidden" id="sim-note"></div>
+  </div>
+
+  <div class="chapter">
+    <h2>看完模擬，記住三件事</h2>
+    <ul>
+      <li><strong>Plan 階段是 PM 最重要的介入點</strong>——在 Agent 動手前確認方向，成本最低。</li>
+      <li><strong>Execute 過程中 Agent 會遇到意外</strong>（缺值、格式不一致），好的任務描述會告訴它「遇到 X 就問我，不要猜」。</li>
+      <li><strong>Verify 不能省</strong>——要求處理摘要（處理幾筆、跳過幾筆、為什麼），這是你驗收的依據。</li>
+    </ul>
+    <p>回到概念：<a href="../learn/agentic.html">Agentic 工作流完整指南</a></p>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 引導式學習</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+<script>
+(function () {
+  var steps = [
+    {
+      log: '▶ ① Explore 探索\n\n$ 讀取資料夾 /data/complaints/\n  找到 8 個 CSV 檔（2026-Q2-*.csv）\n  偵測：3 種不同的欄位格式\n  偵測：complaints-06a.csv 與 06b.csv 有 217 筆重複\n  偵測：412 筆的「類別」欄位是空的\n\nAgent 心得：資料比想像中髒——先弄清楚現況，才不會把垃圾算進結論。',
+      note: null
+    },
+    {
+      log: '▶ ② Plan 規劃\n\nAgent 提出計畫：\n  1. 統一 8 個檔案的欄位格式\n  2. 去除重複（以工單編號為準）\n  3. 空類別的 412 筆 → 依內文自動分類，信心不足的列入「待人工確認」\n  4. 依既有分類法統計各類別佔比與環比\n  5. 產出報告：Top 3 惡化項目 + 證據\n\n⏸ 等待 PM 確認計畫……',
+      note: '<h4>🙋 PM 介入點 #1</h4><p>這裡就是你按下「同意」之前該檢查的：分類法是用「我們的既有分類」還是 AI 自創？去重的依據合理嗎？——在計畫階段改方向，成本是一句話；在報告出來後才發現，成本是重做一次。</p>'
+    },
+    {
+      log: '▶ ③ Execute 執行\n\n$ 合併 8 個檔案 → 3,204 筆\n$ 去重 → 移除 217 筆，剩 2,987 筆\n$ 自動分類空類別欄位：\n  ✓ 358 筆分類完成（信心 > 90%）\n  ⚠ 54 筆信心不足 → 寫入 need-review.csv\n$ 統計完成，產出圖表 3 張\n\nAgent 回報：發現「配送延遲」類別環比 +47%，已標記為重點。',
+      note: null
+    },
+    {
+      log: '▶ ④ Verify 驗證\n\n$ 核對：3,204（原始）− 217（重複）= 2,987 ✓\n$ 分類總數 = 2,987，無遺漏 ✓\n$ 產出處理摘要：\n  - 處理 2,987 筆，54 筆待人工確認\n  - Top 3 惡化：配送延遲 +47%、退款流程 +21%、客服回覆速度 +12%\n  - 報告已存至 /output/Q2-complaints-insight.md\n\n✅ 任務完成，等待 PM 驗收。',
+      note: '<h4>🙋 PM 介入點 #2</h4><p>驗收時間：抽查 5 筆自動分類是否正確、確認 +47% 的計算基期、再決定這份報告能不能進週會。<strong>Agent 完成的是「產出」，「這份洞察可信、值得行動」的背書永遠來自 PM。</strong></p>'
+    }
+  ];
+  var i = -1;
+  var btn = document.getElementById('sim-next');
+  var log = document.getElementById('sim-log');
+  var note = document.getElementById('sim-note');
+
+  btn.addEventListener('click', function () {
+    if (i >= steps.length - 1) return;
+    i++;
+    for (var k = 0; k < 4; k++) {
+      var el = document.getElementById('s' + k);
+      el.classList.remove('active', 'done');
+      if (k < i) el.classList.add('done');
+      if (k === i) el.classList.add('active');
+    }
+    log.textContent = steps[i].log;
+    if (steps[i].note) { note.innerHTML = steps[i].note; note.classList.remove('hidden'); }
+    else { note.classList.add('hidden'); }
+    btn.textContent = i >= steps.length - 1 ? '模擬完成 ✓' : '下一步 →';
+  });
+
+  document.getElementById('sim-reset').addEventListener('click', function () {
+    i = -1;
+    for (var k = 0; k < 4; k++) document.getElementById('s' + k).classList.remove('active', 'done');
+    log.textContent = '按下「開始模擬」，觀察 Agent 的工作循環。';
+    note.classList.add('hidden');
+    btn.textContent = '開始模擬';
+  });
+})();
+</script>
+</body>
+</html>

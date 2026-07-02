@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>團隊協作工具包 | Claude PM 入門手冊</title>
+<meta name="description" content="把個人 AI 技能變成團隊能力：使用規範模板、資料分級、Prompt 庫建立方式與四週導入計畫。">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <button class="nav-toggle" aria-label="選單">☰</button>
+    <div class="nav-menu">
+      <a class="nav-link" href="../learn/index.html">概念學習</a>
+      <a class="nav-link" href="../tools/index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link active" href="index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container narrow">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">協作資源</a> / 團隊協作工具包</div>
+  <h1>團隊協作工具包 🧰</h1>
+  <p class="lead">
+    一個人用 AI 是提效，一個團隊用 AI 是改變工作方式。
+    這頁的模板可以直接複製到你的團隊 Wiki，再依公司政策調整。
+  </p>
+
+  <div class="chapter">
+    <h2>模板一：團隊 AI 使用規範（最小可行版）</h2>
+    <div class="prompt-box"><button class="copy-btn">複製</button><pre># 產品團隊 AI 使用規範 v1.0
+
+## 資料分級（貼進 AI 之前先查這張表）
+- 🟢 可直接使用：公開資訊、已發布文件、去識別化後的用戶回饋
+- 🟡 去識別化後可用：訪談紀錄、客訴內容、內部會議紀錄
+  （移除：姓名、聯絡方式、公司名、可回推身分的細節）
+- 🔴 禁止：用戶個資、財務數據、未公開策略、合約內容、原始碼
+  （除非使用公司核可的企業方案，並依其條款）
+
+## 產出使用規則
+1. 對外文件（給客戶、公開發布）：一律人工複核後才能送出
+2. 數據與事實：AI 產出的數字、引用，使用前雙重查證
+3. 決策：AI 可以提供選項與分析，最終決定與責任在人
+4. 標注：內部文件註明 AI 參與程度，維持可追溯
+
+## 例外處理
+不確定能不能貼？先問 #ai-usage 頻道，不要先斬後奏。</pre></div>
+  </div>
+
+  <div class="chapter">
+    <h2>模板二：團隊 Prompt 庫的建立規則</h2>
+    <p>共用 Prompt 庫（放在 Notion / Confluence / 共用文件都可以）建議的欄位與規則：</p>
+    <table>
+      <tr><th>欄位</th><th>說明</th></tr>
+      <tr><td>名稱與場景</td><td>一句話說清楚「什麼時候用它」</td></tr>
+      <tr><td>Prompt 本體</td><td>【】標出需替換的部分</td></tr>
+      <tr><td>驗證次數</td><td>規則：<strong>成功使用 3 次以上才能入庫</strong>，避免庫裡都是沒人驗過的靈感</td></tr>
+      <tr><td>已知限制</td><td>它做不好什麼？哪裡要人工把關？</td></tr>
+      <tr><td>維護者</td><td>誰負責更新這條</td></tr>
+    </table>
+    <p>起手內容：直接從本站 <a href="prompts.html">Prompt 資料庫</a> 與 <a href="../tasks/index.html">任務實作</a> 挑你們用得到的開始。</p>
+  </div>
+
+  <div class="chapter">
+    <h2>模板三：四週導入計畫</h2>
+    <table>
+      <tr><th>週次</th><th>目標</th><th>具體動作</th></tr>
+      <tr><td>第 1 週<br>建立基線</td><td>規範先行</td><td>發布資料分級清單與使用規則；每人完成本站「概念學習」1～4 章與模式診斷</td></tr>
+      <tr><td>第 2 週<br>個人上手</td><td>每人一個入門任務</td><td>每位成員從任務實作選一個「入門」任務完成，記錄用時與心得</td></tr>
+      <tr><td>第 3 週<br>經驗匯流</td><td>啟動 Prompt 庫</td><td>例會 30 分鐘分享會：每人展示一個成功用法；驗證過的進 Prompt 庫</td></tr>
+      <tr><td>第 4 週<br>制度化</td><td>進入日常節奏</td><td>挑 1～2 個團隊級流程（會議紀錄、週報）標準化；設定每雙週 10 分鐘的持續分享</td></tr>
+    </table>
+    <p>四週後的檢核：用 <a href="../tools/fluency-check.html">4D 自評</a> 讓每人打分，團隊平均分數就是你的導入成效基線。</p>
+  </div>
+
+  <div class="chapter">
+    <h2>模板四：導入時最常見的三種阻力與回應</h2>
+    <table>
+      <tr><th>阻力</th><th>背後的真話</th><th>建議回應</th></tr>
+      <tr><td>「AI 會出錯，不能信」</td><td>擔心品質責任</td><td>同意——所以規範要求人工複核與查證。AI 是初稿引擎，不是簽核者。</td></tr>
+      <tr><td>「我自己寫比較快」</td><td>學習成本的恐懼</td><td>不爭辯，給一個 10 分鐘見效的任務（T10 會議紀錄）親手試一次。</td></tr>
+      <tr><td>「用 AI 是不是代表我要被取代」</td><td>職涯焦慮，最需要認真對待</td><td>誠實談：被自動化的是任務不是人；把省下的時間投資在判斷力——那才是 PM 的護城河。</td></tr>
+    </table>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 協作資源</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt 組裝器 | Claude PM 入門手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <button class="nav-toggle" aria-label="選單">☰</button>
+    <div class="nav-menu">
+      <a class="nav-link" href="../learn/index.html">概念學習</a>
+      <a class="nav-link active" href="index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container narrow">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">引導式學習</a> / Prompt 組裝器</div>
+  <h1>Prompt 組裝器 🧱</h1>
+  <p class="lead">逐格填入五個元素，右下方即時組合出可複製的 Prompt。填不出來的格子，就是你平常提問時漏掉的東西。</p>
+
+  <div class="tool-panel">
+    <label>1. 角色 Role — 你要 Claude 扮演誰？</label>
+    <select id="pb-role">
+      <option value="你是一位有 10 年經驗的 B2B SaaS 資深產品經理。">B2B SaaS 資深產品經理</option>
+      <option value="你是一位擅長從質化資料萃取洞察的用戶研究員。">用戶研究員</option>
+      <option value="你是一位熟悉漏斗分析與 A/B 測試的產品數據分析師。">產品數據分析師</option>
+      <option value="你是一位擅長把技術細節翻譯給非工程背景聽眾的技術溝通專家。">技術溝通專家</option>
+      <option value="你是一位嚴格的產品評審委員，專門挑出規格文件中的漏洞與模糊之處。">魔鬼代言人／評審委員</option>
+    </select>
+
+    <label>2. 任務 Task — 動詞明確、範圍清楚（自行填寫）</label>
+    <textarea id="pb-task" placeholder="例：閱讀以下 5 份訪談摘要，萃取前 5 大痛點並按提及頻率排序。"></textarea>
+
+    <label>3. 脈絡 Context — 產品背景、目標用戶、限制條件（自行填寫）</label>
+    <textarea id="pb-context" placeholder="例：我們是給餐飲業店長用的排班 SaaS，月費 $990；本季工程資源只剩 3 人週。"></textarea>
+
+    <label>4. 格式 Format — 產出長什麼樣子？</label>
+    <select id="pb-format">
+      <option value="輸出格式：用表格呈現，欄位由你依內容設計；表格後附 3 句話的行動建議。繁體中文。">表格 + 行動建議</option>
+      <option value="輸出格式：條列式重點，每點不超過兩行，按重要性排序。繁體中文。">條列重點</option>
+      <option value="輸出格式：一頁式文件，含問題陳述、目標與非目標、成功指標、分階段範圍。繁體中文。">一頁式規格</option>
+      <option value="輸出格式：300 字以內的高層摘要，先講結論，再講依據。繁體中文。">高層摘要</option>
+      <option value="輸出格式：正反方論點各 5 點，最後給出你的綜合判斷與信心程度。繁體中文。">正反方分析</option>
+    </select>
+
+    <label>5. 引導強度 Guidance — 你希望 Claude 怎麼工作？</label>
+    <select id="pb-guide">
+      <option value="請直接完成任務。">直接完成（我趕時間）</option>
+      <option value="開始之前，先問我 3 個能讓產出更精準的問題，等我回答後再執行。">先反問我 3 個問題（推薦新手）</option>
+      <option value="請先列出你的分析步驟與計畫，等我確認後再執行。">先給計畫，確認後執行（複雜任務）</option>
+      <option value="資料不足以下結論時，直接說「證據不足」並列出你還需要什麼，不要猜測。">嚴格模式：不確定就明說（分析任務）</option>
+    </select>
+
+    <div style="margin-top:20px">
+      <button class="btn btn-accent" id="pb-build" style="border:none">組合 Prompt</button>
+    </div>
+  </div>
+
+  <div class="tool-panel hidden" id="pb-output-panel">
+    <h3>你的 Prompt（點右上角複製，貼到 Claude）</h3>
+    <div class="prompt-box">
+      <button class="copy-btn">複製</button>
+      <pre id="pb-output"></pre>
+    </div>
+    <p style="font-size:14px;color:var(--text-muted)">
+      提示：貼上後，把你的原始資料（訪談、數據、文件）接在 Prompt 後面或用附件上傳。
+      產出不理想時，不要重來——用具體的修改指令迭代。
+    </p>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 引導式學習</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+<script>
+(function () {
+  document.getElementById('pb-build').addEventListener('click', function () {
+    var role = document.getElementById('pb-role').value;
+    var task = document.getElementById('pb-task').value.trim() || '（請在上方填入你的任務描述）';
+    var ctx = document.getElementById('pb-context').value.trim() || '（請在上方填入你的產品背景與限制條件）';
+    var fmt = document.getElementById('pb-format').value;
+    var guide = document.getElementById('pb-guide').value;
+
+    var prompt = role + '\n\n【任務】\n' + task + '\n\n【背景脈絡】\n' + ctx + '\n\n【' + fmt.split('：')[0] + '】\n' + fmt.substring(fmt.indexOf('：') + 1) + '\n\n【工作方式】\n' + guide;
+
+    document.getElementById('pb-output').textContent = prompt;
+    document.getElementById('pb-output-panel').classList.remove('hidden');
+    /* 重新綁定複製按鈕（頁面載入時內容還是空的） */
+    var btn = document.querySelector('#pb-output-panel .copy-btn');
+    btn.onclick = function () {
+      navigator.clipboard.writeText(prompt).then(function () {
+        btn.textContent = '已複製 ✓'; btn.classList.add('copied');
+        setTimeout(function () { btn.textContent = '複製'; btn.classList.remove('copied'); }, 1800);
+      });
+    };
+  });
+})();
+</script>
+</body>
+</html>
