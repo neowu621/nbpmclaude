@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const { pool } = require('../db');
 const {
   hashPassword, verifyPassword, signToken,
-  setAuthCookie, clearAuthCookie, requireAuth, isEmail
+  setAuthCookie, clearAuthCookie, requireAuth, requireAdmin, isEmail
 } = require('../lib/auth');
 const { sendMail } = require('../lib/mailer');
 
@@ -185,6 +185,19 @@ router.post('/reset', async (req, res, next) => {
     await pool.query('UPDATE users SET password_hash=$1 WHERE id=$2', [await hashPassword(password), t.user_id]);
     await pool.query('UPDATE email_tokens SET used_at=now() WHERE id=$1', [t.id]);
     res.json({ ok: true, message: '密碼已更新，請重新登入' });
+  } catch (e) { next(e); }
+});
+
+// 管理者:刪除指定 Email 帳號（清理測試帳號用；禁止刪除管理者本人，關聯資料以 CASCADE 一併移除）
+router.post('/admin/delete-user', requireAuth, requireAdmin, async (req, res, next) => {
+  try {
+    const { email } = req.body || {};
+    if (!isEmail(email)) return res.status(400).json({ error: '請輸入有效的 Email' });
+    const lower = email.toLowerCase();
+    const adminEmail = (process.env.ADMIN_EMAIL || 'neowu62@gmail.com').trim().toLowerCase();
+    if (lower === adminEmail) return res.status(400).json({ error: '不可刪除管理者帳號' });
+    const r = await pool.query('DELETE FROM users WHERE email=$1 RETURNING id', [lower]);
+    return res.json({ ok: true, deleted: r.rowCount });
   } catch (e) { next(e); }
 });
 
