@@ -1,10 +1,11 @@
 const express = require('express');
 const { pool } = require('../db');
-const { requireAuth } = require('../lib/auth');
+const { requireAuth, requireAdmin } = require('../lib/auth');
 
 const router = express.Router();
 router.use(requireAuth);
-// 全透明：任何已登入者都能看全部人的數據
+// 共學看板（overview/leaderboard/pages）：任何已登入者都能看，不含 Email
+// 帳號資訊（accounts）：僅管理者
 
 // 概覽三卡：註冊人數、今日活躍、平均造訪時長
 router.get('/overview', async (req, res, next) => {
@@ -20,11 +21,11 @@ router.get('/overview', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// 每人總停留 + 每人最久頁面
-router.get('/people', async (req, res, next) => {
+// 共學排行榜（所有登入者可見，不含 Email）：每人總停留 / 造訪次數 / 最常看頁面
+router.get('/leaderboard', async (req, res, next) => {
   try {
     const r = await pool.query(`
-      SELECT u.display_name, u.email, u.role, u.email_verified, u.created_at,
+      SELECT u.display_name,
         (SELECT MAX(vs.last_seen_at) FROM visit_sessions vs WHERE vs.user_id = u.id) AS last_seen,
         (SELECT COUNT(*) FROM visit_sessions vs WHERE vs.user_id = u.id)::int AS visits,
         COALESCE(SUM(pv.active_seconds),0)::int AS total_seconds,
@@ -33,9 +34,23 @@ router.get('/people', async (req, res, next) => {
            GROUP BY p2.path ORDER BY SUM(p2.active_seconds) DESC LIMIT 1) AS top_path
       FROM users u
       LEFT JOIN page_views pv ON pv.user_id = u.id
+      WHERE u.email_verified = TRUE
       GROUP BY u.id
-      ORDER BY last_seen DESC NULLS LAST, total_seconds DESC`);
+      ORDER BY total_seconds DESC, last_seen DESC NULLS LAST`);
     res.json({ people: r.rows });
+  } catch (e) { next(e); }
+});
+
+// 帳號資訊（僅管理者）：姓名 / Email / 角色 / 驗證狀態 / 註冊日 / 最後活躍 / 造訪次數
+router.get('/accounts', requireAdmin, async (req, res, next) => {
+  try {
+    const r = await pool.query(`
+      SELECT u.display_name, u.email, u.role, u.email_verified, u.created_at,
+        (SELECT MAX(vs.last_seen_at) FROM visit_sessions vs WHERE vs.user_id = u.id) AS last_seen,
+        (SELECT COUNT(*) FROM visit_sessions vs WHERE vs.user_id = u.id)::int AS visits
+      FROM users u
+      ORDER BY u.created_at DESC`);
+    res.json({ users: r.rows });
   } catch (e) { next(e); }
 });
 

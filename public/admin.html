@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>(function(){var d=document.documentElement;d.style.visibility="hidden";fetch("/api/auth/me",{credentials:"include"}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){if(!j.user||j.user.role!=="admin"){location.replace("/dashboard.html");return;}d.style.visibility="";}).catch(function(){location.replace("/login.html?next="+encodeURIComponent(location.pathname));});})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>帳號管理 | Claude PM 入門手冊</title>
+<style>
+  :root{--bg:#f7f4ee;--card:#fff;--text:#1f1e1d;--muted:#6b6660;--accent:#cc785c;--accent-dark:#a85f47;--border:#e4ddd2;--soft:#faf7f1}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:28px}
+  .wrap{max-width:1080px;margin:0 auto}
+  .top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:6px}
+  .top h1{font-size:22px}
+  .top .actions{display:flex;gap:10px;align-items:center}
+  .lnk{color:var(--accent-dark);text-decoration:none;font-size:14px;font-weight:600}
+  .btn-out{padding:8px 16px;border:1px solid var(--border);border-radius:999px;background:var(--card);color:var(--muted);
+       font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .btn-out:hover{background:var(--soft)}
+  .intro{color:var(--muted);font-size:14px;margin-bottom:22px}
+  .count{font-size:13px;color:var(--muted);padding:0 4px 10px}
+  section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:4px;overflow:hidden}
+  .scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:720px}
+  th,td{text-align:left;padding:10px 14px;border-top:1px solid var(--border);white-space:nowrap}
+  th{color:var(--muted);font-weight:600;font-size:12.5px;background:var(--soft)}
+  td.num,th.num{text-align:right}
+  tr:hover td{background:var(--soft)}
+  .tag{display:inline-block;font-size:11.5px;font-weight:600;padding:1px 8px;border-radius:999px}
+  .tag.admin{background:#efe3dd;color:var(--accent-dark)}
+  .tag.member{background:#eceae4;color:var(--muted)}
+  .tag.ok{background:#e8f0e9;color:#3d6b4a}
+  .tag.no{background:#f8e3e0;color:#a53f2f}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--muted)}
+  .spinner{width:34px;height:34px;margin:40px auto;border:3px solid var(--border);border-top-color:var(--accent-dark);
+       border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .empty{padding:26px 18px;color:var(--muted);font-size:14px;text-align:center}
+  .err{margin-bottom:20px;padding:12px 16px;border-radius:10px;background:#f8e3e0;color:#a53f2f;font-size:14px;display:none}
+  .hide{display:none!important}
+  @media(max-width:640px){body{padding:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>👤 帳號管理</h1>
+    <div class="actions">
+      <a class="lnk" href="/dashboard.html">← 共學看板</a>
+      <button class="btn-out" id="logout">登出</button>
+    </div>
+  </div>
+  <div class="intro">所有註冊帳號的基本資訊(僅管理者可見)。</div>
+
+  <div id="err" class="err"></div>
+  <div class="count" id="count"></div>
+
+  <section>
+    <div id="load" class="spinner"></div>
+    <div class="scroll"><table id="tbl" class="hide">
+      <thead><tr>
+        <th>姓名</th><th>Email</th><th>角色</th><th>驗證</th>
+        <th>註冊日</th><th>最後活躍</th><th class="num">造訪次數</th>
+      </tr></thead>
+      <tbody id="body"></tbody>
+    </table></div>
+    <div id="empty" class="empty hide">還沒有任何帳號。</div>
+  </section>
+</div>
+
+<script>
+  var API = window.NBPM_API || '';
+  function el(id){ return document.getElementById(id); }
+  function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; }
+  function when(iso){
+    if(!iso) return '—';
+    var d=new Date(iso); if(isNaN(d)) return '—';
+    var p=function(n){ return (n<10?'0':'')+n; };
+    return d.getFullYear()+'/'+p(d.getMonth()+1)+'/'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
+  }
+  function dateOnly(iso){
+    if(!iso) return '—';
+    var d=new Date(iso); if(isNaN(d)) return '—';
+    var p=function(n){ return (n<10?'0':'')+n; };
+    return d.getFullYear()+'/'+p(d.getMonth()+1)+'/'+p(d.getDate());
+  }
+  function showErr(m){ var e=el('err'); e.textContent=m; e.style.display='block'; }
+
+  fetch(API+'/api/stats/accounts',{credentials:'include'}).then(function(r){
+    if(!r.ok) throw new Error(r.status); return r.json();
+  }).then(function(d){
+    el('load').classList.add('hide');
+    var rows = d.users || [];
+    el('count').textContent = '共 ' + rows.length + ' 個帳號';
+    if(!rows.length){ el('empty').classList.remove('hide'); return; }
+    var html = rows.map(function(u){
+      var role = u.role==='admin' ? '<span class="tag admin">管理者</span>' : '<span class="tag member">會員</span>';
+      var v = u.email_verified ? '<span class="tag ok">已驗證</span>' : '<span class="tag no">未驗證</span>';
+      return '<tr>' +
+        '<td>' + esc(u.display_name) + '</td>' +
+        '<td class="mono">' + esc(u.email) + '</td>' +
+        '<td>' + role + '</td>' +
+        '<td>' + v + '</td>' +
+        '<td>' + dateOnly(u.created_at) + '</td>' +
+        '<td>' + when(u.last_seen) + '</td>' +
+        '<td class="num">' + (u.visits||0) + '</td>' +
+      '</tr>';
+    }).join('');
+    el('body').innerHTML = html;
+    el('tbl').classList.remove('hide');
+  }).catch(function(){ el('load').classList.add('hide'); showErr('載入帳號資料失敗,請重新整理。'); });
+
+  el('logout').onclick = function(){
+    fetch(API+'/api/auth/logout',{method:'POST',credentials:'include'})
+      .then(function(){ location.href='/login.html'; }).catch(function(){ location.href='/login.html'; });
+  };
+</script>
+</body>
+</html>
