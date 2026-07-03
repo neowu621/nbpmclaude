@@ -21,6 +21,11 @@
   .btn{width:100%;margin-top:20px;padding:12px;background:var(--text);color:#fff;border:none;border-radius:999px;
        font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
   .btn:hover{background:var(--accent-dark)}
+  .btn:disabled{opacity:.9;cursor:default}
+  .btn.busy{position:relative;color:transparent!important}
+  .btn.busy::after{content:"";position:absolute;top:50%;left:50%;width:18px;height:18px;margin:-9px 0 0 -9px;
+       border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
   .msg{margin-top:14px;font-size:13.5px;padding:10px 12px;border-radius:8px;display:none}
   .msg.err{display:block;background:#f8e3e0;color:#a53f2f}
   .msg.ok{display:block;background:#e8f0e9;color:#3d6b4a}
@@ -97,19 +102,25 @@
     return fetch(API+path,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
       .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); });
   }
+  // 送出中在按鈕中央顯示轉圈動畫並停用，避免使用者以為當機或重複點擊
+  function busy(id, on){ var b=document.getElementById(id); if(!b) return; b.classList.toggle('busy', on); b.disabled=on; }
 
   document.getElementById('btn-login').onclick=function(){
+    busy('btn-login', true);
     api('/api/auth/login',{email:val('l-email'),password:val('l-pw')}).then(function(r){
-      if(r.ok){ location.href = qs.get('next') || '/'; }
-      else msg(r.j.error||'登入失敗');
-    });
+      if(r.ok){ location.href = qs.get('next') || '/'; return; }  // 導向前保留動畫
+      busy('btn-login', false);
+      msg(r.j.error||'登入失敗');
+    }).catch(function(){ busy('btn-login', false); msg('連線失敗，請稍後再試'); });
   };
   document.getElementById('btn-register').onclick=function(){
     if(!document.getElementById('r-consent').checked){ msg('請先勾選同意記錄學習足跡'); return; }
+    busy('btn-register', true);
     api('/api/auth/register',{displayName:val('r-name'),email:val('r-email'),password:val('r-pw')}).then(function(r){
+      busy('btn-register', false);
       if(r.ok) msg(r.j.message||'確認信已寄出，請收信', true);
       else msg(r.j.error||'註冊失敗');
-    });
+    }).catch(function(){ busy('btn-register', false); msg('連線失敗，請稍後再試'); });
   };
   // 忘記密碼：彈窗輸入 Email → 已註冊寄重設信、未註冊導向註冊
   var fm=document.getElementById('forgot-modal');
@@ -122,7 +133,9 @@
   document.getElementById('f-submit').onclick=function(){
     var email=val('f-email');
     if(!email){ fmsg('請輸入 Email'); return; }
+    busy('f-submit', true);
     api('/api/auth/reset-request',{email:email}).then(function(r){
+      busy('f-submit', false);
       if(!r.ok){ fmsg(r.j.error||'發生錯誤，請稍後再試'); return; }
       closeForgot();
       if(r.j.exists){
@@ -133,7 +146,7 @@
         document.getElementById('r-email').value=email;
         msg('這個 Email 尚未註冊，請完成註冊。', true);
       }
-    });
+    }).catch(function(){ busy('f-submit', false); fmsg('連線失敗，請稍後再試'); });
   };
   document.getElementById('f-email').addEventListener('keydown', function(e){ if(e.key==='Enter') document.getElementById('f-submit').click(); });
   function val(id){ return document.getElementById(id).value.trim(); }

@@ -13,6 +13,11 @@
   label{display:block;font-size:13.5px;font-weight:600;margin:14px 0 6px}
   input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:14.5px;background:#fdfbf7}
   .btn{width:100%;margin-top:20px;padding:12px;background:var(--text);color:#fff;border:none;border-radius:999px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
+  .btn:disabled{opacity:.9;cursor:default}
+  .btn.busy{position:relative;color:transparent!important}
+  .btn.busy::after{content:"";position:absolute;top:50%;left:50%;width:18px;height:18px;margin:-9px 0 0 -9px;
+       border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
   .msg{margin-top:14px;font-size:13.5px;padding:10px 12px;border-radius:8px;display:none}
   .msg.err{display:block;background:#f8e3e0;color:#a53f2f}
   .msg.ok{display:block;background:#e8f0e9;color:#3d6b4a}
@@ -31,16 +36,20 @@
   var API = window.NBPM_API || '';
   var token = new URLSearchParams(location.search).get('token');
   function msg(t, ok){ var m=document.getElementById('msg'); m.className='msg'+(t?(ok?' ok':' err'):''); m.textContent=t||''; }
+  function busy(on){ var b=document.getElementById('btn'); b.classList.toggle('busy', on); b.disabled=on; }
   document.getElementById('btn').onclick=function(){
     var pw=document.getElementById('pw').value, pw2=document.getElementById('pw2').value;
     if(pw.length<8){ msg('密碼至少 8 碼'); return; }
     if(pw!==pw2){ msg('兩次輸入不一致'); return; }
+    busy(true);
     fetch(API+'/api/auth/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token,password:pw})})
       .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
       .then(function(r){
         msg(r.j.message||r.j.error||'', r.ok);
-        if(r.ok) setTimeout(function(){ location.href='/login.html'; }, 1500);
-      });
+        if(r.ok){ setTimeout(function(){ location.href='/login.html'; }, 1500); }  // 成功導向前保留動畫
+        else busy(false);
+      })
+      .catch(function(){ busy(false); msg('連線失敗，請稍後再試'); });
   };
 </script>
 </body>

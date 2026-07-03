@@ -12,6 +12,10 @@
   h1{font-size:20px;margin-bottom:12px}
   p{color:var(--muted);font-size:14.5px}
   a.btn{display:inline-block;margin-top:20px;padding:12px 26px;background:var(--text);color:#fff;text-decoration:none;border-radius:999px;font-weight:600}
+  .hide{display:none!important}
+  .spinner{width:30px;height:30px;margin:16px auto 0;border:3px solid var(--border);border-top-color:var(--accent-dark);
+       border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 <script>window.NBPM_API="";</script>
 </head>
@@ -19,18 +23,22 @@
 <div class="card">
   <h1 id="title">驗證中…</h1>
   <p id="msg">請稍候</p>
+  <div class="spinner" id="spin"></div>
   <a class="btn hide" id="go" href="/login.html">前往登入</a>
 </div>
 <script>
   var API = window.NBPM_API || '';
   var token = new URLSearchParams(location.search).get('token');
+  function done(title, message){
+    document.getElementById('spin').classList.add('hide');
+    document.getElementById('title').textContent = title;
+    document.getElementById('msg').textContent = message || '';
+    document.getElementById('go').classList.remove('hide');
+  }
   fetch(API+'/api/auth/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token})})
     .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
-    .then(function(r){
-      document.getElementById('title').textContent = r.ok ? '驗證成功 ✓' : '驗證失敗';
-      document.getElementById('msg').textContent = r.j.message || r.j.error || '';
-      document.getElementById('go').classList.remove('hide');
-    });
+    .then(function(r){ done(r.ok ? '驗證成功 ✓' : '驗證失敗', r.j.message || r.j.error || ''); })
+    .catch(function(){ done('驗證失敗', '連線失敗，請稍後再試'); });
 </script>
 </body>
 </html>
