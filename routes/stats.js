@@ -24,7 +24,9 @@ router.get('/overview', async (req, res, next) => {
 router.get('/people', async (req, res, next) => {
   try {
     const r = await pool.query(`
-      SELECT u.display_name, u.email,
+      SELECT u.display_name, u.email, u.role, u.email_verified, u.created_at,
+        (SELECT MAX(vs.last_seen_at) FROM visit_sessions vs WHERE vs.user_id = u.id) AS last_seen,
+        (SELECT COUNT(*) FROM visit_sessions vs WHERE vs.user_id = u.id)::int AS visits,
         COALESCE(SUM(pv.active_seconds),0)::int AS total_seconds,
         (SELECT p2.path FROM page_views p2
            WHERE p2.user_id = u.id
@@ -32,7 +34,7 @@ router.get('/people', async (req, res, next) => {
       FROM users u
       LEFT JOIN page_views pv ON pv.user_id = u.id
       GROUP BY u.id
-      ORDER BY total_seconds DESC`);
+      ORDER BY last_seen DESC NULLS LAST, total_seconds DESC`);
     res.json({ people: r.rows });
   } catch (e) { next(e); }
 });

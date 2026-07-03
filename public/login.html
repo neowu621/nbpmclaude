@@ -108,7 +108,11 @@
   document.getElementById('btn-login').onclick=function(){
     busy('btn-login', true);
     api('/api/auth/login',{email:val('l-email'),password:val('l-pw')}).then(function(r){
-      if(r.ok){ location.href = qs.get('next') || '/'; return; }  // 導向前保留動畫
+      if(r.ok){
+        // 有 next 就依 next；否則管理者進後台、一般會員回手冊首頁
+        var dest = qs.get('next') || ((r.j.user && r.j.user.role==='admin') ? '/dashboard.html' : '/');
+        location.href = dest; return;  // 導向前保留動畫
+      }
       busy('btn-login', false);
       msg(r.j.error||'登入失敗');
     }).catch(function(){ busy('btn-login', false); msg('連線失敗，請稍後再試'); });
