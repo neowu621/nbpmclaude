@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>(function(){var d=document.documentElement;d.style.visibility="hidden";fetch("/api/auth/me",{credentials:"include"}).then(function(r){if(!r.ok)throw 0;d.style.visibility="";}).catch(function(){location.replace("/login.html?next="+encodeURIComponent(location.pathname));});})();</script>
+<meta charset="UTF-8">
+<title>任務實作 | Claude PM 入門手冊</title>
+<meta name="description" content="15 個真實 PM 任務實作：PRD、用戶研究、數據分析、利害關係人溝通、競品分析、規劃排序，附可複製 Prompt。">
+<link rel="stylesheet" href="../assets/style.css?v=6">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <div class="nav-menu">
+      <a class="nav-link" href="../learn/index.html">概念學習</a>
+      <a class="nav-link" href="../tools/index.html">引導式學習</a>
+      <a class="nav-link active" href="index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container">
+  <div class="crumbs"><a href="../index.html">首頁</a> / 任務實作</div>
+  <h1>任務實作 <small style="font-size:16px;color:var(--text-muted);font-weight:400">Task Practice</small></h1>
+  <p class="lead">
+    15 個真實的 PM 任務，每個都含：準備資料、操作步驟、可直接複製的 Prompt、驗收提醒。
+    原則不變：<strong>AI 產出，PM 判斷</strong>。點擊任務卡展開完整內容。
+  </p>
+
+  <div class="filters">
+    <span class="flabel">工作領域：</span>
+    <button class="fbtn on" data-group="role" data-val="all">全部</button>
+    <button class="fbtn" data-group="role" data-val="spec">需求與規格</button>
+    <button class="fbtn" data-group="role" data-val="research">用戶研究</button>
+    <button class="fbtn" data-group="role" data-val="data">數據與指標</button>
+    <button class="fbtn" data-group="role" data-val="comm">溝通協作</button>
+    <button class="fbtn" data-group="role" data-val="market">市場競品</button>
+    <button class="fbtn" data-group="role" data-val="plan">規劃執行</button>
+  </div>
+  <div class="filters">
+    <span class="flabel">難度：</span>
+    <button class="fbtn on" data-group="level" data-val="all">全部</button>
+    <button class="fbtn" data-group="level" data-val="easy">入門</button>
+    <button class="fbtn" data-group="level" data-val="mid">進階</button>
+    <button class="fbtn" data-group="level" data-val="hard">挑戰</button>
+    <span class="flabel" style="margin-left:16px">模式：</span>
+    <button class="fbtn on" data-group="mode" data-val="all">全部</button>
+    <button class="fbtn" data-group="mode" data-val="chat">Chat</button>
+    <button class="fbtn" data-group="mode" data-val="cowork">Cowork</button>
+    <button class="fbtn" data-group="mode" data-val="code">Code</button>
+  </div>
+  <p id="task-count" style="font-size:13.5px;color:var(--text-muted);margin-bottom:16px"></p>
+
+  <!-- ===== 需求與規格 ===== -->
+  <details class="task" data-role="spec" data-level="easy" data-mode="chat">
+    <summary>
+      <div class="t-head"><h3>T01 · 把模糊需求變成清楚的用戶故事</h3>
+        <div><span class="tag tag-chat">Chat</span><span class="tag tag-easy">入門</span></div></div>
+      <div class="t-meta">⏱ 約 15 分鐘 · 📎 準備：一句模糊的需求描述</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>業務丟來一句「客戶想要更好的報表功能」。你需要把它拆成可以跟工程討論的用戶故事與驗收條件。</p>
+      <h4>步驟</h4>
+      <ol>
+        <li>複製下方 Prompt，替換【】內的內容</li>
+        <li>Claude 會先反問你釐清問題——認真回答，這是最有價值的部分</li>
+        <li>對產出的驗收條件逐條檢查：可測試嗎？有邊界情況嗎？</li>
+      </ol>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>你是一位資深產品經理。我收到一個模糊的需求：「【客戶想要更好的報表功能】」。
+產品背景：【簡述你的產品與目標用戶】。
+
+請按以下方式工作：
+1. 先問我 3～5 個釐清問題（真實用戶是誰？現在的痛是什麼？怎麼算解決？）
+2. 等我回答後，把需求改寫成 2～4 條用戶故事（As a... I want... So that...）
+3. 每條故事附上 3 條可測試的驗收條件（Given/When/Then）
+4. 最後列出「這個需求最可能被誤解的地方」
+
+輸出繁體中文。</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>AI 寫的驗收條件常漏「邊界情況」（空資料、權限不足、大量資料）——自己補上至少一條。</div>
+    </div>
+  </details>
+
+  <details class="task" data-role="spec" data-level="mid" data-mode="cowork">
+    <summary>
+      <div class="t-head"><h3>T02 · 撰寫一份完整的功能 PRD 初稿</h3>
+        <div><span class="tag tag-cowork">Cowork</span><span class="tag tag-mid">進階</span></div></div>
+      <div class="t-meta">⏱ 約 40 分鐘 · 📎 準備：產品簡介、用戶數據或回饋、資源限制、（可選）一份範例 PRD</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>你要為下一季的重點功能寫 PRD。與其從空白頁開始，讓 Claude 產出結構完整的初稿，你把時間花在判斷與取捨上。</p>
+      <h4>步驟</h4>
+      <ol>
+        <li>建立一個 Claude Project，上傳：產品一頁簡介、相關用戶回饋、範例 PRD（有的話）</li>
+        <li>用下方 Prompt 產出初稿</li>
+        <li>針對「目標與非目標」「成功指標」兩節來回迭代——這兩節決定 PRD 的品質</li>
+        <li>要求 Claude 扮演評審委員挑自己初稿的毛病，再修一輪</li>
+      </ol>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>你是本產品團隊的資深 PM 協作夥伴（背景見專案文件）。
+請為「【功能名稱】」撰寫 PRD 初稿。
+
+已知資訊：
+- 要解決的問題：【問題描述與證據，如：34% 用戶調查提及】
+- 目標用戶：【誰會用】
+- 資源限制:【如：本季 2 人月，不能動後端架構】
+
+PRD 結構：問題陳述 / 目標與非目標 / 用戶故事 / 成功指標（含基準值與目標值）/ 分階段範圍（MVP → V2）/ 風險與開放問題。
+
+要求：
+- 非目標至少 3 條——明確說出這次「不做什麼」
+- 成功指標必須可量測，並注明資料來源
+- 開放問題列出後標注「需要誰來回答」
+- 完成後，換上評審委員的視角，列出這份 PRD 最弱的 3 個地方</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>成功指標的「基準值」AI 只能猜——用你的真實數據替換，否則整節作廢。</div>
+    </div>
+  </details>
+
+  <details class="task" data-role="spec" data-level="hard" data-mode="cowork">
+    <summary>
+      <div class="t-head"><h3>T03 · 讓 AI 當「魔鬼代言人」壓力測試你的規格</h3>
+        <div><span class="tag tag-cowork">Cowork</span><span class="tag tag-hard">挑戰</span></div></div>
+      <div class="t-meta">⏱ 約 30 分鐘 · 📎 準備：一份你寫好的 PRD 或規格文件</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>規格評審會之前，先讓 Claude 用工程、設計、客服、法務四種視角輪番攻擊你的文件，把會上會被問倒的問題提前處理掉。</p>
+      <h4>步驟</h4>
+      <ol>
+        <li>上傳你的 PRD 到對話或 Project</li>
+        <li>用下方 Prompt 進行四輪壓力測試</li>
+        <li>把「答不出來的問題」整理成評審會前的待辦</li>
+      </ol>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>這是我即將送審的 PRD（附件）。請你依序扮演四個角色，每個角色對這份文件提出 3 個最尖銳、最可能讓我在評審會上答不出來的問題：
+
+1. 資深工程師（技術可行性、邊界情況、維運成本）
+2. 設計師（用戶流程斷點、無障礙、與現有設計系統的衝突）
+3. 客服主管（上線後最可能產生的客訴、支援成本）
+4. 法務／合規（資料使用、隱私、條款）
+
+每個問題後面，附上「如果是你，你會怎麼回答」的建議答案。
+最後總結：這份 PRD 送審前最該補的一件事是什麼？</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>AI 的「建議答案」只是起點——答案的事實部分（技術限制、法規）務必找真人確認。</div>
+    </div>
+  </details>
+
+  <!-- ===== 用戶研究 ===== -->
+  <details class="task" data-role="research" data-level="easy" data-mode="chat">
+    <summary>
+      <div class="t-head"><h3>T04 · 設計一份不誘導的用戶訪談大綱</h3>
+        <div><span class="tag tag-chat">Chat</span><span class="tag tag-easy">入門</span></div></div>
+      <div class="t-meta">⏱ 約 20 分鐘 · 📎 準備：研究目的、受訪者輪廓</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>下週要訪談 6 位流失用戶，你需要一份能挖出真實原因、又不會誘導答案的訪談大綱。</p>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>你是一位資深用戶研究員。請為以下研究設計訪談大綱：
+
+研究目的：【例：了解付費用戶在第 2 個月流失的真實原因】
+受訪者：【例：6 位訂閱後 60 天內取消的用戶】
+訪談長度：30 分鐘
+
+要求：
+1. 開場暖身 2 題、主體 6～8 題、收尾 1 題
+2. 全部使用開放式問題，不預設答案（檢查每一題有沒有隱含誘導）
+3. 每題附上 1～2 個追問（probe）
+4. 附上「訪談中絕對不要做的 3 件事」提醒
+5. 最後用一個表格：每一題對應到研究目的的哪個假設</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>自己念一遍每個問題——凡是能用「是/否」回答的，請 Claude 改寫成開放式。</div>
+    </div>
+  </details>
+
+  <details class="task" data-role="research" data-level="mid" data-mode="cowork">
+    <summary>
+      <div class="t-head"><h3>T05 · 從 10 份訪談逐字稿萃取主題與洞察</h3>
+        <div><span class="tag tag-cowork">Cowork</span><span class="tag tag-mid">進階</span></div></div>
+      <div class="t-meta">⏱ 約 45 分鐘 · 📎 準備：訪談逐字稿或筆記（去識別化）、研究問題</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>訪談做完了，10 份逐字稿躺在資料夾裡。手工整理要一整天，Claude 可以把它壓到一小時內——前提是你會驗證。</p>
+      <h4>步驟</h4>
+      <ol>
+        <li><strong>先去識別化</strong>：移除受訪者姓名、公司名等個資</li>
+        <li>建立 Project 上傳全部逐字稿</li>
+        <li>用下方 Prompt 做第一輪主題萃取</li>
+        <li>驗證：隨機挑 3 個引述，回原文確認上下文沒有被斷章取義</li>
+      </ol>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>你是一位擅長質化分析的用戶研究員。專案文件中有 10 份訪談逐字稿。
+研究問題：【例：阻礙用戶升級付費方案的因素是什麼？】
+
+請執行：
+1. 跨所有逐字稿萃取重複出現的主題，每個主題注明「出現在幾位受訪者」
+2. 每個主題附 2 句代表性原話（注明來自哪份文件）
+3. 特別標出「互相矛盾的說法」——不同受訪者說法衝突的地方
+4. 區分「用戶說的」與「用戶做的」不一致之處
+5. 最後：3 個對 roadmap 的建議 + 每個建議的證據強度（強/中/弱）
+
+規則：只能引用文件中真實存在的內容；證據不足的結論要明說。</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>「代表性原話」必須回原文抽查——這是幻覺風險最高的地方。矛盾點清單通常是最有價值的產出。</div>
+    </div>
+  </details>
+
+  <details class="task" data-role="research" data-level="easy" data-mode="chat">
+    <summary>
+      <div class="t-head"><h3>T06 · 把 NPS 開放題回饋分群並找出行動點</h3>
+        <div><span class="tag tag-chat">Chat</span><span class="tag tag-easy">入門</span></div></div>
+      <div class="t-meta">⏱ 約 15 分鐘 · 📎 準備：50～200 條 NPS 或滿意度開放題回覆</div>
+    </summary>
+    <div class="t-body">
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>以下是本季 NPS 調查的開放題回覆（貼在最後）。請：
+1. 把回覆分成若干主題群，每群給一個清楚的名稱與佔比
+2. 區分「批評者(0-6)」與「推薦者(9-10)」最常提的主題有何不同
+3. 找出「一句話就能修好」的速贏項目（如文案誤導、找不到按鈕）
+4. 用表格輸出：主題 | 佔比 | 代表回覆 | 建議行動 | 投入規模（小/中/大）
+
+回覆資料：
+【貼上你的資料，記得先移除可識別個人的內容】</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>佔比數字要自己抽樣核對；分類邏輯若與你的既有分類法不同，指定它照你的來。</div>
+    </div>
+  </details>
+
+  <!-- ===== 數據與指標 ===== -->
+  <details class="task" data-role="data" data-level="mid" data-mode="chat">
+    <summary>
+      <div class="t-head"><h3>T07 · 看懂並質疑一份 A/B 測試結果</h3>
+        <div><span class="tag tag-chat">Chat</span><span class="tag tag-mid">進階</span></div></div>
+      <div class="t-meta">⏱ 約 20 分鐘 · 📎 準備：實驗設計說明與結果數據</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>數據團隊給了你一份「B 版勝出，建議全量」的實驗報告。在按下同意之前，讓 Claude 幫你做一輪統計上的盡職調查。</p>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>你是一位嚴謹的產品數據分析師。以下是一份 A/B 測試的設計與結果，請幫我做批判性檢視:
+
+【貼上：實驗目的、分組方式、樣本數、實驗期間、各組指標結果、顯著性數據】
+
+請回答：
+1. 這個結論在統計上站得住腳嗎？（樣本量、顯著性、實驗期長度、多重比較問題）
+2. 有哪些常見陷阱可能存在？（新奇效應、分組污染、辛普森悖論、指標挑選偏差）
+3. 「全量上線」之前，我該再看哪 2～3 個切面的數據？（如：新舊用戶分開看）
+4. 如果要跟工程團隊解釋「為什麼還不能全量」，給我一段 3 句話的說法
+
+不確定的地方明說，不要為了給結論而給結論。</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>Claude 能檢查推理結構，但它看不到你的原始資料管線——「分組是否真正隨機」要問數據團隊。</div>
+    </div>
+  </details>
+
+  <details class="task" data-role="data" data-level="mid" data-mode="code">
+    <summary>
+      <div class="t-head"><h3>T08 · 用漏斗數據找出流失最嚴重的一步</h3>
+        <div><span class="tag tag-code">Code</span><span class="tag tag-mid">進階</span></div></div>
+      <div class="t-meta">⏱ 約 30 分鐘 · 📎 準備：漏斗各步驟的事件數據 CSV（去識別化）</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>你匯出了註冊漏斗的事件數據，想知道哪一步流失最嚴重、不同管道有沒有差異——不用等數據團隊排程。</p>
+      <h4>步驟</h4>
+      <ol>
+        <li>從分析平台匯出事件 CSV（確認無個資，用匿名 ID）</li>
+        <li>在 Claude（可上傳檔案的模式或 Claude Code）用下方 Prompt</li>
+        <li>先讓它「描述資料」確認欄位理解正確，再開始分析</li>
+      </ol>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>附件是我們註冊漏斗的事件資料。
+漏斗定義（依序）：【landing_view → signup_start → email_verify → profile_done → first_action】
+
+請執行：
+1. 先描述你看到的資料結構（筆數、欄位、期間），與我確認理解正確
+2. 計算整體漏斗：每步的轉換率與流失率，做成表格
+3. 按「acquisition_channel」欄位分組，比較各管道的漏斗差異
+4. 指出流失最嚴重的一步，列出 3 個可能的原因假設，每個假設附上「可以用什麼數據驗證」
+5. 產出一頁摘要：發現 + 建議的下一步實驗
+
+處理原則：數字算不出來就說算不出來；任何假設都標注「這是假設，非結論」。</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>核對總筆數與你平台上的數字是否一致——匯出常有時區或過濾差異，錯的輸入只會算出精確的錯誤。</div>
+    </div>
+  </details>
+
+  <details class="task" data-role="data" data-level="hard" data-mode="code">
+    <summary>
+      <div class="t-head"><h3>T09 · 建立每週自動化的指標週報流程</h3>
+        <div><span class="tag tag-code">Code</span><span class="tag tag-hard">挑戰</span></div></div>
+      <div class="t-meta">⏱ 約 60 分鐘（首次建置） · 📎 準備：指標定義文件、每週數據匯出檔、週報模板</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>每週一早上你花 90 分鐘做指標週報。把它變成：把匯出檔丟進資料夾 → Claude Code 產出固定格式週報 → 你花 15 分鐘審核加上判讀。</p>
+      <h4>步驟</h4>
+      <ol>
+        <li>先手動跑順三次（第 7 章原則），確定格式穩定</li>
+        <li>準備三份文件：指標定義（每個指標怎麼算）、週報模板、上週範例</li>
+        <li>用下方 Prompt 讓 Claude Code 建立可重複執行的流程</li>
+        <li>每週執行後，人工做兩件事：抽查 2 個數字、寫「所以呢（So what）」段落</li>
+      </ol>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>我要建立一個每週指標週報的自動化流程。
+
+輸入：/weekly-data/ 資料夾內的匯出 CSV（欄位定義見 metrics-definition.md）
+輸出：依 report-template.md 的格式產出本週週報
+
+流程要求：
+1. 讀取本週與上週資料，計算每個指標的環比變化
+2. 變化超過 ±10% 的指標，自動標記 ⚠ 並附上可能相關的事件（從 changelog.md 對照）
+3. 產出的週報存到 /reports/YYYY-WW.md
+4. 最後輸出處理摘要：讀了哪些檔、算了哪些指標、有沒有缺漏資料
+
+「判讀與建議」段落留空給我填——那是我的工作，不是你的。</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>自動化最大的風險是「錯了也每週準時錯」。前四週每週抽查數字，穩定後改為每月抽查。</div>
+    </div>
+  </details>
+
+  <!-- ===== 溝通協作 ===== -->
+  <details class="task" data-role="comm" data-level="easy" data-mode="chat">
+    <summary>
+      <div class="t-head"><h3>T10 · 會議紀錄 3 分鐘變行動項目</h3>
+        <div><span class="tag tag-chat">Chat</span><span class="tag tag-easy">入門</span></div></div>
+      <div class="t-meta">⏱ 約 10 分鐘 · 📎 準備：會議逐字稿或雜亂筆記</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>最經典的入門任務：開完一小時的會，把逐字稿或速記丟給 Claude，產出決議、行動項目與待確認事項。</p>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>以下是一場【產品評審會】的會議筆記。請整理成：
+
+1. 【已決議】每條一行，格式：決議內容（提出者）
+2. 【行動項目】表格：事項 | 負責人 | 期限 | 依賴
+3. 【未決議／需追蹤】哪些議題被提出但沒有結論，建議由誰、在什麼場合收斂
+4. 【風險訊號】會議中出現但沒人接住的擔憂（例如有人說「這時程有點趕」）
+
+規則：
+- 只整理筆記中真實出現的內容，不要腦補
+- 負責人或期限沒講清楚的，標【待確認】而不是猜一個
+- 繁體中文，全部內容一頁以內
+
+會議筆記：
+【貼上筆記】</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>「風險訊號」一節常有意外收穫；寄出前把【待確認】的欄位補完，這是 PM 的工作。</div>
+    </div>
+  </details>
+
+  <details class="task" data-role="comm" data-level="mid" data-mode="cowork">
+    <summary>
+      <div class="t-head"><h3>T11 · 同一份進度，寫給三種聽眾</h3>
+        <div><span class="tag tag-cowork">Cowork</span><span class="tag tag-mid">進階</span></div></div>
+      <div class="t-meta">⏱ 約 25 分鐘 · 📎 準備：本期進度的原始素材（完成事項、數據、風險）</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>同一份專案進度，高層要 3 句話結論、工程要細節與依賴、客戶要價值與時程。寫三次很痛苦，讓 Claude 做「聽眾翻譯」。</p>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>以下是本雙週的專案進度素材。請產出三個版本的進度更新：
+
+A. 高層版（100 字內）：先講結論與風險，再講關鍵數字。不用形容詞，用數字。
+B. 研發團隊版：完成／進行中／受阻三段，受阻項目明確寫出「需要誰做什麼決定」。
+C. 客戶版：只講對客戶的價值與影響，時程用「預計時間範圍」而非內部日期，不出現內部代號與人名。
+
+共同規則：不誇大進度；風險不淡化；素材裡沒有的資訊不要編。
+
+進度素材：
+【貼上：完成事項、進行中事項、數據、風險、卡點】</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>客戶版要逐字檢查：內部代號、未承諾的日期、還沒過法務的說法，一個都不能漏出去。</div>
+    </div>
+  </details>
+
+  <details class="task" data-role="comm" data-level="easy" data-mode="chat">
+    <summary>
+      <div class="t-head"><h3>T12 · 演練一場困難的利害關係人對話</h3>
+        <div><span class="tag tag-chat">Chat</span><span class="tag tag-easy">入門</span></div></div>
+      <div class="t-meta">⏱ 約 20 分鐘 · 📎 準備：對話情境與對方立場的描述</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>明天要告訴業務主管「他最想要的功能這季不做」。與其現場被問倒，先跟 Claude 角色扮演演練三回合。</p>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>我們來做一場對話演練。你扮演【業務部主管，個性直接，季度目標壓力大，
+他認為功能 X 能幫他簽下兩個大客戶】。
+
+情境：我要告訴他功能 X 這季不做，因為【技術債必須先處理／另一個功能影響更多用戶】。
+
+規則：
+1. 你就是他，用他的立場和語氣反駁我，不要輕易被說服
+2. 每回合結束後跳出角色，給我一段教練回饋：我哪句話有效、哪句話讓局面更糟、可以怎麼說更好
+3. 演練三回合後，總結：面對這類對話的 3 個原則 + 我明天開場的第一句話建議
+
+開始吧，我先說：【你的開場白】</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>演練的價值在「被反駁」——如果 Claude 太快讓步，要求它「更堅持、更難搞」。</div>
+    </div>
+  </details>
+
+  <!-- ===== 市場競品 ===== -->
+  <details class="task" data-role="market" data-level="mid" data-mode="cowork">
+    <summary>
+      <div class="t-head"><h3>T13 · 建立一份誠實的競品分析</h3>
+        <div><span class="tag tag-cowork">Cowork</span><span class="tag tag-mid">進階</span></div></div>
+      <div class="t-meta">⏱ 約 45 分鐘 · 📎 準備：競品名單、你蒐集的一手資料（截圖、定價頁、評論）</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>競品分析最大的陷阱是 AI 的訓練資料過時。正確做法：<strong>你餵一手資料，AI 負責結構化與比較</strong>，而不是問它「競品 X 有什麼功能」。</p>
+      <h4>步驟</h4>
+      <ol>
+        <li>自己蒐集一手資料：競品官網文案、定價頁截圖、應用商店評論、更新日誌</li>
+        <li>上傳到 Project，用下方 Prompt 做結構化分析</li>
+        <li>AI 提到任何「你沒餵給它」的競品資訊，一律當成需要查證的假設</li>
+      </ol>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>你是一位產品策略分析師。專案文件中是我蒐集的競品一手資料
+（【競品 A、B、C】的官網、定價、評論、更新日誌）。我們的產品背景也在文件中。
+
+請只根據這些文件分析：
+1. 功能對照表：我們 vs A vs B vs C（有/無/部分，注明資料來源）
+2. 定價與目標客群的定位差異
+3. 從評論萃取：每個競品被罵最多的 3 件事——這是我們的機會清單
+4. 從更新日誌推測：每個競品最近 6 個月的投資方向
+5. 結論：我們最該「打」的差異化角度 1～2 個，與最不該跟進的戰場 1 個
+
+嚴格規則：只用文件內的資訊。你訓練資料裡關於這些競品的知識可能過時，
+如果要用，必須明確標注「此為模型既有知識，需查證」。</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>檢查功能對照表的每一格是否真的有資料來源——「大家都覺得競品有」和「文件證明競品有」是兩回事。</div>
+    </div>
+  </details>
+
+  <!-- ===== 規劃執行 ===== -->
+  <details class="task" data-role="plan" data-level="mid" data-mode="chat">
+    <summary>
+      <div class="t-head"><h3>T14 · 用 RICE 把 20 個需求排出優先級</h3>
+        <div><span class="tag tag-chat">Chat</span><span class="tag tag-mid">進階</span></div></div>
+      <div class="t-meta">⏱ 約 30 分鐘 · 📎 準備：需求清單（含你對每項的粗估）</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>backlog 裡躺了 20 個需求，每個利害關係人都說自己的最急。用 RICE 框架排序，並讓 Claude 揭露你估分裡的矛盾。</p>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>你是一位資深 PM。以下是我們的需求清單與我對每項的粗估
+（Reach 觸及人數/月、Impact 影響 0.25~3、Confidence 信心 %、Effort 人週）。
+
+請執行：
+1. 計算每項的 RICE 分數（R×I×C÷E），排序成表格
+2. 標出「分數高但我可能高估」的項目：Confidence 低於 70% 卻排前五的
+3. 標出估分邏輯矛盾的地方（例：兩個相似需求的 Impact 差 3 倍）
+4. 排序結果和我直覺排的前五名（【你的直覺前五】）有出入的地方，
+   分析：是我的估分有偏誤，還是 RICE 沒捕捉到的策略因素？
+5. 提醒我：RICE 不適合評估哪類項目？（如：技術債、平台投資）
+
+需求清單：
+【貼上清單與估分】</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>RICE 的輸出品質 = 你估分的品質。真正的價值在第 4 步——直覺與框架的差異，往往藏著沒說出口的策略判斷。</div>
+    </div>
+  </details>
+
+  <details class="task" data-role="plan" data-level="hard" data-mode="code">
+    <summary>
+      <div class="t-head"><h3>T15 · 做一個能點擊的功能原型給評審會</h3>
+        <div><span class="tag tag-code">Code</span><span class="tag tag-hard">挑戰</span></div></div>
+      <div class="t-meta">⏱ 約 45 分鐘 · 📎 準備：功能流程描述、（可選）設計截圖或風格參考</div>
+    </summary>
+    <div class="t-body">
+      <h4>情境</h4>
+      <p>與其在評審會上用文字描述新的 onboarding 流程，不如給大家一個能實際點擊的 HTML 原型。不需要設計師與工程師排時間——這是拿來「對齊認知」的草稿，不是拿來上線的。</p>
+      <h4>步驟</h4>
+      <ol>
+        <li>寫清楚流程：有哪幾步、每步用戶看到什麼、點什麼會發生什麼</li>
+        <li>用下方 Prompt 請 Claude 產出單一 HTML 檔原型</li>
+        <li>自己完整點擊一遍每條路徑，有問題直接用文字描述請它修</li>
+        <li>評審會上開給大家點，收集的回饋比看文件具體十倍</li>
+      </ol>
+      <div class="prompt-box"><button class="copy-btn">複製</button><pre>請幫我做一個可互動的 HTML 原型（單一檔案，不用後端），
+用於明天產品評審會的討論，重點是流程清楚，不是視覺精美。
+
+功能：【例：新用戶 onboarding 流程改版】
+流程步驟：
+1.【歡迎頁：標題＋「開始設定」按鈕】
+2.【選擇角色：三張卡片（店長/員工/總部），點選後高亮】
+3.【…依此描述每一步】
+
+要求：
+- 手機尺寸的版面（375px 寬置中）
+- 每一步之間有真實的點擊跳轉，含「上一步」
+- 在畫面角落顯示目前步驟（例：2/4）
+- 用簡潔的中性風格，主色 #【你的品牌色】</pre></div>
+      <div class="checkpoint"><strong>✓ 驗收提醒：</strong>向與會者明說「這是討論用草稿，不代表最終設計」——不然設計師會想找你聊聊。</div>
+    </div>
+  </details>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 任務實作</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+<script>setupTaskFilters();</script>
+</body>
+</html>

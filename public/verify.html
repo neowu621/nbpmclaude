@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>Email 驗證 | Claude PM 入門手冊</title>
+<style>
+  :root{--bg:#f7f4ee;--card:#fff;--text:#1f1e1d;--muted:#6b6660;--accent-dark:#a85f47;--border:#e4ddd2}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text);
+       min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;line-height:1.7}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px;max-width:400px;text-align:center}
+  h1{font-size:20px;margin-bottom:12px}
+  p{color:var(--muted);font-size:14.5px}
+  a.btn{display:inline-block;margin-top:20px;padding:12px 26px;background:var(--text);color:#fff;text-decoration:none;border-radius:999px;font-weight:600}
+</style>
+<script>window.NBPM_API="";</script>
+</head>
+<body>
+<div class="card">
+  <h1 id="title">驗證中…</h1>
+  <p id="msg">請稍候</p>
+  <a class="btn hide" id="go" href="/login.html">前往登入</a>
+</div>
+<script>
+  var API = window.NBPM_API || '';
+  var token = new URLSearchParams(location.search).get('token');
+  fetch(API+'/api/auth/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token})})
+    .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
+    .then(function(r){
+      document.getElementById('title').textContent = r.ok ? '驗證成功 ✓' : '驗證失敗';
+      document.getElementById('msg').textContent = r.j.message || r.j.error || '';
+      document.getElementById('go').classList.remove('hide');
+    });
+</script>
+</body>
+</html>

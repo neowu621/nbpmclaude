@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>(function(){var d=document.documentElement;d.style.visibility="hidden";fetch("/api/auth/me",{credentials:"include"}).then(function(r){if(!r.ok)throw 0;d.style.visibility="";}).catch(function(){location.replace("/login.html?next="+encodeURIComponent(location.pathname));});})();</script>
+<meta charset="UTF-8">
+<title>網站架構地圖 | Claude PM 入門手冊</title>
+<meta name="description" content="Claude PM 入門手冊的完整網站架構地圖與建議學習路徑。">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">Claude <span>PM</span> 入門手冊</a>
+    <div class="nav-menu">
+      <a class="nav-link" href="learn/index.html">概念學習</a>
+      <a class="nav-link" href="tools/index.html">引導式學習</a>
+      <a class="nav-link" href="tasks/index.html">任務實作</a>
+      <a class="nav-link" href="resources/index.html">協作資源</a>
+      <a class="nav-link active" href="sitemap.html">網站地圖</a>
+      <a class="nav-link" href="guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container">
+  <div class="crumbs"><a href="index.html">首頁</a> / 網站架構地圖</div>
+  <h1>網站架構地圖 🗺️</h1>
+  <p class="lead">全站 19 頁的完整結構。粗體為主要區塊入口，縮排為該區塊的子頁面。</p>
+
+  <div class="chapter">
+    <div class="sitemap-tree">
+      <ul>
+        <li>🏠 <a href="index.html">首頁</a> <span class="desc">— 手冊定位、四大學習路徑、快速上手三步驟</span>
+          <ul>
+            <li>📖 <a href="learn/index.html">概念學習 /learn</a> <span class="desc">— 八章節的核心心智模型（約 60 分鐘）</span>
+              <ul>
+                <li><a href="learn/index.html#ch1">第 1 章：生成式 AI 是怎麼運作的</a> <span class="desc">— 機率性、幻覺、知識截止日</span></li>
+                <li><a href="learn/index.html#ch2">第 2 章：Claude 在 PM 工作中的定位</a> <span class="desc">— 「產出 ↔ 判斷」光譜</span></li>
+                <li><a href="learn/modes.html">第 3 章：三種工作模式（深入頁）</a> <span class="desc">— Chat / Cowork / Code 選擇指南</span></li>
+                <li><a href="learn/prompt-context.html">第 4 章：Prompt 與脈絡（深入頁）</a> <span class="desc">— 四元素與迭代技巧</span></li>
+                <li><a href="learn/agentic.html">第 5 章：Agentic 工作流（深入頁）</a> <span class="desc">— 代理循環與治理三件事</span></li>
+                <li><a href="learn/index.html#ch6">第 6 章：AI 協作成熟度 4D 框架</a></li>
+                <li><a href="learn/index.html#ch7">第 7 章：重複工作自動化</a></li>
+                <li><a href="learn/index.html#ch8">第 8 章：負責任的使用</a></li>
+              </ul>
+            </li>
+            <li>🧭 <a href="tools/index.html">引導式學習 /tools</a> <span class="desc">— 動手前的四個校準工具</span>
+              <ul>
+                <li><a href="tools/mode-diagnosis.html">模式診斷</a> <span class="desc">— 三題判斷該用哪種模式</span></li>
+                <li><a href="tools/prompt-builder.html">Prompt 組裝器</a> <span class="desc">— 五元素組出可複製的 Prompt</span></li>
+                <li><a href="tools/fluency-check.html">4D 成熟度自評</a> <span class="desc">— 找出最弱維度與行動建議</span></li>
+                <li><a href="tools/agentic-simulator.html">Agentic 流程模擬器</a> <span class="desc">— 走一遍代理工作循環</span></li>
+              </ul>
+            </li>
+            <li>🛠️ <a href="tasks/index.html">任務實作 /tasks</a> <span class="desc">— 15 個真實 PM 任務（可篩選）</span>
+              <ul>
+                <li><span class="desc">需求與規格：T01 用戶故事 / T02 PRD 初稿 / T03 規格壓力測試</span></li>
+                <li><span class="desc">用戶研究：T04 訪談大綱 / T05 逐字稿萃取 / T06 NPS 分群</span></li>
+                <li><span class="desc">數據與指標：T07 A/B 測試檢視 / T08 漏斗分析 / T09 週報自動化</span></li>
+                <li><span class="desc">溝通協作：T10 會議紀錄 / T11 三種聽眾 / T12 對話演練</span></li>
+                <li><span class="desc">市場競品：T13 競品分析</span></li>
+                <li><span class="desc">規劃執行：T14 RICE 排序 / T15 可點擊原型</span></li>
+              </ul>
+            </li>
+            <li>📚 <a href="resources/index.html">協作資源 /resources</a> <span class="desc">— 日常反覆查用的資料庫</span>
+              <ul>
+                <li><a href="resources/prompts.html">Prompt 資料庫</a> <span class="desc">— 12 個場景範本（P01～P12）</span></li>
+                <li><a href="resources/cases.html">實務案例</a> <span class="desc">— 5 個成敗案例與可複製做法</span></li>
+                <li><a href="resources/glossary.html">詞彙表</a> <span class="desc">— 20 個 AI 詞彙的 PM 白話解釋</span></li>
+                <li><a href="resources/sources.html">官方資源</a> <span class="desc">— Anthropic 官方文件與延伸連結</span></li>
+                <li><a href="resources/toolkit.html">團隊協作工具包</a> <span class="desc">— 規範模板與四週導入計畫</span></li>
+              </ul>
+            </li>
+            <li>🗺️ <a href="sitemap.html">網站架構地圖</a> <span class="desc">— 本頁</span></li>
+            <li>📘 <a href="guide.html">使用說明</a> <span class="desc">— 這個網站怎麼用、學習路徑建議</span></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chapter">
+    <h2>建議學習路徑</h2>
+    <table>
+      <tr><th>你是誰</th><th>建議路徑</th></tr>
+      <tr><td>完全新手</td><td>首頁 → 概念學習 1～4 章 → 模式診斷 → 任務 T10（入門） → 回頭讀 5～8 章</td></tr>
+      <tr><td>已在用 AI，想用得更專業</td><td>4D 自評 → 依最弱維度補對應章節 → 挑 2 個進階任務 → Prompt 資料庫存自己的庫</td></tr>
+      <tr><td>要帶團隊導入的 PM／主管</td><td>全部概念章節 → 實務案例 5 → 團隊協作工具包 → 規劃四週導入</td></tr>
+      <tr><td>在做 AI 產品功能的 PM</td><td>詞彙表全篇 → 第 5 章 Agentic → 官方資源的開發者文件</td></tr>
+    </table>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 網站架構地圖</div>
+    <div><a href="guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="assets/main.js"></script>
+</body>
+</html>

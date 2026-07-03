@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>登入 | Claude PM 入門手冊</title>
+<style>
+  :root{--bg:#f7f4ee;--card:#fff;--text:#1f1e1d;--muted:#6b6660;--accent:#cc785c;--accent-dark:#a85f47;--border:#e4ddd2}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text);
+       min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;line-height:1.7}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px;width:100%;max-width:400px;
+        box-shadow:0 2px 12px rgba(31,30,29,.06)}
+  h1{font-size:20px;margin-bottom:4px}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+  .tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--border)}
+  .tab{flex:1;padding:8px;background:none;border:none;font-family:inherit;font-size:14.5px;color:var(--muted);
+       cursor:pointer;border-bottom:2px solid transparent}
+  .tab.on{color:var(--accent-dark);border-bottom-color:var(--accent);font-weight:600}
+  label{display:block;font-size:13.5px;font-weight:600;margin:14px 0 6px}
+  input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:14.5px;background:#fdfbf7}
+  .btn{width:100%;margin-top:20px;padding:12px;background:var(--text);color:#fff;border:none;border-radius:999px;
+       font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
+  .btn:hover{background:var(--accent-dark)}
+  .msg{margin-top:14px;font-size:13.5px;padding:10px 12px;border-radius:8px;display:none}
+  .msg.err{display:block;background:#f8e3e0;color:#a53f2f}
+  .msg.ok{display:block;background:#e8f0e9;color:#3d6b4a}
+  .link{background:none;border:none;color:var(--accent-dark);font-family:inherit;font-size:13px;cursor:pointer;padding:0;margin-top:12px}
+  .consent{font-size:12.5px;color:var(--muted);margin-top:14px;display:flex;gap:8px;align-items:flex-start}
+  .hide{display:none}
+</style>
+<script>window.NBPM_API="";</script>
+</head>
+<body>
+<div class="card">
+  <h1>Claude PM 入門手冊</h1>
+  <div class="sub">登入以繼續學習</div>
+
+  <div class="tabs">
+    <button class="tab on" data-t="login">登入</button>
+    <button class="tab" data-t="register">註冊</button>
+  </div>
+
+  <div id="pane-login">
+    <label>Email</label><input id="l-email" type="email" autocomplete="username">
+    <label>密碼</label><input id="l-pw" type="password" autocomplete="current-password">
+    <button class="btn" id="btn-login">登入</button>
+    <button class="link" id="btn-forgot">忘記密碼？</button>
+  </div>
+
+  <div id="pane-register" class="hide">
+    <label>姓名（顯示於排行榜）</label><input id="r-name" type="text">
+    <label>Email</label><input id="r-email" type="email" autocomplete="username">
+    <label>設定密碼（至少 8 碼）</label><input id="r-pw" type="password" autocomplete="new-password">
+    <div class="consent">
+      <input type="checkbox" id="r-consent" style="width:auto;margin-top:4px">
+      <label for="r-consent" style="margin:0;font-weight:400">我同意本站記錄我的學習足跡（登入時間、各頁停留時間）用於學習分析，資料保存 360 天。</label>
+    </div>
+    <button class="btn" id="btn-register">註冊並寄確認信</button>
+  </div>
+
+  <div class="msg" id="msg"></div>
+</div>
+
+<script>
+  var API = window.NBPM_API || '';
+  var qs = new URLSearchParams(location.search);
+  function show(t){
+    document.querySelectorAll('.tab').forEach(function(b){ b.classList.toggle('on', b.dataset.t===t); });
+    document.getElementById('pane-login').classList.toggle('hide', t!=='login');
+    document.getElementById('pane-register').classList.toggle('hide', t!=='register');
+    msg('');
+  }
+  document.querySelectorAll('.tab').forEach(function(b){ b.onclick=function(){ show(b.dataset.t); }; });
+  function msg(text, ok){ var m=document.getElementById('msg'); m.className='msg'+(text?(ok?' ok':' err'):''); m.textContent=text||''; }
+
+  function api(path, data){
+    return fetch(API+path,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+      .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); });
+  }
+
+  document.getElementById('btn-login').onclick=function(){
+    api('/api/auth/login',{email:val('l-email'),password:val('l-pw')}).then(function(r){
+      if(r.ok){ location.href = qs.get('next') || '/'; }
+      else msg(r.j.error||'登入失敗');
+    });
+  };
+  document.getElementById('btn-register').onclick=function(){
+    if(!document.getElementById('r-consent').checked){ msg('請先勾選同意記錄學習足跡'); return; }
+    api('/api/auth/register',{displayName:val('r-name'),email:val('r-email'),password:val('r-pw')}).then(function(r){
+      if(r.ok) msg(r.j.message||'確認信已寄出，請收信', true);
+      else msg(r.j.error||'註冊失敗');
+    });
+  };
+  document.getElementById('btn-forgot').onclick=function(){
+    var email=val('l-email');
+    if(!email){ msg('請先在上方輸入你的 Email'); return; }
+    api('/api/auth/forgot',{email:email}).then(function(r){ msg(r.j.message||'若已註冊，重設連結已寄出', r.ok); });
+  };
+  function val(id){ return document.getElementById(id).value.trim(); }
+</script>
+</body>
+</html>

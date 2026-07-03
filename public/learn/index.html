@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>(function(){var d=document.documentElement;d.style.visibility="hidden";fetch("/api/auth/me",{credentials:"include"}).then(function(r){if(!r.ok)throw 0;d.style.visibility="";}).catch(function(){location.replace("/login.html?next="+encodeURIComponent(location.pathname));});})();</script>
+<meta charset="UTF-8">
+<title>概念學習 | Claude PM 入門手冊</title>
+<meta name="description" content="八個章節建立 PM 使用 Claude 的正確心智模型：生成式 AI 原理、工作模式、Prompt 設計、Agentic 工作流與負責任的使用。">
+<link rel="stylesheet" href="../assets/style.css?v=6">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <div class="nav-menu">
+      <a class="nav-link active" href="index.html">概念學習</a>
+      <a class="nav-link" href="../tools/index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container">
+  <div class="crumbs"><a href="../index.html">首頁</a> / 概念學習</div>
+  <h1>概念學習 <small style="font-size:16px;color:var(--text-muted);font-weight:400">Concept Learning</small></h1>
+  <p class="lead">
+    八個章節，約 60 分鐘。目標不是把你變成 AI 專家，而是建立足夠準確的心智模型，
+    讓你知道 Claude 擅長什麼、不擅長什麼，以及如何把它安全地放進 PM 的日常工作。
+    每章結尾有一個「自我檢核」，通過了再往下走。
+  </p>
+
+  <!-- 第 1 章 -->
+  <div class="chapter" id="ch1">
+    <div class="ch-num">CHAPTER 01</div>
+    <h2>生成式 AI 是怎麼運作的？</h2>
+    <div class="guiding-q">引導問題：為什麼 Claude 有時答得又快又好，有時卻一本正經地胡說八道？</div>
+    <p>
+      Claude 這類大型語言模型（LLM）的本質，是一個「根據前文預測下一個字」的機率系統。
+      它讀過海量文字，學會了語言、知識與推理的<strong>模式</strong>——但它不是查資料庫，
+      每次回答都是即時「生成」出來的。
+    </p>
+    <p>這帶來三個 PM 必須內化的特性：</p>
+    <ul>
+      <li><strong>機率性</strong>：同一個問題問兩次，答案可能不同。這是特性不是 bug——需要穩定輸出時，要靠明確的格式指令來收斂。</li>
+      <li><strong>幻覺（Hallucination）</strong>：模型可能自信地編造不存在的數據、論文或功能。<strong>所有要對外或用於決策的事實，都必須查證。</strong></li>
+      <li><strong>知識截止日</strong>：模型的訓練資料有時間上限，最新的市場動態、競品發布它可能不知道——除非你把資料貼給它。</li>
+    </ul>
+    <p>
+      對 PM 的實務意義：把 Claude 想成一位<strong>「讀過所有書、但沒參加過你公司任何會議」的聰明顧問</strong>。
+      它的通用能力極強，但對你的產品、用戶、內部脈絡一無所知——你給它多少脈絡，它就能幫你多少。
+    </p>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>你能用一句話向工程師解釋「為什麼 AI 給的競品數據必須查證」嗎？</div>
+  </div>
+
+  <!-- 第 2 章 -->
+  <div class="chapter" id="ch2">
+    <div class="ch-num">CHAPTER 02</div>
+    <h2>Claude 在 PM 工作中的定位與邊界</h2>
+    <div class="guiding-q">引導問題：哪些工作該交給 Claude，哪些必須留在 PM 手上？</div>
+    <p>一個好用的判斷框架：把 PM 的工作沿著「產出 ↔ 判斷」的光譜排開。</p>
+    <table>
+      <tr><th>光譜位置</th><th>工作範例</th><th>建議分工</th></tr>
+      <tr><td><strong>純產出</strong></td><td>會議紀錄整理、格式轉換、翻譯、初稿撰寫</td><td>大膽交給 Claude，人工快速複核</td></tr>
+      <tr><td><strong>產出＋分析</strong></td><td>訪談逐字稿萃取主題、數據異常初判、競品功能對照</td><td>Claude 產出 → PM 驗證關鍵結論</td></tr>
+      <tr><td><strong>分析＋判斷</strong></td><td>優先級排序、方案取捨、指標目標設定</td><td>Claude 當「思考對手」提供選項與盲點，PM 做決定</td></tr>
+      <tr><td><strong>純判斷</strong></td><td>產品願景、資源承諾、對高層與客戶的承諾</td><td>PM 本人。AI 只能幫你演練說法</td></tr>
+    </table>
+    <p>
+      核心原則：<strong>「AI 指出，PM 決定」</strong>。讓 Claude 幫你看見更多選項、更快看見盲點，
+      但每一個寫進 roadmap、說出口的承諾，責任都在你身上。這也是你對團隊使用 AI 時該立下的規範。
+    </p>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>列出你本週的三項工作，分別放進上面光譜的哪一格？</div>
+  </div>
+
+  <!-- 第 3 章 -->
+  <div class="chapter" id="ch3">
+    <div class="ch-num">CHAPTER 03</div>
+    <h2>三種工作模式：Chat、Cowork、Code</h2>
+    <div class="guiding-q">引導問題：同樣是「請 Claude 幫忙」，為什麼選錯模式會事倍功半？</div>
+    <p>使用 Claude 有三種漸進的方式，對 PM 來說對應三種工作場景：</p>
+    <ul>
+      <li><strong>Chat（對話）</strong>——快速問答、發想、改寫。適合 5 分鐘內能解決的事：改一段文案、腦力激盪命名、解釋一個技術名詞。</li>
+      <li><strong>Cowork（協作專案）</strong>——上傳文件、建立專屬知識庫（Projects）、持續多回合的深度協作。適合寫 PRD、整理整批訪談、每週都要做的分析。</li>
+      <li><strong>Code（代理執行）</strong>——讓 Claude 實際操作檔案、跑腳本、批次處理。適合資料清洗、自動產報表、原型製作。PM 不用會寫程式，但要會「驗收」。</li>
+    </ul>
+    <p>詳細的選擇準則、實例與常見誤區，請看深入章節：<a href="modes.html">三種工作模式完整指南 →</a></p>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>「把 30 份客訴工單分類並統計」該用哪種模式？（提示：量大、重複、需要結構化輸出）</div>
+  </div>
+
+  <!-- 第 4 章 -->
+  <div class="chapter" id="ch4">
+    <div class="ch-num">CHAPTER 04</div>
+    <h2>Prompt 與脈絡：跟 AI 說話的專業能力</h2>
+    <div class="guiding-q">引導問題：為什麼同一件事，有人問出垃圾，有人問出可以直接用的產出？</div>
+    <p>
+      Prompt 不是咒語，是<strong>需求文件</strong>——這正是 PM 的主場。你平常怎麼寫一張好的需求單，
+      就怎麼寫一個好的 Prompt。四個必要元素：
+    </p>
+    <ol>
+      <li><strong>角色（Role）</strong>：你要它扮演誰？「你是一位 B2B SaaS 的資深產品經理」。</li>
+      <li><strong>任務（Task)</strong>：動詞明確、範圍清楚。「將以下訪談萃取出前五大痛點並按提及頻率排序」。</li>
+      <li><strong>脈絡（Context）</strong>：產品背景、目標用戶、限制條件、你已知的資訊。<strong>脈絡的品質決定產出的上限。</strong></li>
+      <li><strong>格式（Format）</strong>：表格？條列？字數？語氣？要給誰看？</li>
+    </ol>
+    <p>完整的寫法、迭代技巧與 PM 範例，請看：<a href="prompt-context.html">Prompt 與脈絡完整指南 →</a>，或直接使用 <a href="../tools/prompt-builder.html">Prompt 組裝器</a> 練習。</p>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>把你最近一次「AI 答得很爛」的提問拿出來，檢查四元素缺了哪幾個？</div>
+  </div>
+
+  <!-- 第 5 章 -->
+  <div class="chapter" id="ch5">
+    <div class="ch-num">CHAPTER 05</div>
+    <h2>Agentic 工作流：當 AI 不只回答，還會動手</h2>
+    <div class="guiding-q">引導問題：讓 AI 自主執行多步驟任務時，PM 該控制什麼？</div>
+    <p>
+      Agent（代理）指的是 AI 不只生成文字，還能<strong>使用工具</strong>：讀寫檔案、搜尋網頁、
+      呼叫其他系統（透過 MCP 連接 Jira、Notion、資料庫等），並且自主規劃「先做什麼、再做什麼」。
+    </p>
+    <p>PM 需要理解的控制點有三個：</p>
+    <ul>
+      <li><strong>權限（Permissions）</strong>：Agent 能碰哪些資料、能做哪些動作？唯讀還是可寫？</li>
+      <li><strong>檢核點（Checkpoints）</strong>：哪些步驟需要人類批准才能繼續？（例如：寄出郵件前、修改正式文件前）</li>
+      <li><strong>可驗證的產出（Verifiable Output）</strong>：任務怎麼定義「做完了、做對了」？</li>
+    </ul>
+    <p>這其實就是 PM 熟悉的「授權與治理」問題——只是對象從人變成 AI。深入內容：<a href="agentic.html">Agentic 工作流完整指南 →</a>，並可用 <a href="../tools/agentic-simulator.html">流程模擬器</a> 走一遍代理循環。</p>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>如果讓 Agent 自動整理每週競品動態並寄給團隊，你會在哪一步設檢核點？</div>
+  </div>
+
+  <!-- 第 6 章 -->
+  <div class="chapter" id="ch6">
+    <div class="ch-num">CHAPTER 06</div>
+    <h2>AI 協作成熟度：4D 框架</h2>
+    <div class="guiding-q">引導問題：怎麼知道自己「用得好不好」，而不只是「有在用」？</div>
+    <p>評估人機協作品質的四個維度（4D），源自 Anthropic 提出的 AI Fluency 框架：</p>
+    <table>
+      <tr><th>維度</th><th>核心問題</th><th>PM 情境範例</th></tr>
+      <tr><td><strong>Delegation 委派</strong></td><td>你是否把「對的任務」交給 AI？</td><td>讓 AI 整理訪談 ✓；讓 AI 決定砍哪個功能 ✗</td></tr>
+      <tr><td><strong>Description 描述</strong></td><td>你的指令是否讓 AI 有足夠脈絡把事做對？</td><td>附上產品背景與目標受眾 vs. 一句「幫我寫 PRD」</td></tr>
+      <tr><td><strong>Discernment 辨別</strong></td><td>你能否評估產出的品質與錯誤？</td><td>抓出 AI 編造的數據、發現分析漏掉的用戶群</td></tr>
+      <tr><td><strong>Diligence 盡責</strong></td><td>你是否為 AI 參與的產出負起責任？</td><td>對外文件人工複核、標注 AI 參與、遵循公司規範</td></tr>
+    </table>
+    <p>用 <a href="../tools/fluency-check.html">4D 自評工具</a> 對你最近一次的 AI 協作打分，找出最弱的維度。</p>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>四個 D 裡面，你直覺最弱的是哪一個？多數 PM 的答案是 Description。</div>
+  </div>
+
+  <!-- 第 7 章 -->
+  <div class="chapter" id="ch7">
+    <div class="ch-num">CHAPTER 07</div>
+    <h2>把重複工作變成自動化流程</h2>
+    <div class="guiding-q">引導問題：哪些 PM 工作值得從「每次都問」升級成「自動執行」？</div>
+    <p>
+      當一件事你每週都用幾乎相同的 Prompt 做一次——週報、指標摘要、backlog 整理——
+      它就是自動化的候選。判斷公式：<strong>頻率 × 每次耗時 × 格式穩定度</strong>。
+    </p>
+    <p>PM 常見的自動化階梯（由淺入深）：</p>
+    <ol>
+      <li><strong>存成範本</strong>：把驗證過的 Prompt 存進團隊的 Prompt 庫（見<a href="../resources/prompts.html">資源區</a>）。</li>
+      <li><strong>建立 Project</strong>：在 Claude Projects 放入產品文件與指令，讓每次對話自帶脈絡。</li>
+      <li><strong>排程任務</strong>：用 Claude Code 或整合工具，讓「每週一早上自動彙整上週數據」自己發生。</li>
+    </ol>
+    <p>
+      自動化的原則：<strong>先手動跑順三次，再自動化</strong>。流程還在變的東西不要急著固定下來——
+      這跟你對開發團隊說「先驗證再規模化」是同一個道理。
+    </p>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>寫下你每週重複做、格式穩定的一件事，它就是你的第一個自動化目標。</div>
+  </div>
+
+  <!-- 第 8 章 -->
+  <div class="chapter" id="ch8">
+    <div class="ch-num">CHAPTER 08</div>
+    <h2>負責任的使用：資料、隱私與團隊規範</h2>
+    <div class="guiding-q">引導問題：把公司資料貼進 AI 之前，你該問自己哪三個問題？</div>
+    <p>PM 手上有大量敏感資訊：用戶資料、營收數據、未發布的策略。使用前的三個問題：</p>
+    <ol>
+      <li><strong>這份資料可以離開公司環境嗎？</strong>確認公司的 AI 使用政策；企業方案與個人帳號的資料處理條款不同。</li>
+      <li><strong>資料裡有沒有個資（PII）？</strong>用戶姓名、電話、Email 應先去識別化再處理。</li>
+      <li><strong>這個產出會被當成事實引用嗎？</strong>會的話，建立查證步驟，並讓接收者知道 AI 的參與程度。</li>
+    </ol>
+    <p>帶團隊導入時的最低限度規範（可直接抄進團隊 Wiki，另見<a href="../resources/toolkit.html">協作工具包</a>）：</p>
+    <ul>
+      <li>敏感資料分級清單：哪些可用、哪些去識別化後可用、哪些禁止。</li>
+      <li>對外文件一律人工複核，重要數據雙重查證。</li>
+      <li>AI 產出物在內部文件標注來源，維持可追溯性。</li>
+    </ul>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>你知道公司目前的 AI 工具使用政策是什麼嗎？不知道的話，這是你今天的第一個行動項目。</div>
+  </div>
+
+  <div style="text-align:center;margin-top:36px">
+    <a class="btn btn-accent" href="../tools/index.html">下一步：引導式學習 →</a>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 概念學習</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>

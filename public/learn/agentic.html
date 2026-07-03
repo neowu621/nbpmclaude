@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>(function(){var d=document.documentElement;d.style.visibility="hidden";fetch("/api/auth/me",{credentials:"include"}).then(function(r){if(!r.ok)throw 0;d.style.visibility="";}).catch(function(){location.replace("/login.html?next="+encodeURIComponent(location.pathname));});})();</script>
+<meta charset="UTF-8">
+<title>Agentic 工作流 | Claude PM 入門手冊</title>
+<meta name="description" content="PM 視角的 Agentic AI 指南：代理循環、權限治理、檢核點設計與 MCP 工具連接。">
+<link rel="stylesheet" href="../assets/style.css?v=6">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <div class="nav-menu">
+      <a class="nav-link active" href="index.html">概念學習</a>
+      <a class="nav-link" href="../tools/index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">概念學習</a> / Agentic 工作流</div>
+  <h1>Agentic 工作流完整指南</h1>
+  <p class="lead">
+    當 AI 從「回答問題」進化到「完成任務」，PM 的角色也從「提問者」變成「委託人」。
+    這一章教你像管理一個外包團隊一樣管理 AI 代理。
+  </p>
+
+  <div class="chapter">
+    <h2>什麼是 Agent？用 PM 的語言說</h2>
+    <p>
+      傳統的 AI 對話：你問一句，它答一句。<br>
+      Agentic 的 AI：你給一個<strong>目標</strong>，它自己拆解步驟、使用工具、檢查結果、修正錯誤，直到完成。
+    </p>
+    <p>組成一個 Agent 的三個零件：</p>
+    <ul>
+      <li><strong>模型（大腦）</strong>：負責理解目標、規劃步驟、判斷下一步。</li>
+      <li><strong>工具（手腳）</strong>：讀寫檔案、搜尋網頁、執行程式、透過 <strong>MCP</strong>（Model Context Protocol，一種讓 AI 連接外部系統的開放標準）存取 Jira、Notion、Slack、資料庫等。</li>
+      <li><strong>迴圈（工作方法）</strong>：探索 → 規劃 → 執行 → 驗證，不斷循環直到達成目標或需要人類介入。</li>
+    </ul>
+  </div>
+
+  <div class="chapter">
+    <h2>代理循環：Explore → Plan → Execute → Verify</h2>
+    <p>以「整理本季所有客訴並產出洞察報告」為例，Agent 的實際運作：</p>
+    <ol>
+      <li><strong>Explore 探索</strong>：先讀取資料夾，發現有 8 個 CSV 檔、格式不一致、其中兩個檔案有重複資料。</li>
+      <li><strong>Plan 規劃</strong>：提出計畫——統一格式 → 去重 → 依問題類型分類 → 統計 → 產出報告。<em>（好的實踐：在這裡停下來讓你確認）</em></li>
+      <li><strong>Execute 執行</strong>：逐步執行，過程中發現新問題（如某欄位缺值）會自行調整或回報。</li>
+      <li><strong>Verify 驗證</strong>：檢查總筆數是否對得上、分類是否有遺漏，產出處理摘要。</li>
+    </ol>
+    <p>想直觀感受這個循環，去玩：<a href="../tools/agentic-simulator.html">Agentic 流程模擬器 →</a></p>
+  </div>
+
+  <div class="chapter">
+    <h2>PM 的治理三件事</h2>
+    <h4>1. 權限設計：最小必要原則</h4>
+    <table>
+      <tr><th>權限層級</th><th>範例</th><th>適用</th></tr>
+      <tr><td>唯讀</td><td>讀取數據、搜尋文件</td><td>分析與研究類任務，預設起點</td></tr>
+      <tr><td>可寫（沙盒）</td><td>在指定資料夾產出報告</td><td>產出類任務，影響範圍受控</td></tr>
+      <tr><td>可寫（正式）</td><td>更新 Jira 工單、寄送郵件</td><td>必須搭配人工檢核點</td></tr>
+    </table>
+    <h4>2. 檢核點：不可逆的動作之前必須有人</h4>
+    <ul>
+      <li>寄出任何對外訊息之前</li>
+      <li>修改正式文件、工單狀態之前</li>
+      <li>刪除或覆蓋資料之前</li>
+    </ul>
+    <p>口訣：<strong>「可逆的放行，不可逆的把關。」</strong></p>
+    <h4>3. 驗收定義：像寫 acceptance criteria 一樣寫任務</h4>
+    <div class="prompt-box"><button class="copy-btn">複製</button><pre>任務：整理 Q2 客訴資料並產出洞察報告。
+完成的定義：
+1. 所有 CSV 已合併去重，處理筆數與原始筆數的差異有說明
+2. 分類使用我們的既有分類法（附件），不要自創類別
+3. 報告含：各類別佔比、環比變化、Top 3 惡化項目與證據
+4. 過程中遇到無法分類的資料，列出來問我，不要猜</pre></div>
+  </div>
+
+  <div class="chapter">
+    <h2>常見問題</h2>
+    <h4>Q：PM 不會寫程式，能用 Agentic 工具嗎？</h4>
+    <p>能。Claude Code 這類工具用自然語言下指令即可；你的價值在於「規格清楚、驗收嚴謹」——這比會寫程式更關鍵。</p>
+    <h4>Q：Agent 會不會做出我不想要的事？</h4>
+    <p>權限與檢核點就是為此存在。從唯讀任務開始建立信任，逐步放寬——跟你帶新人的方式一樣。</p>
+    <h4>Q：什麼任務「不適合」交給 Agent？</h4>
+    <p>目標模糊、判斷密集、政治敏感的任務。「幫我決定要不要跟這個客戶簽約」不是 Agent 任務；「把這個客戶過去一年的往來紀錄整理成時間軸」才是。</p>
+  </div>
+
+  <div style="text-align:center;margin-top:36px">
+    <a class="btn btn-outline" href="prompt-context.html">← 上一篇：Prompt 與脈絡</a>
+    <a class="btn btn-accent" href="../tools/index.html">下一步：引導式學習 →</a>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 概念學習</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>
