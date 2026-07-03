@@ -142,6 +142,34 @@ router.post('/forgot', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+// 忘記密碼（彈窗分流用）：回報 Email 是否已註冊
+//   已註冊 → 寄出重設信、回 { exists:true }
+//   未註冊 → 回 { exists:false }，由前端導向註冊流程
+router.post('/reset-request', async (req, res, next) => {
+  try {
+    const { email } = req.body || {};
+    if (!isEmail(email)) return res.status(400).json({ error: '請輸入有效的 Email' });
+    const lower = email.toLowerCase();
+    const r = await pool.query('SELECT id FROM users WHERE email=$1', [lower]);
+    if (!r.rows.length) return res.json({ ok: true, exists: false });
+    const token = newToken();
+    await pool.query(
+      `INSERT INTO email_tokens (user_id, token, purpose, expires_at)
+       VALUES ($1,$2,'reset', now() + interval '2 hours')`,
+      [r.rows[0].id, token]
+    );
+    const link = `${site()}/reset.html?token=${token}`;
+    await sendMail({
+      to: lower,
+      subject: '重設密碼 — Claude PM 入門手冊',
+      html: `<p>點擊以下連結重設密碼（2 小時內有效）：</p>
+             <p><a href="${link}">${link}</a></p>
+             <p>若非你本人操作，請忽略此信，你的密碼不會變動。</p>`
+    });
+    return res.json({ ok: true, exists: true });
+  } catch (e) { next(e); }
+});
+
 // 重設密碼
 router.post('/reset', async (req, res, next) => {
   try {
