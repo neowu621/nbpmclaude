@@ -6,6 +6,30 @@
 <title>概念學習 | Claude PM 入門手冊</title>
 <meta name="description" content="八個章節建立 PM 使用 Claude 的正確心智模型：生成式 AI 原理、工作模式、Prompt 設計、Agentic 工作流與負責任的使用。">
 <link rel="stylesheet" href="../assets/style.css?v=6">
+<style>
+  .cp-btn{display:inline-flex;align-items:center;gap:5px;margin-left:10px;vertical-align:middle;
+    background:#fff;border:1px solid #e4ddd2;border-radius:999px;padding:3px 11px 3px 9px;
+    font-family:inherit;font-size:13px;font-weight:600;color:#a85f47;cursor:pointer;line-height:1.3}
+  .cp-btn:hover{background:#fbf0ea;border-color:#cc785c}
+  .cp-btn .fg{font-size:15px;display:inline-block;animation:cpwig 1.5s ease-in-out infinite}
+  @keyframes cpwig{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  .cp-modal{position:fixed;inset:0;background:rgba(31,30,29,.5);display:flex;align-items:center;justify-content:center;padding:24px;z-index:100}
+  .cp-modal.hide{display:none}
+  .cp-box{background:#fff;border-radius:16px;max-width:580px;width:100%;max-height:82vh;overflow:auto;
+    padding:28px 28px 22px;box-shadow:0 12px 40px rgba(31,30,29,.25)}
+  .cp-box h3{font-size:18px;margin:0 0 6px;color:#1f1e1d}
+  .cp-box .cpq{font-size:13.5px;color:#6b6660;margin:0 0 16px;padding-bottom:14px;border-bottom:1px solid #efe9df}
+  .cp-box .cpa{font-size:14.5px;line-height:1.75;color:#2c2b29}
+  .cp-box .cpa p{margin:0 0 10px}
+  .cp-box .cpa ul,.cp-box .cpa ol{margin:6px 0 12px;padding-left:20px}
+  .cp-box .cpa li{margin-bottom:6px}
+  .cp-box .cpa strong{color:#a85f47}
+  .cp-eg{background:#faf7f1;border-left:3px solid #cc785c;border-radius:0 8px 8px 0;padding:10px 14px;margin:12px 0;font-size:13.5px;color:#4a463f}
+  .cp-note{font-size:13px;color:#6b6660;margin-top:6px}
+  .cp-foot{margin-top:20px;display:flex;justify-content:flex-end}
+  .cp-foot button{background:#1f1e1d;color:#fff;border:none;border-radius:999px;padding:9px 24px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .cp-foot button:hover{background:#a85f47}
+</style>
 </head>
 <body>
 
@@ -30,7 +54,7 @@
   <p class="lead">
     八個章節，約 60 分鐘。目標不是把你變成 AI 專家，而是建立足夠準確的心智模型，
     讓你知道 Claude 擅長什麼、不擅長什麼，以及如何把它安全地放進 PM 的日常工作。
-    每章結尾有一個「自我檢核」，通過了再往下走。
+    每章結尾有一個「自我檢核」，答完點右邊的 👆 看建議答案。
   </p>
 
   <!-- 第 1 章 -->
@@ -53,7 +77,7 @@
       對 PM 的實務意義：把 Claude 想成一位<strong>「讀過所有書、但沒參加過你公司任何會議」的聰明顧問</strong>。
       它的通用能力極強，但對你的產品、用戶、內部脈絡一無所知——你給它多少脈絡，它就能幫你多少。
     </p>
-    <div class="checkpoint"><strong>✓ 自我檢核：</strong>你能用一句話向工程師解釋「為什麼 AI 給的競品數據必須查證」嗎？</div>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>你能用一句話向工程師解釋「為什麼 AI 給的競品數據必須查證」嗎？<button class="cp-btn" data-cp="ch1" title="點我看建議答案"><span class="fg">👆</span>建議答案</button></div>
   </div>
 
   <!-- 第 2 章 -->
@@ -73,7 +97,7 @@
       核心原則：<strong>「AI 指出，PM 決定」</strong>。讓 Claude 幫你看見更多選項、更快看見盲點，
       但每一個寫進 roadmap、說出口的承諾，責任都在你身上。這也是你對團隊使用 AI 時該立下的規範。
     </p>
-    <div class="checkpoint"><strong>✓ 自我檢核：</strong>列出你本週的三項工作，分別放進上面光譜的哪一格？</div>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>列出你本週的三項工作，分別放進上面光譜的哪一格？<button class="cp-btn" data-cp="ch2" title="點我看建議答案"><span class="fg">👆</span>建議答案</button></div>
   </div>
 
   <!-- 第 3 章 -->
@@ -88,7 +112,7 @@
       <li><strong>Code（代理執行）</strong>——讓 Claude 實際操作檔案、跑腳本、批次處理。適合資料清洗、自動產報表、原型製作。PM 不用會寫程式，但要會「驗收」。</li>
     </ul>
     <p>詳細的選擇準則、實例與常見誤區，請看深入章節：<a href="modes.html">三種工作模式完整指南 →</a></p>
-    <div class="checkpoint"><strong>✓ 自我檢核：</strong>「把 30 份客訴工單分類並統計」該用哪種模式？（提示：量大、重複、需要結構化輸出）</div>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>「把 30 份客訴工單分類並統計」該用哪種模式？（提示：量大、重複、需要結構化輸出）<button class="cp-btn" data-cp="ch3" title="點我看建議答案"><span class="fg">👆</span>建議答案</button></div>
   </div>
 
   <!-- 第 4 章 -->
@@ -107,7 +131,7 @@
       <li><strong>格式（Format）</strong>：表格？條列？字數？語氣？要給誰看？</li>
     </ol>
     <p>完整的寫法、迭代技巧與 PM 範例，請看：<a href="prompt-context.html">Prompt 與脈絡完整指南 →</a>，或直接使用 <a href="../tools/prompt-builder.html">Prompt 組裝器</a> 練習。</p>
-    <div class="checkpoint"><strong>✓ 自我檢核：</strong>把你最近一次「AI 答得很爛」的提問拿出來，檢查四元素缺了哪幾個？</div>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>把你最近一次「AI 答得很爛」的提問拿出來，檢查四元素缺了哪幾個？<button class="cp-btn" data-cp="ch4" title="點我看建議答案"><span class="fg">👆</span>建議答案</button></div>
   </div>
 
   <!-- 第 5 章 -->
@@ -126,7 +150,7 @@
       <li><strong>可驗證的產出（Verifiable Output）</strong>：任務怎麼定義「做完了、做對了」？</li>
     </ul>
     <p>這其實就是 PM 熟悉的「授權與治理」問題——只是對象從人變成 AI。深入內容：<a href="agentic.html">Agentic 工作流完整指南 →</a>，並可用 <a href="../tools/agentic-simulator.html">流程模擬器</a> 走一遍代理循環。</p>
-    <div class="checkpoint"><strong>✓ 自我檢核：</strong>如果讓 Agent 自動整理每週競品動態並寄給團隊，你會在哪一步設檢核點？</div>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>如果讓 Agent 自動整理每週競品動態並寄給團隊，你會在哪一步設檢核點？<button class="cp-btn" data-cp="ch5" title="點我看建議答案"><span class="fg">👆</span>建議答案</button></div>
   </div>
 
   <!-- 第 6 章 -->
@@ -143,7 +167,7 @@
       <tr><td><strong>Diligence 盡責</strong></td><td>你是否為 AI 參與的產出負起責任？</td><td>對外文件人工複核、標注 AI 參與、遵循公司規範</td></tr>
     </table>
     <p>用 <a href="../tools/fluency-check.html">4D 自評工具</a> 對你最近一次的 AI 協作打分，找出最弱的維度。</p>
-    <div class="checkpoint"><strong>✓ 自我檢核：</strong>四個 D 裡面，你直覺最弱的是哪一個？多數 PM 的答案是 Description。</div>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>四個 D 裡面，你直覺最弱的是哪一個？多數 PM 的答案是 Description。<button class="cp-btn" data-cp="ch6" title="點我看建議答案"><span class="fg">👆</span>建議答案</button></div>
   </div>
 
   <!-- 第 7 章 -->
@@ -165,7 +189,7 @@
       自動化的原則：<strong>先手動跑順三次，再自動化</strong>。流程還在變的東西不要急著固定下來——
       這跟你對開發團隊說「先驗證再規模化」是同一個道理。
     </p>
-    <div class="checkpoint"><strong>✓ 自我檢核：</strong>寫下你每週重複做、格式穩定的一件事，它就是你的第一個自動化目標。</div>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>寫下你每週重複做、格式穩定的一件事，它就是你的第一個自動化目標。<button class="cp-btn" data-cp="ch7" title="點我看建議答案"><span class="fg">👆</span>建議答案</button></div>
   </div>
 
   <!-- 第 8 章 -->
@@ -185,7 +209,7 @@
       <li>對外文件一律人工複核，重要數據雙重查證。</li>
       <li>AI 產出物在內部文件標注來源，維持可追溯性。</li>
     </ul>
-    <div class="checkpoint"><strong>✓ 自我檢核：</strong>你知道公司目前的 AI 工具使用政策是什麼嗎？不知道的話，這是你今天的第一個行動項目。</div>
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>你知道公司目前的 AI 工具使用政策是什麼嗎？不知道的話，這是你今天的第一個行動項目。<button class="cp-btn" data-cp="ch8" title="點我看建議答案"><span class="fg">👆</span>建議答案</button></div>
   </div>
 
   <div style="text-align:center;margin-top:36px">
@@ -199,6 +223,106 @@
     <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
   </div>
 </footer>
+
+<div class="cp-modal hide" id="cp-modal">
+  <div class="cp-box">
+    <h3 id="cp-title">建議答案</h3>
+    <div class="cpq" id="cp-q"></div>
+    <div class="cpa" id="cp-a"></div>
+    <div class="cp-foot"><button id="cp-close">知道了</button></div>
+  </div>
+</div>
+
+<script>
+  var CP = {
+    ch1: {
+      q: '你能用一句話向工程師解釋「為什麼 AI 給的競品數據必須查證」嗎？',
+      a: '<p><strong>一句話版：</strong>「AI 的競品數字是『預測生成』出來的、不是查資料庫查來的，可能是幻覺、也可能過期，所以任何要進決策或對外的數據都要回到原始來源核對。」</p>' +
+         '<p>展開說給工程師聽，扣住三個特性：</p>' +
+         '<ul><li><strong>幻覺</strong>：LLM 會自信地編造看似合理但不存在的數字。</li>' +
+         '<li><strong>知識截止日</strong>：訓練資料有時間上限，最新的競品發布它未必知道。</li>' +
+         '<li><strong>機率性</strong>：同一題問兩次答案可能不同，不能當成穩定事實源。</li></ul>' +
+         '<div class="cp-eg">類比：把它當成「讀過所有書、但沒查過你公司後台」的顧問——洞見很強，但每個具體數字都要你去對帳。</div>'
+    },
+    ch2: {
+      q: '列出你本週的三項工作，分別放進「產出 ↔ 判斷」光譜的哪一格？',
+      a: '<p>沒有標準答案，重點是<strong>越靠近「判斷」端，AI 越只能當參謀、責任越在你</strong>。以三項常見工作示範：</p>' +
+         '<ol><li>「整理上週 20 份用戶訪談逐字稿、萃取痛點」→ <strong>產出＋分析</strong>格。Claude 萃取主題，你驗證關鍵結論。</li>' +
+         '<li>「把本週產品數據做成週報」→ <strong>純產出</strong>格。Claude 套模板生成，你快速複核數字。</li>' +
+         '<li>「決定下一季要不要做 SSO 功能」→ <strong>純判斷</strong>格。你拍板；Claude 只幫你列利弊、演練對高層的說法。</li></ol>' +
+         '<div class="cp-eg">自我檢查：如果你把三項都放進「純產出」，可能低估了工作裡的判斷成分；如果都放「純判斷」，可能有不少產出其實能安心交給 AI 提速。</div>'
+    },
+    ch3: {
+      q: '「把 30 份客訴工單分類並統計」該用哪種模式？（量大、重複、需要結構化輸出）',
+      a: '<p><strong>建議：Cowork（協作專案），量再更大或要重複跑就升級到 Code。</strong></p>' +
+         '<p>理由：30 份、重複性高、需要結構化輸出（分類＋統計），已超過 Chat 一次性問答的範圍。做法是在 Claude Projects 開專案、上傳工單、給明確指令。</p>' +
+         '<div class="cp-eg"><strong>範例 Prompt：</strong>「你是客服資料分析師。以下 30 份客訴，請：①每份標記類別（功能缺陷／使用疑問／帳務／其他）②輸出表格：工單編號｜類別｜一句摘要 ③最後給各類別的數量與占比。」</div>' +
+         '<p class="cp-note">若工單是 CSV、量到數百上千、或每週都要重跑 → 用 <strong>Code</strong> 模式批次處理並自動產出報表。</p>'
+    },
+    ch4: {
+      q: '把你最近一次「AI 答得很爛」的提問拿出來，檢查四元素缺了哪幾個？',
+      a: '<p>對照四元素逐一檢查。多數「答得爛」都敗在<strong>脈絡不足</strong>與<strong>格式沒指定</strong>：</p>' +
+         '<ul><li><strong>缺角色</strong>：沒說要它站在什麼專業視角 → 答得泛泛。</li>' +
+         '<li><strong>缺任務</strong>：動詞含糊（「幫我看看」）→ 不知道要交付什麼。</li>' +
+         '<li><strong>缺脈絡</strong>：沒給產品背景／受眾／限制 → 只能給教科書答案（最常見的致命傷）。</li>' +
+         '<li><strong>缺格式</strong>：沒說表格／條列／字數／給誰看 → 產出無法直接用。</li></ul>' +
+         '<div class="cp-eg"><strong>修法示範：</strong>把「幫我寫個上線公告」補成——「你是 B2B SaaS 的 PM（角色），寫一則新功能上線公告（任務）；受眾是既有付費客戶的 IT 管理員、功能是 SSO 單一登入、語氣專業簡潔（脈絡）；輸出 150 字內、結尾含一句 CTA（格式）。」</div>'
+    },
+    ch5: {
+      q: '如果讓 Agent 自動整理每週競品動態並寄給團隊，你會在哪一步設檢核點？',
+      a: '<p>至少在<strong>「寄出前」設一個人類批准檢核點</strong>；更嚴謹則設兩個：</p>' +
+         '<ol><li><strong>彙整前</strong>：確認來源可信、沒抓到假訊息或過期資料（對應幻覺／知識截止風險）。</li>' +
+         '<li><strong>寄出前（必設）</strong>：草稿先給你過目再送出——因為「寄信給團隊」是對外、不可逆的動作。</li></ol>' +
+         '<p>權限上建議給 Agent「唯讀競品來源＋產生草稿」，寄送動作保留人工觸發。</p>' +
+         '<div class="cp-eg">通則：<strong>凡是不可逆或對外的步驟，一定要人類按下確認。</strong>這跟你對團隊的授權治理是同一套邏輯，只是對象從人變成 AI。</div>'
+    },
+    ch6: {
+      q: '四個 D 裡面，你直覺最弱的是哪一個？',
+      a: '<p>沒有標準答案，這題是要你<strong>誠實面對自己</strong>。多數 PM 最弱的是 <strong>Description（描述）</strong>——因為太習慣「一句話交辦」，常沒把產品背景、受眾、限制、期望格式講清楚，AI 只好給泛泛的答案。</p>' +
+         '<p>對症下藥：</p>' +
+         '<ul><li>弱在 <strong>Description</strong> → 每次下指令前，用第 4 章的四元素（角色／任務／脈絡／格式）檢查一遍。</li>' +
+         '<li>弱在 <strong>Discernment（辨別）</strong> → 刻意建立查證步驟，別照單全收 AI 的產出。</li>' +
+         '<li>弱在 <strong>Delegation（委派）</strong> → 練習分辨「該交給 AI」vs.「該留給自己判斷」的工作。</li>' +
+         '<li>弱在 <strong>Diligence（盡責）</strong> → 對外產出建立人工複核與標注來源的習慣。</li></ul>' +
+         '<div class="cp-eg">用 <a href="../tools/fluency-check.html">4D 自評工具</a> 對最近一次協作打分，量化找出最弱維度。</div>'
+    },
+    ch7: {
+      q: '寫下你每週重複做、格式穩定的一件事，它就是你的第一個自動化目標。',
+      a: '<p>好的自動化目標＝<strong>頻率高 × 每次耗時 × 格式穩定</strong>。PM 首選通常是<strong>每週產品週報／指標摘要</strong>。示範：</p>' +
+         '<ul><li><strong>目標</strong>：每週一自動彙整上週核心指標（活躍／留存／轉換）＋ 重點事件，產出固定格式週報。</li>' +
+         '<li><strong>自動化階梯</strong>：①先把驗證過的週報 Prompt 存成範本 → ②在 Claude Projects 放入指標定義與基準，讓對話自帶脈絡 → ③熟了再用排程／Code 讓它每週一自動生草稿。</li></ul>' +
+         '<p class="cp-note">其他好候選：backlog 週整理、競品動態彙整、會議紀錄轉行動項目。</p>' +
+         '<div class="cp-eg">原則：<strong>先手動跑順三次再自動化</strong>。流程還在變就先別固定下來——這跟「先驗證再規模化」是同一個道理。</div>'
+    },
+    ch8: {
+      q: '你知道公司目前的 AI 工具使用政策是什麼嗎？',
+      a: '<p>如果現在答不出來，<strong>今天的行動項目就是去找出來</strong>。你至少該確認三件事：</p>' +
+         '<ol><li><strong>可用工具與帳號類型</strong>：公司有沒有提供企業版帳號（資料不被拿去訓練）？能不能用個人帳號處理公司資料？</li>' +
+         '<li><strong>資料分級</strong>：哪些資料可貼、哪些要先去識別化（PII）、哪些絕對禁止（未發布財務／策略、客戶個資）。</li>' +
+         '<li><strong>對外與合規</strong>：AI 產出對外前要不要人工複核、要不要標注 AI 參與、有沒有留存／稽核要求。</li></ol>' +
+         '<div class="cp-eg">找不到成文政策？那就是你替團隊建立第一版規範的機會——參考本章的最低限度規範與<a href="../resources/toolkit.html">協作工具包</a>。</div>'
+    }
+  };
+  (function(){
+    var modal = document.getElementById('cp-modal');
+    var elT = document.getElementById('cp-title'), elQ = document.getElementById('cp-q'), elA = document.getElementById('cp-a');
+    function open(key){
+      var d = CP[key]; if(!d) return;
+      var n = key.replace('ch','');
+      elT.textContent = '第 ' + n + ' 章 · 建議答案';
+      elQ.textContent = d.q;
+      elA.innerHTML = d.a;
+      modal.classList.remove('hide');
+    }
+    function close(){ modal.classList.add('hide'); }
+    document.querySelectorAll('.cp-btn').forEach(function(b){
+      b.addEventListener('click', function(){ open(b.getAttribute('data-cp')); });
+    });
+    document.getElementById('cp-close').addEventListener('click', close);
+    modal.addEventListener('click', function(e){ if(e.target === modal) close(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+  })();
+</script>
 
 <script src="../assets/main.js"></script>
 <script src="/tracker.js"></script>
