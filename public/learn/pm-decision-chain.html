@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>(function(){var d=document.documentElement;d.style.visibility="hidden";fetch("/api/auth/me",{credentials:"include"}).then(function(r){if(!r.ok)throw 0;d.style.visibility="";}).catch(function(){location.replace("/login.html?next="+encodeURIComponent(location.pathname));});})();</script>
+<meta charset="UTF-8">
+<title>PM 決策與產品思維鏈建置 | Claude PM 入門手冊</title>
+<meta name="description" content="讓 AI 不只是整理需求，而是模擬資深 PM 的問題定義、取捨、驗證與產品決策流程：七步思維鏈、決策引擎、Multi-Agent 辯論與精準產品建議。">
+<link rel="stylesheet" href="../assets/style.css?v=6">
+<style>
+  .dc-flow{background:#fff;border:1px solid var(--border);border-radius:16px;padding:26px 24px;margin:26px 0 34px}
+  .dc-flow-title{text-align:center;font-size:15px;font-weight:700;color:var(--accent-dark);letter-spacing:1px;margin-bottom:4px}
+  .dc-flow-sub{text-align:center;font-size:12.5px;color:var(--text-muted);margin-bottom:18px}
+  .dc-zone{border:1px dashed var(--border);border-radius:12px;padding:14px 14px 12px;margin-bottom:0}
+  .dc-zone-label{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .dc-zone-label small{font-weight:400;color:var(--text-muted);font-size:12px}
+  .dc-grid-in{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .dc-grid-out{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .dc-chip{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 10px}
+  .dc-chip b{display:block;font-size:12.5px;color:var(--text)}
+  .dc-chip span{display:block;font-size:11.5px;color:var(--text-muted);line-height:1.5}
+  .dc-arrow{text-align:center;font-size:18px;color:var(--accent);line-height:1;padding:8px 0}
+  .dc-chain{border:1px solid var(--border);border-radius:12px;background:#fdfbf7;padding:14px}
+  .dc-chain-label{font-size:13px;font-weight:700;color:var(--accent-dark);margin-bottom:10px}
+  .dc-steps{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+  .dc-step{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 8px;text-align:center}
+  .dc-step .n{display:inline-flex;width:22px;height:22px;align-items:center;justify-content:center;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:12px;font-weight:700;margin-bottom:6px}
+  .dc-step b{display:block;font-size:12.5px;color:var(--text);margin-bottom:4px;line-height:1.4}
+  .dc-step span{display:block;font-size:11px;color:var(--text-muted);line-height:1.5}
+  .dc-engine{display:flex;flex-direction:column;gap:8px}
+  .dc-bar{border:1px solid var(--border);border-radius:10px;background:#fff;padding:10px 16px;text-align:center}
+  .dc-bar b{font-size:13.5px;color:var(--text)}
+  .dc-bar span{display:block;font-size:12px;color:var(--text-muted)}
+  .dc-loop{font-size:11.5px;color:var(--accent-dark);text-align:center;margin-top:2px}
+  .dc-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+  .dc-pillar{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+  .dc-pillar b{display:block;font-size:13.5px;color:var(--accent-dark);margin-bottom:6px}
+  .dc-pillar p{font-size:12.5px;color:var(--text-muted);line-height:1.7;margin:0}
+  .dc-motto{text-align:center;font-size:13px;color:var(--text-muted);letter-spacing:2px;margin-top:18px}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <div class="nav-menu">
+      <a class="nav-link active" href="index.html">概念學習</a>
+      <a class="nav-link" href="../tools/index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">概念學習</a> / PM 決策與產品思維鏈建置</div>
+  <h1>PM 決策與產品思維鏈建置</h1>
+  <p class="lead">
+    讓 AI 不只是整理需求，而是模擬資深 PM 的問題定義、取捨、驗證與產品決策流程。
+    最終目標不是做更多功能，而是做出更正確的產品選擇。
+  </p>
+
+  <!-- 架構總覽圖（HTML 重建版） -->
+  <div class="dc-flow">
+    <div class="dc-flow-title">PM 決策與產品思維鏈建置</div>
+    <div class="dc-flow-sub">需求與問題輸入 → PM 思維鏈分析 → 產品決策引擎 → 決策產出 → 上線驗證與迭代（持續循環）</div>
+
+    <div class="dc-zone">
+      <div class="dc-zone-label">🧾 需求與問題輸入 <small>— 判斷前先收集足夠的資訊</small></div>
+      <div class="dc-grid-in">
+        <div class="dc-chip"><b>用戶訪談 / 調研</b><span>痛點、需求、使用情境</span></div>
+        <div class="dc-chip"><b>客服 / 銷售回饋</b><span>常見問題、客訴、建議</span></div>
+        <div class="dc-chip"><b>數據分析 / 儀表板</b><span>行為數據、漏斗、留存</span></div>
+        <div class="dc-chip"><b>競品 / 市場分析</b><span>市場趨勢、競品功能</span></div>
+        <div class="dc-chip"><b>商業目標 / KPI</b><span>成長、營收、留存、效率</span></div>
+        <div class="dc-chip"><b>技術 / 資源限制</b><span>技術可行性、人力、時程</span></div>
+        <div class="dc-chip"><b>法務 / 營運 / 品牌</b><span>合規、風險、品牌一致性</span></div>
+        <div class="dc-chip"><b>Stakeholder 需求</b><span>內部團隊、合作夥伴期待</span></div>
+      </div>
+    </div>
+
+    <div class="dc-arrow">↓</div>
+
+    <div class="dc-chain">
+      <div class="dc-chain-label">PM 思維鏈（AI Product Thinking Chain）</div>
+      <div class="dc-steps">
+        <div class="dc-step"><span class="n">1</span><b>問題定義</b><span>我們要解決真正的問題是什麼？</span></div>
+        <div class="dc-step"><span class="n">2</span><b>用戶價值判斷</b><span>這個問題對用戶真的重要嗎？</span></div>
+        <div class="dc-step"><span class="n">3</span><b>商業價值判斷</b><span>對商業目標有什麼價值？</span></div>
+        <div class="dc-step"><span class="n">4</span><b>方案假設</b><span>有哪些可行的解決方案？</span></div>
+        <div class="dc-step"><span class="n">5</span><b>優先級排序</b><span>有限資源下什麼最值得先做？</span></div>
+        <div class="dc-step"><span class="n">6</span><b>風險與依賴評估</b><span>做了會有哪些風險或副作用？</span></div>
+        <div class="dc-step"><span class="n">7</span><b>成功指標設計</b><span>如何定義成功並驗證有效？</span></div>
+      </div>
+    </div>
+
+    <div class="dc-arrow">↓</div>
+
+    <div class="dc-engine">
+      <div class="dc-bar"><b>🧠 產品決策引擎</b><span>整合多方觀點，AI 協助推理與取捨，產出最適合的產品決策建議</span></div>
+      <div class="dc-arrow" style="padding:2px 0">↓</div>
+      <div class="dc-bar"><b>🔁 驗證與迭代</b><span>上線驗證 / 數據回饋 / 學習迭代</span></div>
+      <div class="dc-loop">↺ 驗證結果回饋到「需求與問題輸入」，持續循環優化</div>
+    </div>
+
+    <div class="dc-arrow">↓</div>
+
+    <div class="dc-zone">
+      <div class="dc-zone-label">📦 決策產出 <small>— 從想法變成可執行的計畫</small></div>
+      <div class="dc-grid-out">
+        <div class="dc-chip"><b>產品策略</b><span>為什麼要做 / 做什麼</span></div>
+        <div class="dc-chip"><b>機會地圖</b><span>機會盤點與價值評估</span></div>
+        <div class="dc-chip"><b>優先級 Backlog</b><span>功能 / 需求排序</span></div>
+        <div class="dc-chip"><b>MVP 範圍</b><span>做什麼 / 不做什麼</span></div>
+        <div class="dc-chip"><b>PRD / 需求文件</b><span>情境、流程、規格</span></div>
+        <div class="dc-chip"><b>實驗計畫</b><span>A/B Test、灰度、指標</span></div>
+        <div class="dc-chip"><b>Roadmap</b><span>近期、中期、長期規劃</span></div>
+        <div class="dc-chip"><b>GTM 建議</b><span>推廣策略與導入建議</span></div>
+        <div class="dc-chip"><b>Success Metrics</b><span>成功指標與驗證方式</span></div>
+      </div>
+    </div>
+
+    <div class="dc-pillars">
+      <div class="dc-pillar"><b>🧭 產品北極星精神</b><p>捕捉產品願景、目標用戶、核心價值與商業目標，將零散需求轉成一致的產品判斷原則。「我們不是在做功能，而是在縮短使用者從『有問題』到『獲得價值』的距離。」</p></div>
+      <div class="dc-pillar"><b>🗣️ Multi-Agent 產品辯論框架</b><p>模擬多個產品決策角色（用戶、商業、數據、UX、工程、銷售、法務、PM Lead）互相辯論，從不同角度挑戰假設，產生更穩健的結論。</p></div>
+      <div class="dc-pillar"><b>🎯 精準產品建議（Skill）</b><p>根據不同產品情境與目標——新品探索、成長瓶頸、留存、轉換、B2B、平台、AI 產品——產出精準的策略與方案。</p></div>
+    </div>
+
+    <div class="dc-motto">用 數 據 驅 動 判 斷 ・ 用 假 設 驗 證 價 值 ・ 用 取 捨 創 造 影 響</div>
+  </div>
+
+  <!-- 一、核心概念 -->
+  <div class="chapter" id="s1">
+    <div class="ch-num">SECTION 01</div>
+    <h2>核心概念</h2>
+    <p>
+      PM 的工作不是單純整理需求、排功能優先級，而是在眾多資訊與限制之中，做出最合理的產品判斷。
+      一個好的 PM 決策，需要同時考慮：
+      <strong>使用者是否真的有痛點、商業上是否值得做、數據是否支持、技術是否可行、資源是否足夠、風險是否可控，以及最後要如何驗證成效。</strong>
+    </p>
+    <p>因此，PM 決策鏈的目的，是把零散的需求、數據、回饋與限制，轉換成有邏輯、可溝通、可執行的產品決策。</p>
+    <div class="guiding-q">整體流程：需求與問題輸入 → PM 思維鏈分析 → 產品決策引擎 → 決策產出 → 上線驗證與迭代。這不是一次性的，而是持續循環——上線後透過數據與回饋再次修正判斷。</div>
+  </div>
+
+  <!-- 三、需求與問題輸入 -->
+  <div class="chapter" id="s2">
+    <div class="ch-num">SECTION 02</div>
+    <h2>需求與問題輸入</h2>
+    <p>
+      在做任何產品決策之前，PM 需要先收集足夠的資訊。這些資訊就像醫生診斷前需要病歷、檢查報告與專科意見一樣，
+      是 PM 判斷問題的基礎。
+    </p>
+    <table>
+      <tr><th>輸入來源</th><th>說明</th></tr>
+      <tr><td><strong>用戶訪談 / 研究</strong></td><td>了解使用者真正的痛點、需求與使用情境</td></tr>
+      <tr><td><strong>客服 / 銷售回饋</strong></td><td>收集第一線常見問題、客戶抱怨與市場需求</td></tr>
+      <tr><td><strong>數據分析 / 儀表板</strong></td><td>從行為數據、轉換率、留存率中找出問題</td></tr>
+      <tr><td><strong>競品 / 市場分析</strong></td><td>了解市場趨勢、競爭者策略與差異化機會</td></tr>
+      <tr><td><strong>商業目標 / KPI</strong></td><td>確認產品決策是否對成長、營收、留存或效率有幫助</td></tr>
+      <tr><td><strong>技術 / 資源限制</strong></td><td>評估開發成本、技術可行性、人力與時程</td></tr>
+      <tr><td><strong>法務 / 營運 / 品牌限制</strong></td><td>確認是否有合規、營運或品牌風險</td></tr>
+      <tr><td><strong>Stakeholder 需求</strong></td><td>整合公司內部不同部門的期待與限制</td></tr>
+    </table>
+    <p>這些輸入不會直接變成產品功能，而是先進入 PM 思維鏈，經過分析、取捨與驗證設計。</p>
+  </div>
+
+  <!-- 四、七個決策步驟 -->
+  <div class="chapter" id="s3">
+    <div class="ch-num">SECTION 03</div>
+    <h2>PM 思維鏈：七個決策步驟</h2>
+    <p>PM 思維鏈是整個架構的核心。它幫助團隊把「我們要不要做這件事」拆解成一連串清楚的判斷問題。</p>
+
+    <h3>1. 問題定義</h3>
+    <p>第一步不是想解法，而是先確認問題是什麼。很多產品失敗，不是因為功能做得不好，而是因為一開始就解錯問題。</p>
+    <div class="guiding-q">我們真正要解決的是什麼問題？這是使用者問題、商業問題、流程問題，還是體驗問題？根本原因是什麼？</div>
+    <p>例如：使用者流失不一定代表要做更多功能——也可能是 onboarding 太複雜、價值感不清楚、價格不合理，或目標用戶根本不精準。</p>
+
+    <h3>2. 用戶價值判斷</h3>
+    <p>確認問題後，判斷這個問題對使用者是否真的重要。不是所有需求都值得做——有些只是少數人的偏好，有些問題雖然存在但使用者並不在意。</p>
+    <div class="guiding-q">這個問題痛不痛？頻率高不高？影響的人多不多？使用者現在怎麼解決？他們願意為解法付出時間、金錢或行為改變嗎？</div>
+    <p>重點：產品不是做「有人說想要」的功能，而是解決「足夠重要、足夠明確」的使用者問題。</p>
+
+    <h3>3. 商業價值判斷</h3>
+    <p>產品決策不能只看使用者需求，也要連結公司的商業目標：</p>
+    <ul>
+      <li>是否能提升轉換率、提高留存、增加營收？</li>
+      <li>是否能降低營運成本、提升市場競爭力？</li>
+      <li>是否能強化品牌或產品定位？</li>
+    </ul>
+    <p>這一步避免團隊投入大量資源，做出「使用者覺得不錯，但對公司目標幫助有限」的功能。</p>
+
+    <h3>4. 方案假設</h3>
+    <p>PM 不應該一開始就鎖定單一解法，而是建立多個可能的產品假設。以「提升新用戶啟用率」為例：</p>
+    <table>
+      <tr><th>假設</th><th>可能方案</th></tr>
+      <tr><td>使用者不知道下一步該做什麼</td><td>優化 onboarding 流程</td></tr>
+      <tr><td>使用者太晚感受到產品價值</td><td>縮短 Time to Value</td></tr>
+      <tr><td>使用者缺少範例</td><td>提供模板或推薦案例</td></tr>
+      <tr><td>使用者不信任產品結果</td><td>加入說明、預覽或人為確認機制</td></tr>
+    </table>
+    <p>重點：PM 不是直接決定「做什麼功能」，而是先提出「什麼解法可能有效」，再透過優先級與驗證機制來選擇。</p>
+
+    <h3>5. 優先級排序</h3>
+    <p>資源永遠有限，所以必須取捨。排序的目的不是找出所有值得做的事，而是找出<strong>現在最值得先做的事</strong>。</p>
+    <table>
+      <tr><th>評估面向</th><th>說明</th></tr>
+      <tr><td><strong>Impact</strong></td><td>對使用者或商業目標的影響有多大</td></tr>
+      <tr><td><strong>Confidence</strong></td><td>我們對這個判斷有多大把握</td></tr>
+      <tr><td><strong>Effort</strong></td><td>需要投入多少開發、人力與時間成本</td></tr>
+      <tr><td><strong>Reach</strong></td><td>影響多少使用者或客戶</td></tr>
+      <tr><td><strong>Urgency</strong></td><td>是否有市場、客戶或時程上的急迫性</td></tr>
+    </table>
+    <p>可使用 RICE、ICE、Impact × Confidence ÷ Effort 等方式，讓優先級判斷更透明、更容易和團隊溝通。</p>
+
+    <h3>6. 風險與依賴評估</h3>
+    <p>一個產品決策不只要看「好處」，也要看「副作用」：</p>
+    <ul>
+      <li>技術上是否可行？是否會增加技術債？</li>
+      <li>是否會影響既有使用者體驗？是否需要其他團隊配合？</li>
+      <li>是否有資料、法務、隱私或品牌風險？是否會讓產品變得更複雜？</li>
+    </ul>
+    <p>這一步避免團隊只看短期成效，卻忽略長期維護成本與潛在風險。</p>
+
+    <h3>7. 成功指標設計</h3>
+    <p>最後，定義什麼叫做成功。好的產品決策不能只用「有沒有上線」衡量，而要用結果衡量：</p>
+    <table>
+      <tr><th>目標</th><th>指標範例</th></tr>
+      <tr><td>提升啟用</td><td>Activation Rate、完成首個關鍵行為比例</td></tr>
+      <tr><td>提升留存</td><td>D1 / D7 / D30 Retention</td></tr>
+      <tr><td>提升轉換</td><td>註冊轉換率、付費轉換率、試用轉付費比例</td></tr>
+      <tr><td>提升效率</td><td>操作時間降低、客服工單下降</td></tr>
+      <tr><td>提升體驗</td><td>NPS、滿意度、任務完成率</td></tr>
+      <tr><td>提升營收</td><td>ARPU、MRR、客單價、續約率</td></tr>
+    </table>
+    <p>這一步確保團隊不是「做完功能就結束」，而是能清楚判斷這個決策是否真的有效。</p>
+  </div>
+
+  <!-- 五、產品決策引擎 -->
+  <div class="chapter" id="s4">
+    <div class="ch-num">SECTION 04</div>
+    <h2>產品決策引擎</h2>
+    <p>當 PM 思維鏈完成分析後，進入「產品決策引擎」——把多方資訊整合成具體判斷：</p>
+    <ul>
+      <li>哪些問題最重要？哪些方案最有機會成功？</li>
+      <li>哪些事情應該先做？哪些需求應該延後或不做？</li>
+      <li>第一版 MVP 要做到什麼程度？上線後要如何驗證？</li>
+    </ul>
+    <p>
+      這裡的重點是<strong>取捨</strong>。PM 的價值，不在於把所有需求都接下來，而是能說清楚：
+      <strong>為什麼現在做 A 不做 B；為什麼這個版本做到這裡就好；為什麼這個方向值得投入。</strong>
+    </p>
+  </div>
+
+  <!-- 六、決策產出 -->
+  <div class="chapter" id="s5">
+    <div class="ch-num">SECTION 05</div>
+    <h2>決策產出</h2>
+    <p>經過 PM 決策鏈後，最終產出一組清楚、可執行的產品建議：</p>
+    <table>
+      <tr><th>決策產出</th><th>說明</th></tr>
+      <tr><td><strong>產品策略</strong></td><td>說明產品方向、目標用戶、核心價值與商業目的</td></tr>
+      <tr><td><strong>機會地圖</strong></td><td>梳理不同產品機會，判斷哪些最值得投入</td></tr>
+      <tr><td><strong>優先級 Backlog</strong></td><td>將需求與功能依照價值、成本、風險排序</td></tr>
+      <tr><td><strong>MVP 範圍</strong></td><td>定義第一版要做什麼、不做什麼</td></tr>
+      <tr><td><strong>PRD / 需求文件</strong></td><td>描述功能目的、使用情境、流程、規格與驗收標準</td></tr>
+      <tr><td><strong>實驗計畫</strong></td><td>設計 A/B Test、灰度測試、觀察指標與驗證方法</td></tr>
+      <tr><td><strong>Roadmap</strong></td><td>規劃短期、中期、長期的產品發展節奏</td></tr>
+      <tr><td><strong>GTM 建議</strong></td><td>規劃產品如何推廣、導入、包裝與溝通價值</td></tr>
+      <tr><td><strong>Success Metrics</strong></td><td>定義成功指標與成效追蹤方式</td></tr>
+    </table>
+    <p>這些產出讓產品決策從「想法」變成「可以被團隊理解與執行的計畫」。</p>
+  </div>
+
+  <!-- 七、Multi-Agent -->
+  <div class="chapter" id="s6">
+    <div class="ch-num">SECTION 06</div>
+    <h2>Multi-Agent 產品辯論框架</h2>
+    <p>在複雜產品決策中，單一視角很容易有盲點。透過 Multi-Agent 產品辯論框架，模擬不同角色的觀點互相挑戰：</p>
+    <table>
+      <tr><th>Agent 角色</th><th>代表觀點</th></tr>
+      <tr><td><strong>User Advocate</strong></td><td>使用者痛點與體驗</td></tr>
+      <tr><td><strong>Business Owner</strong></td><td>商業價值、營收與成長</td></tr>
+      <tr><td><strong>Data Analyst</strong></td><td>數據證據與指標判斷</td></tr>
+      <tr><td><strong>UX Designer</strong></td><td>使用流程、易用性與體驗品質</td></tr>
+      <tr><td><strong>Engineer</strong></td><td>技術可行性、開發成本與架構影響</td></tr>
+      <tr><td><strong>Sales / CS</strong></td><td>客戶需求、市場聲音與導入阻力</td></tr>
+      <tr><td><strong>Risk / Legal</strong></td><td>法務、合規、資料與品牌風險</td></tr>
+      <tr><td><strong>PM Lead</strong></td><td>整合觀點，做最終取捨與決策</td></tr>
+    </table>
+    <p>這個框架的價值：讓產品決策不只是 PM 個人的直覺，而是經過不同角度檢驗後的綜合判斷。</p>
+    <div class="checkpoint"><strong>✓ 與手冊的連結：</strong>這正是第 5 章 Agentic 工作流的應用——每個 Agent 有明確視角（權限），辯論後由 PM Lead 收斂（檢核點），產出可驗證的決策建議（可驗證產出）。</div>
+  </div>
+
+  <!-- 八、底層三核心 -->
+  <div class="chapter" id="s7">
+    <div class="ch-num">SECTION 07</div>
+    <h2>底層三個核心能力</h2>
+
+    <h3>1. 產品北極星精神</h3>
+    <p>產品北極星是所有決策的共同準則。它幫助團隊回答：我們到底在為誰創造價值？最核心的產品價值是什麼？哪些事情符合方向、哪些只是短期雜訊？</p>
+    <div class="guiding-q">「我們不是在做功能，而是在縮短使用者從『有問題』到『獲得價值』的距離。」</div>
+
+    <h3>2. Multi-Agent 產品辯論框架</h3>
+    <p>透過不同角色的模擬辯論，讓每個產品決策都能被挑戰與檢驗，降低三種常見風險：</p>
+    <table>
+      <tr><th>風險</th><th>說明</th></tr>
+      <tr><td>只看使用者、不看商業</td><td>做出受歡迎但無法支撐商業目標的功能</td></tr>
+      <tr><td>只看商業、不看體驗</td><td>做出短期有效但傷害使用者信任的決策</td></tr>
+      <tr><td>只看需求、不看成本</td><td>做出難以維護、技術成本過高的產品</td></tr>
+    </table>
+
+    <h3>3. 精準產品建議</h3>
+    <p>不同產品階段，需要不同的決策重點——避免用同一套方法處理所有問題：</p>
+    <table>
+      <tr><th>產品情境</th><th>決策重點</th></tr>
+      <tr><td><strong>新產品探索</strong></td><td>找到真實問題、驗證 MVP</td></tr>
+      <tr><td><strong>成長瓶頸</strong></td><td>找出漏斗問題，設計 Growth Experiment</td></tr>
+      <tr><td><strong>留存問題</strong></td><td>提升使用頻率、價值感與習慣形成</td></tr>
+      <tr><td><strong>轉換問題</strong></td><td>優化價格、信任、流程與 CTA</td></tr>
+      <tr><td><strong>B2B 客戶需求</strong></td><td>評估客戶價值、共通性與客製化成本</td></tr>
+      <tr><td><strong>平台型產品</strong></td><td>平衡供需、規則、激勵與生態系</td></tr>
+      <tr><td><strong>AI 產品</strong></td><td>建立資料回饋、信任機制與 Human-in-the-loop 流程</td></tr>
+    </table>
+  </div>
+
+  <!-- 九、解決什麼問題 -->
+  <div class="chapter" id="s8">
+    <div class="ch-num">SECTION 08</div>
+    <h2>這套 PM 決策鏈解決什麼問題？</h2>
+    <table>
+      <tr><th>常見問題</th><th>PM 決策鏈的幫助</th></tr>
+      <tr><td>需求太多，不知道先做什麼</td><td>用價值、成本、風險與信心排序</td></tr>
+      <tr><td>Stakeholder 意見很多</td><td>用共同決策邏輯對齊討論</td></tr>
+      <tr><td>團隊只是在接需求</td><td>回到問題定義與產品目標</td></tr>
+      <tr><td>功能做完不知道有沒有效</td><td>事前定義成功指標</td></tr>
+      <tr><td>決策常靠直覺</td><td>引入用戶、數據、商業與技術證據</td></tr>
+      <tr><td>做了很多功能但產品沒有成長</td><td>聚焦真正影響北極星指標的機會</td></tr>
+    </table>
+  </div>
+
+  <!-- 十、總結 -->
+  <div class="chapter" id="s9">
+    <div class="ch-num">SECTION 09</div>
+    <h2>總結</h2>
+    <div class="guiding-q">用數據驅動判斷，用假設驗證價值，用取捨創造影響。</div>
+    <p>
+      它讓 AI 不只是協助整理需求，而是進一步模擬資深 PM 的產品思考方式——從問題定義、價值判斷、方案假設、
+      優先級排序，到風險評估與成功指標設計——幫助團隊產出更清楚、更有依據、也更容易執行的產品決策。
+    </p>
+    <p><strong>最終目標不是做更多功能，而是做出更正確的產品選擇。</strong></p>
+    <div class="checkpoint"><strong>✓ 記得手冊第 2 章的光譜：</strong>這套思維鏈的所有產出都是「建議」。AI 指出，PM 決定——進 roadmap 之前，永遠由你簽核。</div>
+  </div>
+
+  <div style="text-align:center;margin-top:36px">
+    <a class="btn btn-outline" href="agentic.html">← Agentic 工作流</a>
+    <a class="btn btn-accent" href="../tools/index.html">練習：引導式學習 →</a>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — PM 決策與產品思維鏈建置</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js"></script>
+<script src="/tracker.js"></script>
+</body>
+</html>
