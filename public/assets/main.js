@@ -1,7 +1,7 @@
 /* Claude PM 入門手冊 — 共用互動腳本 */
 
 /* 版本號（每修改一次 +1）；顯示於頂部 Head，並與後端 /health build 對齊 */
-var NBPM_VERSION = 'v20260709_002';
+var NBPM_VERSION = 'v20260709_003';
 
 document.addEventListener('DOMContentLoaded', function () {
   /* 注入頂部 Head：站名（連回首頁）+ 版本號 */
@@ -11,6 +11,20 @@ document.addEventListener('DOMContentLoaded', function () {
     bar.innerHTML = '<a class="topbar-title" href="/index.html">Claude <span>PM</span> 入門手冊</a>' +
                     '<span class="topbar-ver" title="版本號">' + NBPM_VERSION + '</span>';
     document.body.insertBefore(bar, document.body.firstChild);
+  }
+
+  /* 側欄加入「決策思維鏈」入口（進階頁），放在「概念學習」下面；同網域用絕對路徑 */
+  var menu = document.querySelector('.nav-menu');
+  if (menu && !menu.querySelector('.nav-dc')) {
+    var onDC = location.pathname.indexOf('/learn/pm-decision-chain') !== -1;
+    var dc = document.createElement('a');
+    dc.className = 'nav-link nav-dc' + (onDC ? ' active' : '');
+    dc.href = '/learn/pm-decision-chain.html';
+    dc.textContent = '決策思維鏈';
+    var first = menu.querySelector('a.nav-link'); /* 概念學習 */
+    if (first) first.insertAdjacentElement('afterend', dc);
+    else menu.insertBefore(dc, menu.firstChild);
+    if (onDC) menu.querySelectorAll('a.nav-link').forEach(function (a) { if (a !== dc) a.classList.remove('active'); });
   }
 
   /* 複製按鈕：把最近的 pre 內容複製到剪貼簿 */
