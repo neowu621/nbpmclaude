@@ -1,7 +1,7 @@
 /* Claude PM 入門手冊 — 共用互動腳本 */
 
 /* 版本號（每修改一次 +1）；顯示於頂部 Head，並與後端 /health build 對齊 */
-var NBPM_VERSION = 'v20260709_001';
+var NBPM_VERSION = 'v20260709_002';
 
 document.addEventListener('DOMContentLoaded', function () {
   /* 注入頂部 Head：站名（連回首頁）+ 版本號 */
