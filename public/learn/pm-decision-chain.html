@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <title>PM 決策與產品思維鏈建置 | Claude PM 入門手冊</title>
 <meta name="description" content="讓 AI 不只是整理需求，而是模擬資深 PM 的問題定義、取捨、驗證與產品決策流程：七步思維鏈、決策引擎、Multi-Agent 辯論與精準產品建議。">
-<link rel="stylesheet" href="../assets/style.css?v=6">
+<link rel="stylesheet" href="../assets/style.css?v=7">
 <style>
   .dc-flow{background:#fff;border:1px solid var(--border);border-radius:16px;padding:26px 24px;margin:26px 0 34px}
   .dc-flow-title{text-align:center;font-size:15px;font-weight:700;color:var(--accent-dark);letter-spacing:1px;margin-bottom:4px}
@@ -64,8 +64,15 @@
     最終目標不是做更多功能，而是做出更正確的產品選擇。
   </p>
 
-  <!-- 架構總覽圖（HTML 重建版） -->
-  <div class="dc-flow">
+  <!-- 設計好的架構圖（請存成 assets/pm-decision-chain.png）；載入失敗時自動改顯示下方 HTML 重建版 -->
+  <figure style="margin:26px 0 34px;">
+    <img src="../assets/pm-decision-chain.png" alt="PM 決策與產品思維鏈建置架構圖：需求輸入 → 七步思維鏈 → 決策引擎 → 決策產出 → 驗證迭代，以及三支柱"
+         style="width:100%;height:auto;display:block;border:1px solid var(--border);border-radius:12px;"
+         onerror="this.parentNode.style.display='none';var f=document.getElementById('dc-flow-fallback');if(f)f.style.display='block';">
+  </figure>
+
+  <!-- 架構總覽圖（HTML 重建版，作為圖檔未就緒時的後備） -->
+  <div class="dc-flow" id="dc-flow-fallback" style="display:none">
     <div class="dc-flow-title">PM 決策與產品思維鏈建置</div>
     <div class="dc-flow-sub">需求與問題輸入 → PM 思維鏈分析 → 產品決策引擎 → 決策產出 → 上線驗證與迭代（持續循環）</div>
 
@@ -368,7 +375,7 @@
   </div>
 </footer>
 
-<script src="../assets/main.js"></script>
+<script src="../assets/main.js?v=7"></script>
 <script src="/tracker.js"></script>
 </body>
 </html>
