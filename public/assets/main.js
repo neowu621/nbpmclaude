@@ -1,7 +1,7 @@
 /* Claude PM 入門手冊 — 共用互動腳本 */
 
 /* 版本號（每修改一次 +1）；顯示於頂部 Head，並與後端 /health build 對齊 */
-var NBPM_VERSION = 'v20260709_004';
+var NBPM_VERSION = 'v20260709_005';
 
 document.addEventListener('DOMContentLoaded', function () {
   /* 注入頂部 Head：站名（連回首頁）+ 版本號 */
@@ -9,8 +9,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var bar = document.createElement('div');
     bar.className = 'topbar';
     bar.innerHTML = '<a class="topbar-title" href="/index.html">Claude <span>PM</span> 入門手冊</a>' +
-                    '<span class="topbar-ver" title="版本號">' + NBPM_VERSION + '</span>';
+                    '<span class="topbar-ver" id="nbpm-ver" title="版本號">' + NBPM_VERSION + '</span>';
     document.body.insertBefore(bar, document.body.firstChild);
+    /* 版本號以後端 /health 的 build 為準（即時抓）；日後改版只需改後端一行，不必再破前端快取 */
+    fetch('/health', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) {
+      var v = document.getElementById('nbpm-ver');
+      if (v && j && j.build) v.textContent = j.build;
+    }).catch(function () {});
   }
 
   /* 側欄最下方加入「決策思維鏈」入口（進階頁），與上方其他項目以分隔線隔開；同網域用絕對路徑 */
