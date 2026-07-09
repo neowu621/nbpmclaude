@@ -70,6 +70,7 @@ body {
   font-size: 14px; padding: 10px 16px; border-radius: 999px; white-space: nowrap;
 }
 .nav .nav-cta:hover { background: var(--accent-dark); }
+.nav-sep { height: 1px; background: var(--border); margin: 12px 10px; }
 
 /* ---------- 版面 ---------- */
 .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
