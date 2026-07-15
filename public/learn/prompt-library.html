@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>(function(){var d=document.documentElement;d.style.visibility="hidden";fetch("/api/auth/me",{credentials:"include"}).then(function(r){if(!r.ok)throw 0;d.style.visibility="";}).catch(function(){location.replace("/login.html?next="+encodeURIComponent(location.pathname));});})();</script>
+<meta charset="UTF-8">
+<title>Prompt Library 提示詞庫 | Claude PM 入門手冊</title>
+<meta name="description" content="Anthropic 官方 Claude Code Prompt Library 的 PM 讀法：五大開發階段、52 組提示詞的分類邏輯，以及讓 AI 更懂你的六條寫法原則。">
+<link rel="stylesheet" href="../assets/style.css?v=11">
+<style>
+  .pl-num{display:inline-flex;width:26px;height:26px;align-items:center;justify-content:center;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:13px;font-weight:700;margin-right:8px;flex:0 0 auto}
+  .pl-rule{display:flex;gap:2px;align-items:flex-start;background:#fdfbf7;border:1px solid var(--border);
+    border-radius:12px;padding:14px 16px;margin-bottom:10px}
+  .pl-rule .body b{display:block;font-size:15px;color:var(--text);margin-bottom:3px}
+  .pl-rule .body p{font-size:13.5px;color:var(--text-muted);margin:0;line-height:1.7}
+  .pl-rule .body .eg{font-size:12.5px;color:var(--accent-dark);margin-top:5px}
+  .pl-stage{border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px;background:#fff}
+  .pl-stage h4{margin:0 0 4px;font-size:15.5px;color:var(--accent-dark)}
+  .pl-stage .who{font-size:12px;color:var(--text-muted);margin-bottom:8px}
+  .pl-stage ul{margin:0;padding-left:20px}
+  .pl-stage li{font-size:13.5px;color:var(--text-muted);margin-bottom:4px;line-height:1.65}
+  .pl-stage li b{color:var(--text)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <div class="nav-menu">
+      <a class="nav-link active" href="index.html">概念學習</a>
+      <a class="nav-link" href="../tools/index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link" href="../resources/index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">概念學習</a> / Prompt Library 提示詞庫</div>
+  <h1>Prompt Library（提示詞庫）<small style="font-size:16px;color:var(--text-muted);font-weight:400">讓 AI 更懂你</small></h1>
+  <p class="lead">
+    Anthropic 官方釋出了 Claude Code 的 Prompt Library——<strong>52 組現成提示詞，依開發生命週期的五個階段分類</strong>。
+    這頁不是要你背 52 組指令，而是帶你看懂它背後的<strong>六條寫法原則</strong>：
+    為什麼同一件事，有人問出垃圾、有人問出可以直接用的產出。這正是第 4 章「Prompt 是需求文件」的實戰升級版。
+  </p>
+
+  <div class="checkpoint">
+    <strong>✓ 先講結論：</strong>這 52 組提示詞的價值不在「複製貼上」，而在它們共用同一套寫法——
+    <strong>描述結果、內建驗證、給範式、給指標、給素材、指定格式</strong>。學會這六條，你自己就能寫出第 53 組。
+  </div>
+
+  <!-- 一、六條原則 -->
+  <div class="chapter" id="rules">
+    <div class="ch-num">SECTION 01</div>
+    <h2>六條寫法原則：讓 AI 更懂你</h2>
+    <div class="guiding-q">引導問題：官方 52 組提示詞長得都不一樣，為什麼它們「有效」的理由是同一個？</div>
+
+    <div class="pl-rule">
+      <span class="pl-num">1</span>
+      <div class="body"><b>描述結果，不描述步驟</b>
+        <p>別指定「去改 A 檔案第 30 行」，而是說「我要讓新用戶三步內完成設定」——讓 Claude 自己找出相關檔案與路徑。你負責定義「要什麼」，它負責找「在哪、怎麼做」。</p>
+        <p class="eg">PM 對照：這就是你寫需求單的方式——描述問題與目標，不是幫工程師寫實作。</p>
+      </div>
+    </div>
+
+    <div class="pl-rule">
+      <span class="pl-num">2</span>
+      <div class="body"><b>內建自我驗證</b>
+        <p>在同一個提示詞裡同時要求「執行 + 驗證」，例如「寫完後跑測試，失敗就修到全過」。Claude 會自己迭代到通過，而不是丟一份沒驗證的產出給你。</p>
+        <p class="eg">PM 對照：等於在需求單裡就寫好<strong>驗收標準</strong>——沒有驗收標準的需求，交付品質全靠運氣。</p>
+      </div>
+    </div>
+
+    <div class="pl-rule">
+      <span class="pl-num">3</span>
+      <div class="body"><b>提供參考範式</b>
+        <p>給它你既有的寫法／文件／範例，它會照<strong>你的風格</strong>做，而不是套用通用最佳實踐。「照 X 的格式做 Y」比「做一個好的 Y」有效得多。</p>
+        <p class="eg">PM 對照：附上上一版 PRD 當範本，勝過解釋十句「我想要的風格」。</p>
+      </div>
+    </div>
+
+    <div class="pl-rule">
+      <span class="pl-num">4</span>
+      <div class="body"><b>用可量測的目標</b>
+        <p>把「優化效能」換成「首屏載入壓到 2 秒內」。有具體指標，才有明確的完成標準，AI 才知道什麼時候算做完。</p>
+        <p class="eg">PM 對照：呼應第 7 章的成功指標——沒有數字的目標，是願望不是需求。</p>
+      </div>
+    </div>
+
+    <div class="pl-rule">
+      <span class="pl-num">5</span>
+      <div class="body"><b>給原始素材，不要給摘要</b>
+        <p>直接貼錯誤日誌、截圖、原始數據、計畫輸出——AI 處理原始資料的能力，遠勝你先幫它濃縮過的二手摘要（你的摘要可能已經漏掉關鍵線索）。</p>
+        <p class="eg">PM 對照：第 4 章「脈絡的品質決定產出的上限」的具體做法。</p>
+      </div>
+    </div>
+
+    <div class="pl-rule">
+      <span class="pl-num">6</span>
+      <div class="body"><b>指定輸出格式</b>
+        <p>說清楚格式、長度、受眾：「輸出成表格，200 字內，給不懂技術的高階主管看」。不說，就會拿到一份無法直接用的東西。</p>
+        <p class="eg">PM 對照：第 4 章四元素中的「格式」——決定產出能不能直接貼進你的文件。</p>
+      </div>
+    </div>
+
+    <div class="checkpoint"><strong>✓ 自我檢核：</strong>拿你最近一個提示詞出來，對照這六條——你最常漏掉的是哪一條？（多數 PM 漏的是第 2 條「自我驗證」與第 4 條「可量測目標」。）</div>
+  </div>
+
+  <!-- 二、五大階段 -->
+  <div class="chapter" id="stages">
+    <div class="ch-num">SECTION 02</div>
+    <h2>五大階段：52 組提示詞的分類邏輯</h2>
+    <div class="guiding-q">引導問題：這個庫依「開發生命週期」分類——但哪些階段其實跟 PM 有關？</div>
+    <p>官方把提示詞依開發流程的先後順序分成五個階段。以下標注哪些對 PM／設計師特別有用：</p>
+
+    <div class="pl-stage">
+      <h4>① Discover — 探索與理解</h4>
+      <div class="who">🎯 PM／設計師高度相關</div>
+      <ul>
+        <li><b>看懂不熟的程式碼</b>：不用指定檔案，直接問「這個系統的架構長怎樣」。</li>
+        <li><b>找功能在哪</b>、<b>追程式碼演進history</b>。</li>
+        <li><b>刪除前的影響分析</b>：「拿掉這個功能會影響什麼？」——評估改動範圍的利器。</li>
+        <li><b>產品層級的行為問題</b>：用產品語言問，不用工程語言。</li>
+      </ul>
+    </div>
+
+    <div class="pl-stage">
+      <h4>② Design — 規劃與原型</h4>
+      <div class="who">🎯 PM／設計師高度相關</div>
+      <ul>
+        <li><b>先列計畫、不要動手</b>：把「探索」與「執行」分開——Claude 先列出要改什麼，你確認後才做。</li>
+        <li><b>訪談式寫規格</b>：讓它反問你，逼出你沒想到的<strong>邊界情境</strong>。</li>
+        <li><b>會議記錄轉工作項目</b>、<b>找出錯誤／空狀態</b>（設計常漏的地方）。</li>
+        <li><b>mockup 轉可點原型</b>、<b>設計與實作的自動比對</b>。</li>
+      </ul>
+    </div>
+
+    <div class="pl-stage">
+      <h4>③ Build — 實作、測試、重構、審查</h4>
+      <div class="who">最大的一類，多數偏工程；但有幾組 PM 用得到</div>
+      <ul>
+        <li><b>給非工程師的內部小工具</b>、<b>依範本產出文件草稿</b>、<b>批次文字更新</b>。</li>
+        <li><b>發布前的內容審查</b>（行銷／文件團隊適用）。</li>
+        <li><b>修正方向</b>：用明確約束把它拉回來；<b>縮小範圍</b>；把行為規範寫進 CLAUDE.md。</li>
+        <li>工程向：測試「寫—跑—修」循環、TDD、補覆蓋率、跨語言移植、效能優化到指定指標、資安稽核。</li>
+      </ul>
+    </div>
+
+    <div class="pl-stage">
+      <h4>④ Ship — 交付與發布</h4>
+      <div class="who">🎯 PM／行銷／文件團隊適用</div>
+      <ul>
+        <li><b>從 diff 與歷史自動生成 commit message、release notes</b>——不用手動描述做了什麼。</li>
+        <li>從 issue 開 PR、建 CI 流程、解合併衝突。</li>
+      </ul>
+    </div>
+
+    <div class="pl-stage">
+      <h4>⑤ Operate — 維運、除錯、分析、自動化</h4>
+      <div class="who">🎯 資料分析與自動化 PM 必看</div>
+      <ul>
+        <li><b>除錯</b>：描述症狀，讓它追根因並修復（不用你先猜是哪裡壞）。</li>
+        <li><b>事故應對</b>：一次列出所有證據來源（日誌、部署、設定變更）交叉比對，而不是一條一條查。</li>
+        <li><b>資料分析</b>：直接給原始檔（呼應原則 5）、指定輸出格式（原則 6）。</li>
+        <li><b>自動化</b>：把重複工作變成可重用的 skill、設 hooks 自動觸發、接 MCP 工具——這就是第 7 章的自動化階梯。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 三、角色對照 -->
+  <div class="chapter" id="roles">
+    <div class="ch-num">SECTION 03</div>
+    <h2>不同角色怎麼用</h2>
+    <table>
+      <tr><th>角色</th><th>最該用的提示詞</th></tr>
+      <tr><td><strong>PM</strong></td><td>架構問題、規格訪談、會議轉工單、邊界／空狀態盤點、資料分析</td></tr>
+      <tr><td><strong>設計師</strong></td><td>改動影響評估、mockup 轉原型、設計與實作視覺比對、修視覺 bug</td></tr>
+      <tr><td><strong>行銷／文件</strong></td><td>文字統一批次更新、依範本產草稿、發布前內容審查、release notes</td></tr>
+      <tr><td><strong>資安／維運</strong></td><td>漏洞掃描、事故調查、日誌分析</td></tr>
+    </table>
+    <p>換句話說：<strong>這個庫叫「Claude Code」提示詞庫，但有一半以上不需要你會寫程式。</strong>PM 用得最多的是 Discover（問清楚現況）、Design（把想法變規格）與 Operate（分析與自動化）。</p>
+  </div>
+
+  <!-- 四、限制 -->
+  <div class="chapter" id="limits">
+    <div class="ch-num">SECTION 04</div>
+    <h2>三個要先知道的限制</h2>
+    <ol>
+      <li><strong>跨對話不會自動記得</strong>：背景脈絡會重置。要維持狀態，靠 CLAUDE.md 或記憶功能——呼應第 3 章「Cowork 要建 Project 帶脈絡」。</li>
+      <li><strong>有些提示詞有工具依賴</strong>：需要先接好 MCP 伺服器、GitHub 整合或資料庫連線才跑得動。</li>
+      <li><strong>效果取決於你的地基</strong>：既有測試、程式規範文件、清楚的專案慣例越完整，這些提示詞越有效。地基爛，AI 也只能跟著爛。</li>
+    </ol>
+    <div class="checkpoint"><strong>✓ PM 的啟示：</strong>第 3 點對產品同樣成立——你的產品文件、指標定義、決策紀錄越清楚，AI 幫得上的忙就越多。<strong>整理脈絡本身就是投資。</strong></div>
+  </div>
+
+  <!-- 五、下一步 -->
+  <div class="chapter" id="next">
+    <div class="ch-num">SECTION 05</div>
+    <h2>接下來做什麼</h2>
+    <ol>
+      <li>用 <a href="../tools/prompt-builder.html">Prompt 組裝器</a> 練一次，刻意把六條原則都放進去。</li>
+      <li>去 <a href="../resources/prompts.html">PM Prompt 資料庫</a> 挑一個你常用的，用六條原則改寫升級。</li>
+      <li>回頭讀 <a href="prompt-context.html">第 4 章：Prompt 與脈絡完整指南</a>，把四元素與這六條原則對起來。</li>
+      <li>把改好、驗證過的提示詞存進團隊的 Prompt 庫（<a href="index.html#ch7">第 7 章</a>的自動化第一階）。</li>
+    </ol>
+    <p style="font-size:13.5px;color:var(--text-muted);margin-top:14px">
+      資料來源：Anthropic 官方 Claude Code Prompt Library；中文整理參考
+      <a href="https://www.bnext.com.tw/article/91421/claude-code-prompt-library-52-prompts" target="_blank" rel="noopener">數位時代報導 ↗</a>。
+      本頁為 PM 視角的重新編寫與延伸，非原文翻譯。
+    </p>
+  </div>
+
+  <div style="text-align:center;margin-top:36px">
+    <a class="btn btn-outline" href="prompt-context.html">← 第 4 章：Prompt 與脈絡</a>
+    <a class="btn btn-accent" href="../tools/prompt-builder.html">練習：Prompt 組裝器 →</a>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — Prompt Library 提示詞庫</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script src="../assets/main.js?v=11"></script>
+<script src="/tracker.js"></script>
+</body>
+</html>
