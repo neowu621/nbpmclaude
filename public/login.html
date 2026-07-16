@@ -40,6 +40,12 @@
   .modal-actions .btn{flex:1;margin-top:0}
   .btn-ghost{padding:12px 18px;background:none;border:1px solid var(--border);border-radius:999px;font-family:inherit;font-size:15px;font-weight:600;color:var(--muted);cursor:pointer}
   .btn-ghost:hover{background:var(--bg)}
+  .guest-sep{display:flex;align-items:center;gap:10px;margin:22px 0 14px;color:var(--muted);font-size:13px}
+  .guest-sep::before,.guest-sep::after{content:"";flex:1;height:1px;background:var(--border)}
+  .btn-guest{margin-top:0;background:none;border:1px solid var(--border);color:var(--text)}
+  .btn-guest:hover{background:var(--bg);color:var(--text)}
+  .btn-guest.busy::after{border-top-color:var(--text)}
+  .guest-note{margin-top:10px;font-size:12px;line-height:1.7;color:var(--muted);text-align:center}
 </style>
 </head>
 <body>
@@ -57,6 +63,13 @@
     <label>密碼</label><input id="l-pw" type="password" autocomplete="current-password">
     <button class="btn" id="btn-login">登入</button>
     <button class="link" id="btn-forgot">忘記密碼？</button>
+
+    <div class="guest-sep"><span>或</span></div>
+    <button class="btn btn-guest" id="btn-guest">以 TEST123 測試帳號進入（免密碼）</button>
+    <div class="guest-note">
+      共用的公開測試帳號，看得到全部教材與共學看板。<br>
+      學習足跡會記在 TEST123 名下，不會計入你個人；要留下自己的紀錄請用上面的帳號登入。
+    </div>
   </div>
 
   <div id="pane-register" class="hide">
@@ -104,6 +117,16 @@
   }
   // 送出中在按鈕中央顯示轉圈動畫並停用，避免使用者以為當機或重複點擊
   function busy(id, on){ var b=document.getElementById(id); if(!b) return; b.classList.toggle('busy', on); b.disabled=on; }
+
+  // 訪客登入：不送任何帳密，後端固定登入 TEST123（member 權限）
+  document.getElementById('btn-guest').onclick=function(){
+    busy('btn-guest', true);
+    api('/api/auth/guest',{}).then(function(r){
+      if(r.ok){ location.href = qs.get('next') || '/dashboard.html'; return; }
+      busy('btn-guest', false);
+      msg(r.j.error||'訪客登入失敗');
+    }).catch(function(){ busy('btn-guest', false); msg('連線失敗，請稍後再試'); });
+  };
 
   document.getElementById('btn-login').onclick=function(){
     busy('btn-login', true);
