@@ -4,7 +4,7 @@
 <script>(function(){var d=document.documentElement;d.style.visibility="hidden";fetch("/api/auth/me",{credentials:"include"}).then(function(r){if(!r.ok)throw 0;d.style.visibility="";}).catch(function(){location.replace("/login.html?next="+encodeURIComponent(location.pathname));});})();</script>
 <meta charset="UTF-8">
 <title>Skill 技能包 | Claude PM 入門手冊</title>
-<meta name="description" content="AI 的 Skill 是什麼、什麼情況適合用、怎麼建立自己的 Skill，以及 PM 最該優先建立的 8 個基本 Skill。含 ChatGPT Skills 實作細節與 Claude 對應做法。">
+<meta name="description" content="AI 的 Skill 是什麼、Claude / ChatGPT / Gemini 三家怎麼做、什麼情況適合用、怎麼建立自己的 Skill，以及 PM 最該優先建立的 8 個基本 Skill。">
 <link rel="stylesheet" href="../assets/style.css?v=11">
 <style>
   .sk-card{border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;background:#fff}
@@ -17,6 +17,19 @@
   .sk-why{font-size:12.5px;color:var(--accent-dark);margin-top:5px}
   .sk-warn{background:#fdf3ef;border:1px solid #f0d9cf;border-radius:12px;padding:14px 16px;margin:16px 0}
   .sk-warn b{color:#a53f2f}
+  .sk-gate{background:#eef4fb;border:1px solid #cfe0f0;border-radius:12px;padding:16px 18px;margin:0 0 22px}
+  .sk-gate b{color:#2c5d8f}
+  .sk-fig{margin:18px 0;text-align:center}
+  .sk-fig svg{max-width:100%;height:auto}
+  .sk-fig figcaption{font-size:12.5px;color:var(--text-muted);margin-top:8px}
+  .sk-code{background:#1e2430;color:#e6edf3;border-radius:10px;padding:14px 16px;overflow-x:auto;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.75;margin:12px 0}
+  .sk-code .c{color:#8b98a5}
+  .sk-code .k{color:#7ee787}
+  .sk-code .s{color:#a5d6ff}
+  .sk-tools td:first-child{white-space:nowrap;font-weight:600}
+  .sk-same{background:#eef7f0;border:1px solid #cfe6d6;border-radius:12px;padding:14px 16px;margin:14px 0}
+  .sk-same b{color:#2d6a45}
 </style>
 </head>
 <body>
@@ -39,10 +52,24 @@
 <main class="article container">
   <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">概念學習</a> / Skill 技能包</div>
   <h1>Skill（技能包）<small style="font-size:16px;color:var(--text-muted);font-weight:400">把重複工作打包成可重用能力</small></h1>
+
+  <div class="sk-gate">
+    <b>⏸ 先確認：你現在需要讀這頁嗎？</b>
+    <p style="margin:8px 0 0">
+      這是<strong>進階頁</strong>。如果你還沒做過至少 3 個<a href="../tasks/index.html">任務實作</a>，
+      <strong>你現在還不需要 Skill</strong>——直接複製現成 Prompt 就好，那樣完全沒問題，很多資深 PM 一輩子都停在這裡也用得很好。
+    </p>
+    <p style="margin:8px 0 0">
+      Skill 要解決的是一個<strong>很具體的痛</strong>：「同一段 Prompt 我這個月已經貼第 12 次了」。
+      <strong>還沒有痛到這個程度，就先別花時間。</strong>把這頁存書籤，等你真的貼煩了再回來。
+    </p>
+  </div>
+
   <p class="lead">
     你已經學會寫好的 Prompt（<a href="index.html#ch4">第 4 章</a>）、也知道重複的工作該自動化（<a href="index.html#ch7">第 7 章</a>）。
     <strong>Skill 就是這兩件事的交會點</strong>：把一個驗證過的工作流程<strong>固化成可重用的能力</strong>，
-    之後一句話就能叫出來，不用每次重寫 Prompt。這頁講清楚：Skill 是什麼、什麼時候該用、怎麼建、
+    之後一句話就能叫出來，不用每次重寫 Prompt。這頁講清楚：Skill 是什麼、
+    <strong>Claude / ChatGPT / Gemini 三家怎麼做</strong>、什麼時候該用、怎麼建、
     以及 <strong>PM 最該優先建立的 8 個 Skill</strong>。
   </p>
 
@@ -54,188 +81,463 @@
   <!-- 一、是什麼 -->
   <div class="chapter" id="what">
     <div class="ch-num">SECTION 01</div>
-    <h2>Skill 是什麼？跟 GPTs、Projects 差在哪？</h2>
-    <div class="guiding-q">引導問題：都是「讓 AI 記住我要什麼」，為什麼要分成三種東西？</div>
+    <h2>Skill 是什麼？用「新人入職」來理解</h2>
+    <div class="guiding-q">引導問題：為什麼「教一次，以後都會」這件事，需要一個專門的機制？</div>
+
     <p>
-      OpenAI 對 Skill 的定義是：一份<strong>可重用的指令集</strong>，教 AI 依標準流程執行特定任務——
-      裡面預先寫好步驟、輸出格式與品質標準，像一本<strong>工作手冊</strong>。
-      關鍵差別在「它解決的是哪一種重複」：
+      想像你帶一位<strong>很聰明但完全不認識你們公司的新人</strong>。他什麼都學得會，但有個怪毛病：
+      <strong>每天早上都會忘記昨天教過的所有事。</strong>
     </p>
+    <p>
+      你有三種應對方式，這三種剛好就對應到 AI 的三個機制：
+    </p>
+
     <table>
-      <tr><th>類型</th><th>本質</th><th>最適合</th></tr>
-      <tr><td><strong>Skill</strong></td><td>重複任務的<strong>標準作業流程</strong></td><td>週報、會議紀錄、固定格式的產出</td></tr>
-      <tr><td><strong>Custom GPTs</strong></td><td>有特定領域與人格的<strong>AI 助理</strong></td><td>長期、專業固定的顧問角色</td></tr>
-      <tr><td><strong>Projects</strong></td><td>集中脈絡的<strong>協作工作區</strong></td><td>持續進行的專案，如產品上線</td></tr>
+      <tr><th>你的做法</th><th>對應機制</th><th>白話</th></tr>
+      <tr>
+        <td>每次都重講一遍該怎麼做</td>
+        <td><strong>Prompt</strong></td>
+        <td>這次怎麼做。講完就沒了，下次再講一次。</td>
+      </tr>
+      <tr>
+        <td>把公司資料放在他桌上的共用資料夾</td>
+        <td><strong>Projects</strong>（Claude）<br>Projects（ChatGPT）</td>
+        <td>他要用的<strong>材料</strong>。但不會告訴他「怎麼做」。</td>
+      </tr>
+      <tr>
+        <td>寫一份 SOP 貼在牆上：「做週報時，照這 5 步」</td>
+        <td><strong>Skill</strong></td>
+        <td>以後<strong>每次</strong>都這樣做。他自己會判斷什麼時候該翻這份 SOP。</td>
+      </tr>
     </table>
-    <p>
-      用 PM 的話說：<strong>Projects 是「共用的資料夾與脈絡」，GPTs 是「一位固定角色的同事」，Skill 是「一份 SOP」。</strong>
-      三者不衝突——你可以在一個 Project 裡，用一個 Skill 產出這週的週報。
-    </p>
-    <div class="checkpoint"><strong>✓ 對照第 3 章：</strong>Claude 這邊的對應是 <a href="modes.html">Cowork 模式的 Projects</a>（放入文件與自訂指令，讓每次對話自帶脈絡）；Claude 也有 Skills 機制。<strong>概念是共通的：把脈絡與流程固化，不要每次重講。</strong></div>
+
+    <div class="sk-fig">
+      <svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Prompt 與 Skill 的差別示意圖">
+        <text x="10" y="20" font-size="13" font-weight="700" fill="#5a6472">沒有 Skill</text>
+        <rect x="10" y="32" width="120" height="34" rx="6" fill="#f4f5f7" stroke="#d8dce2"/>
+        <text x="70" y="53" font-size="11.5" text-anchor="middle" fill="#3d4450">第 1 次：寫 Prompt</text>
+        <rect x="140" y="32" width="120" height="34" rx="6" fill="#f4f5f7" stroke="#d8dce2"/>
+        <text x="200" y="53" font-size="11.5" text-anchor="middle" fill="#3d4450">第 2 次：再寫一次</text>
+        <rect x="270" y="32" width="120" height="34" rx="6" fill="#f4f5f7" stroke="#d8dce2"/>
+        <text x="330" y="53" font-size="11.5" text-anchor="middle" fill="#3d4450">第 3 次：再寫一次</text>
+        <text x="400" y="53" font-size="13" fill="#8b98a5">⋯⋯</text>
+        <rect x="440" y="32" width="140" height="34" rx="6" fill="#fdf3ef" stroke="#f0d9cf"/>
+        <text x="510" y="53" font-size="11.5" text-anchor="middle" fill="#a53f2f">第 12 次：貼到很煩</text>
+
+        <line x1="10" y1="92" x2="690" y2="92" stroke="#e3e6ea" stroke-width="1"/>
+
+        <text x="10" y="122" font-size="13" font-weight="700" fill="#5a6472">有 Skill</text>
+        <rect x="10" y="134" width="150" height="44" rx="6" fill="#eef7f0" stroke="#cfe6d6"/>
+        <text x="85" y="151" font-size="11.5" text-anchor="middle" fill="#2d6a45">寫一次 SKILL.md</text>
+        <text x="85" y="167" font-size="10.5" text-anchor="middle" fill="#5a8a6c">（一次性投資 ~30 分鐘）</text>
+        <path d="M168 156 L196 156" stroke="#9aa4b0" stroke-width="1.5" marker-end="url(#ar)"/>
+        <rect x="204" y="134" width="110" height="44" rx="6" fill="#fff" stroke="#d8dce2"/>
+        <text x="259" y="160" font-size="11.5" text-anchor="middle" fill="#3d4450">「寫本週週報」</text>
+        <rect x="324" y="134" width="110" height="44" rx="6" fill="#fff" stroke="#d8dce2"/>
+        <text x="379" y="160" font-size="11.5" text-anchor="middle" fill="#3d4450">「寫本週週報」</text>
+        <rect x="444" y="134" width="110" height="44" rx="6" fill="#fff" stroke="#d8dce2"/>
+        <text x="499" y="160" font-size="11.5" text-anchor="middle" fill="#3d4450">「寫本週週報」</text>
+        <text x="566" y="160" font-size="13" fill="#8b98a5">⋯⋯</text>
+        <text x="600" y="156" font-size="11" fill="#2d6a45">每次一句話</text>
+        <defs>
+          <marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 z" fill="#9aa4b0"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>Skill 的價值不在「更聰明」，而在<strong>把第 2 次到第 100 次的成本壓到接近零</strong>。</figcaption>
+    </div>
+
+    <div class="checkpoint">
+      <strong>✓ 關鍵差別：</strong>Projects 給的是<strong>材料</strong>，Skill 給的是<strong>做法</strong>。
+      兩者常常一起用：Skill 說「照這 5 步寫週報」，Projects 提供「這週的 Jira 匯出檔」。
+    </div>
   </div>
 
-  <!-- 二、什麼時候該用 -->
-  <div class="chapter" id="when">
+  <!-- 二、三家怎麼做 -->
+  <div class="chapter" id="tools">
     <div class="ch-num">SECTION 02</div>
-    <h2>什麼情況、什麼場景適合做成 Skill？</h2>
-    <div class="guiding-q">引導問題：不是所有事都值得做成 Skill——那界線在哪？</div>
-    <p>沿用<a href="index.html#ch7">第 7 章</a>的判斷公式：<strong>頻率 × 每次耗時 × 格式穩定度</strong>。三個條件同時成立，才值得固化：</p>
-    <ol>
-      <li><strong>會重複發生</strong>：每週／每月都要做一次（一次性的事don't）。</li>
-      <li><strong>流程已經穩定</strong>：你已經<strong>手動跑順至少三次</strong>，知道好的產出長什麼樣。流程還在變的東西，固化下來只會綁住自己。</li>
-      <li><strong>輸出格式固定</strong>：每次的結構一樣，只有內容不同（週報、PRD、會議紀錄都符合）。</li>
-    </ol>
+    <h2>Claude / ChatGPT / Gemini 三家怎麼做？</h2>
+    <div class="guiding-q">引導問題：我學的東西，換一個 AI 工具還能用嗎？</div>
+
+    <p>
+      這是最多人問、也最多人搞錯的一題。答案是：<strong>一半通用，一半不通用</strong>，而且分界線很清楚。
+    </p>
+
+    <div class="sk-same">
+      <b>✅ 好消息：SKILL.md 已經是開放標準</b>
+      <p style="margin:8px 0 0">
+        2025 年 12 月起，<code>SKILL.md</code> 這個格式變成<strong>跨廠商的開放標準</strong>，
+        目前約 30 多個 AI 工具都讀得懂——包含 Claude Code、Gemini CLI、Codex CLI、Cursor 等。
+        <strong>同一份 SKILL.md 檔案，不用改，三家都能用。</strong>
+        你在這頁學的 Skill 寫法，不會因為換工具而作廢。
+      </p>
+    </div>
+
+    <p>
+      但這個「通用」有個<strong>重要前提</strong>：它通用在<strong>開發者工具（CLI）那一層</strong>。
+      如果你用的是<strong>網頁版 App</strong>（claude.ai / chatgpt.com / gemini.google.com），三家的機制、名字、限制都不一樣：
+    </p>
+
+    <table class="sk-tools">
+      <tr><th>　</th><th>Claude</th><th>ChatGPT</th><th>Gemini</th></tr>
+      <tr>
+        <td>機制名稱</td>
+        <td><strong>Agent Skills</strong></td>
+        <td><strong>Skills</strong>（Beta）<br><span style="font-size:12px;color:var(--text-muted)">另有 GPTs</span></td>
+        <td><strong>Gems</strong><br><span style="font-size:12px;color:var(--text-muted)">Enterprise 版另有 Skills</span></td>
+      </tr>
+      <tr>
+        <td>用 SKILL.md？</td>
+        <td>✅ 是（Anthropic 提出的格式）</td>
+        <td>✅ Skills 是<br>❌ GPTs 不是</td>
+        <td>✅ CLI／Enterprise 是<br>❌ Gems 不是</td>
+      </tr>
+      <tr>
+        <td>指令長度上限</td>
+        <td>實質無上限<br><span style="font-size:12px;color:var(--text-muted)">（可掛多個參考檔）</span></td>
+        <td>GPTs 約 8,000 字元</td>
+        <td>Gems 約 4,000 字元</td>
+      </tr>
+      <tr>
+        <td>可攜性</td>
+        <td>✅ 可搬到其他工具</td>
+        <td>GPTs ❌ 只能在 ChatGPT 用</td>
+        <td>Gems ❌ 只能在 Gemini 用</td>
+      </tr>
+      <tr>
+        <td>能跑腳本？</td>
+        <td>✅ 可附 Python 等執行檔</td>
+        <td>透過 Actions</td>
+        <td>Gems 不行</td>
+      </tr>
+      <tr>
+        <td>可用位置</td>
+        <td>claude.ai／Claude Code／API</td>
+        <td>ChatGPT App</td>
+        <td>Gemini App／Workspace</td>
+      </tr>
+    </table>
+
+    <div class="checkpoint">
+      <strong>✓ 給 PM 的實務結論：</strong>
+      <strong>概念 100% 通用</strong>——「把重複工作寫成 SOP 給 AI」這件事三家都成立，你學的思路不會浪費。
+      <strong>但 GPTs 和 Gems 不是 Skill</strong>：它們比較像「一位設定好人設的同事」（<span style="white-space:nowrap">≈ 客製助理</span>），
+      而 Skill 是「一份 SOP」——AI 自己判斷何時該翻開它。這是本質差異，不是名字差異。
+    </div>
+
     <div class="sk-warn">
-      <b>⚠️ 不適合做成 Skill 的：</b>需要大量判斷與取捨的事（優先級的最終拍板、對高層的承諾、產品願景）。
-      這些落在<a href="index.html#ch2">第 2 章光譜</a>的「判斷」端——<strong>Skill 能標準化的是「產出」，不是「判斷」。</strong>
-      把判斷做成 Skill，等於把你的價值自動化掉。
+      <b>⚠️ 這一塊變動非常快</b>
+      <p style="margin:8px 0 0">
+        上表是 2026 年中的狀況，而且<strong>幾乎確定會再變</strong>（例：Gemini CLI 已宣布 2026/6/18 對個人用戶終止，
+        由 Antigravity CLI 接手，Skills 機制保留但資料夾從 <code>.gemini/skills/</code> 改到 <code>.agents/skills/</code>）。
+        <strong>你該記住的是概念，不是這張表。</strong>要動手前，請去
+        <a href="../resources/sources.html">官方資源</a>確認當下的實際規格。
+      </p>
     </div>
   </div>
 
-  <!-- 三、怎麼建 -->
-  <div class="chapter" id="how">
+  <!-- 三、什麼時候該用 -->
+  <div class="chapter" id="when">
     <div class="ch-num">SECTION 03</div>
-    <h2>三種方式建立自己的 Skill</h2>
-    <p>以 ChatGPT Skills 為例（合格帳號預設就內建一個 <code>skill-creator</code> 可以幫你做）：</p>
-    <table>
-      <tr><th>方式</th><th>怎麼做</th><th>適合誰</th></tr>
-      <tr><td><strong>① 對話式</strong></td><td>開新對話直接說「<strong>幫我建一個 skill…</strong>」，它會反問你流程、輸出格式與需要的工具，然後直接存成 Skill</td><td><strong>新手首選</strong>——不用碰任何格式</td></tr>
-      <tr><td><strong>② 編輯器</strong></td><td>到 <code>chatgpt.com/skills</code> → 「+」→ build via editor，直接用 Markdown 寫 <code>SKILL.md</code>，可附加資源檔</td><td>想精確控制步驟與格式</td></tr>
-      <tr><td><strong>③ 檔案上傳</strong></td><td>到 <code>chatgpt.com/skills</code> → 「+」→ upload from computer，上傳寫好的 <code>SKILL.md</code>；系統會做<strong>安全掃描</strong>，結果分為可用／需人工確認／封鎖</td><td>沿用團隊既有的 SOP 文件</td></tr>
-    </table>
-    <p><strong>PM 的建議做法：先用①對話式做出來，跑幾次覺得穩了，再用②編輯器微調步驟與格式。</strong>不要一開始就想寫完美的 SKILL.md。</p>
+    <h2>什麼時候該做成 Skill？（三個條件全中才做）</h2>
+    <div class="guiding-q">引導問題：我怎麼知道這件事值不值得花 30 分鐘固化？</div>
 
-    <h3>怎麼呼叫？兩種情境</h3>
-    <ul>
-      <li><strong>@ 指定（手動）</strong>：在輸入框打 <code>@</code>，從清單選 Skill。例：<code>@weekly-report 把這段文字整理成進度更新</code>。<strong>你確定要用哪個時最快。</strong></li>
-      <li><strong>自動觸發</strong>：ChatGPT 依 Skill 的<strong>名稱與描述</strong>自行判斷要不要用，複雜任務甚至會組合多個 Skill。
-        <br><strong>關鍵：描述寫得越詳細，自動觸發越準</strong>——這正是<a href="prompt-library.html">六條寫法原則</a>的「指定得夠清楚」在 Skill 層級的應用。</li>
-    </ul>
+    <p>做 Skill 有成本。這三個條件<strong>全部成立</strong>再動手，否則你只是在做一份沒人用的文件：</p>
+
+    <table>
+      <tr><th>條件</th><th>怎麼判斷</th><th>反例（別做）</th></tr>
+      <tr>
+        <td><strong>1. 夠常做</strong></td>
+        <td>一個月至少 4 次以上</td>
+        <td>一年一次的年度規劃 → 直接寫 Prompt</td>
+      </tr>
+      <tr>
+        <td><strong>2. 流程穩定</strong></td>
+        <td>步驟每次都差不多，你已經驗證過至少 3 次</td>
+        <td>還在摸索怎麼做 → 先用 Prompt 迭代到穩定</td>
+      </tr>
+      <tr>
+        <td><strong>3. 產出格式固定</strong></td>
+        <td>你能明確說出「好的產出長什麼樣」</td>
+        <td>「幫我想點子」→ 沒有固定格式，不適合</td>
+      </tr>
+    </table>
+
+    <div class="checkpoint">
+      <strong>✓ 一個很實用的檢查法：</strong>
+      翻你自己的對話紀錄，看有沒有<strong>同一段 Prompt 你貼了 3 次以上</strong>。
+      有 → 那就是你的第一個 Skill，而且題目已經幫你選好了。
+      沒有 → 你還不需要 Skill，回去做任務。
+    </div>
   </div>
 
-  <!-- 四、官方範例 -->
-  <div class="chapter" id="examples">
+  <!-- 四、怎麼建 -->
+  <div class="chapter" id="how">
     <div class="ch-num">SECTION 04</div>
-    <h2>官方點名的 6 大職場 Skills</h2>
-    <p>OpenAI 官方示範的六個職場 Skill——注意它們<strong>全都是「把散亂輸入變成固定格式產出」</strong>，沒有一個在做判斷：</p>
+    <h2>一個 Skill 長什麼樣子？（看真的檔案）</h2>
+    <div class="guiding-q">引導問題：不會寫程式的 PM，做得出 Skill 嗎？</div>
+
+    <p>
+      先講結論：<strong>做得出來，而且不用寫任何程式。</strong>
+      一個 Skill 最小的樣子，就是<strong>一個資料夾，裡面放一個叫 <code>SKILL.md</code> 的純文字檔</strong>。
+      <code>.md</code> 是 Markdown，就是「可以用 <code>#</code> 標題、<code>-</code> 列點的純文字」，你在寫 Notion 的時候其實就在用它。
+    </p>
+
+    <p>這是一個真實可用的 Skill，整份就這麼長：</p>
+
+    <div class="sk-code"><span class="c">--- ← 這三個橫線之間叫「frontmatter」，是給 AI 看的標籤</span>
+<span class="k">name</span>: weekly-status
+<span class="k">description</span>: <span class="s">產生產品週報。當使用者要求「寫週報」、「本週進度」</span>
+             <span class="s">或提供 Jira／Linear 匯出資料要求彙整時使用。</span>
+<span class="c">---</span>
+
+<span class="c"># 產品週報產生器</span>
+
+<span class="c">## 步驟</span>
+1. 讀取使用者提供的 Jira／Linear 匯出資料
+2. 依「已完成／進行中／受阻」三類分組
+3. 受阻項目必須標出<span class="s">卡住的原因</span>與<span class="s">需要誰決策</span>
+4. 資料不足的欄位標【待確認】，<span class="s">不要猜測</span>
+5. 「風險判讀與建議」段落<span class="s">留空</span>——那是 PM 的工作，不是你的
+
+<span class="c">## 輸出格式</span>
+- 總長度不超過 400 字
+- 開頭一句話講「這週最重要的一件事」
+- 給主管看，不要有內部術語
+
+<span class="c">## 品質標準</span>
+- 每個「已完成」都要對得上一個 ticket 編號
+- 不確定的事寧可標【待確認】，也不要寫得很篤定
+</div>
+
+    <p>整份檔案<strong>只有兩個地方是必填的</strong>，其他都是你自己的 SOP 內容：</p>
+
     <table>
-      <tr><th>領域</th><th>Skill</th><th>功能</th></tr>
-      <tr><td>行銷</td><td><code>campaign-brief-builder</code></td><td>把初步想法變成結構化的行銷 brief</td></tr>
-      <tr><td>業務</td><td><code>discovery-to-next-steps</code></td><td>從會議筆記萃取痛點與後續行動</td></tr>
-      <tr><td>財務</td><td><code>monthly-close-narrative</code></td><td>自動生成財報說明與差異分析</td></tr>
-      <tr><td>營運</td><td><code>ops-playbook-writer</code></td><td>把日常流程寫成文件化 SOP</td></tr>
-      <tr><td>管理</td><td><code>weekly-status-multi-format</code></td><td>把團隊更新彙整成三種格式</td></tr>
-      <tr><td>高階主管</td><td><code>exec-decision-brief</code></td><td>把研究濃縮成一頁決策摘要</td></tr>
+      <tr><th>欄位</th><th>作用</th><th>寫壞會怎樣</th></tr>
+      <tr>
+        <td><code>name</code></td>
+        <td>這個 Skill 的代號</td>
+        <td>叫不出來</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><strong>最關鍵的一行。</strong>AI 靠它判斷「什麼時候該用這個 Skill」</td>
+        <td>寫太模糊 → AI 該用的時候不用，或不該用的時候亂用</td>
+      </tr>
     </table>
+
+    <div class="checkpoint">
+      <strong>✓ 90% 的 Skill 失敗都敗在 <code>description</code>：</strong>
+      寫「處理週報相關事務」→ AI 不知道什麼算「相關」，常常不觸發。
+      寫「當使用者要求『寫週報』、『本週進度』，或提供 Jira 匯出資料要求彙整時使用」→ 明確列出<strong>觸發時機與關鍵詞</strong>，AI 才叫得動。
+      <strong>把 <code>description</code> 想成「這份 SOP 的封面標題」——同事要能一眼看出什麼時候該翻它。</strong>
+    </div>
+
+    <h3 style="margin-top:22px">為什麼要分成 frontmatter 和內文？（漸進式揭露）</h3>
+    <p>
+      這個設計有個很聰明的理由，理解它你就懂 Skill 的整個邏輯了。AI 的「注意力」是有限資源（<a href="../resources/glossary.html">詞彙表：Context</a>），
+      不可能把你所有 Skill 的全文都一直放在腦子裡。所以它分三層載入：
+    </p>
+
+    <div class="sk-fig">
+      <svg viewBox="0 0 660 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Skill 三層漸進式載入示意圖">
+        <rect x="20" y="14" width="300" height="46" rx="8" fill="#eef7f0" stroke="#cfe6d6"/>
+        <text x="34" y="34" font-size="12.5" font-weight="700" fill="#2d6a45">第 1 層：一直都在</text>
+        <text x="34" y="51" font-size="11.5" fill="#3d4450">只載入 name + description（每個約 100 字）</text>
+        <text x="336" y="42" font-size="11.5" fill="#8b98a5">← 像書架上的書名</text>
+
+        <path d="M170 62 L170 78" stroke="#9aa4b0" stroke-width="1.5" marker-end="url(#ar2)"/>
+        <text x="182" y="75" font-size="10.5" fill="#8b98a5">AI 判斷「這次用得到」才往下</text>
+
+        <rect x="20" y="82" width="300" height="46" rx="8" fill="#fff" stroke="#d8dce2"/>
+        <text x="34" y="102" font-size="12.5" font-weight="700" fill="#3d4450">第 2 層：用到才載入</text>
+        <text x="34" y="119" font-size="11.5" fill="#3d4450">SKILL.md 全文（建議 5,000 字以內）</text>
+        <text x="336" y="110" font-size="11.5" fill="#8b98a5">← 翻開這一本</text>
+
+        <path d="M170 130 L170 146" stroke="#9aa4b0" stroke-width="1.5" marker-end="url(#ar2)"/>
+
+        <rect x="20" y="150" width="300" height="34" rx="8" fill="#fff" stroke="#d8dce2"/>
+        <text x="34" y="171" font-size="11.5" fill="#3d4450">第 3 層：真的需要才載入參考檔</text>
+        <text x="336" y="171" font-size="11.5" fill="#8b98a5">← 翻到附錄那一頁</text>
+        <defs>
+          <marker id="ar2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 z" fill="#9aa4b0"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>這叫<strong>漸進式揭露</strong>：所以你可以裝很多 Skill 而不會拖慢 AI——但也所以 <code>description</code> 必須寫準，它是唯一一直被看見的東西。</figcaption>
+    </div>
+
+    <h3 style="margin-top:22px">三種建立方式</h3>
+    <table>
+      <tr><th>方式</th><th>適合誰</th><th>怎麼做</th></tr>
+      <tr>
+        <td><strong>1. 叫 AI 幫你寫</strong><br><span style="font-size:12px;color:var(--text-muted)">最推薦</span></td>
+        <td>所有人，尤其新手</td>
+        <td>把你貼過 3 次的那段 Prompt 丟給 AI：「幫我把這段整理成一個 SKILL.md，description 要明確寫出觸發時機」</td>
+      </tr>
+      <tr>
+        <td><strong>2. 手寫</strong></td>
+        <td>流程你自己最清楚時</td>
+        <td>照上面的範本改。真的就是純文字，沒有魔法。</td>
+      </tr>
+      <tr>
+        <td><strong>3. 用現成的</strong></td>
+        <td>通用任務（做投影片、Excel）</td>
+        <td>各家都有官方預建 Skill，直接開來用</td>
+      </tr>
+    </table>
+
+    <div class="checkpoint">
+      <strong>✓ 新手就用第 1 種。</strong>你不需要學 Markdown 語法、不需要記 frontmatter 格式——
+      <strong>叫 AI 寫，你負責檢查它寫得對不對。</strong>這正是本手冊的主軸：
+      <a href="index.html#ch2">AI 產出，你判斷</a>。
+    </div>
   </div>
 
-  <!-- 五、PM 該建哪些 -->
-  <div class="chapter" id="pm-skills">
+  <!-- 五、PM 的 8 個 Skill -->
+  <div class="chapter" id="pm8">
     <div class="ch-num">SECTION 05</div>
-    <h2>⭐ PM 該優先建立的 8 個基本 Skill</h2>
-    <div class="guiding-q">引導問題：如果只能先做三個，你會選哪三個？（提示：挑你每週都在做、格式又固定的）</div>
-    <p>依「頻率 × 耗時 × 格式穩定」排序，這八個是 PM 投報率最高的。每個都對應手冊裡已經驗證過的任務——<strong>先去做那個任務、跑順三次，再固化成 Skill</strong>：</p>
+    <h2>⭐ PM 最該優先建立的 8 個 Skill</h2>
+    <div class="guiding-q">引導問題：如果只能做 3 個，我該做哪 3 個？</div>
 
-    <div class="sk-card"><span class="n">1</span><b class="name">weekly-status</b>
-      <div class="use">週報彙整——最該第一個做</div>
-      <div class="io"><em>輸入：</em>散落的進度筆記、指標數字 · <em>輸出：</em>固定格式週報（進展／風險／下週重點）</div>
-      <div class="sk-why">→ 每週一次、格式最穩定；先做 <a href="../tasks/index.html">T09 週報自動化</a></div>
+    <p>
+      這 8 個是從<a href="../tasks/index.html">任務實作</a>裡挑出「最常重複、格式最固定」的。
+      <strong>不要一次做 8 個</strong>——挑你這個月真的做過 4 次以上的那 1～2 個開始。
+    </p>
+
+    <div class="sk-card">
+      <span class="n">1</span><b class="name">weekly-status</b>
+      <div class="use">產品週報產生器</div>
+      <div class="io"><em>輸入：</em>Jira／Linear 匯出　<em>輸出：</em>已完成／進行中／受阻三段式週報</div>
+      <div class="sk-why">💡 為什麼優先：每週都做，格式最固定，投報率最高。<a href="../tasks/index.html">→ T09</a></div>
     </div>
 
-    <div class="sk-card"><span class="n">2</span><b class="name">meeting-to-actions</b>
+    <div class="sk-card">
+      <span class="n">2</span><b class="name">meeting-to-actions</b>
       <div class="use">會議紀錄轉行動項目</div>
-      <div class="io"><em>輸入：</em>逐字稿或速記 · <em>輸出：</em>決議 / 待辦（負責人＋期限）／ 未解問題</div>
-      <div class="sk-why">→ 高頻、高價值；先做 <a href="../tasks/index.html">T10 會議紀錄</a></div>
+      <div class="io"><em>輸入：</em>會議逐字稿／筆記　<em>輸出：</em>誰、做什麼、何時完成的行動清單</div>
+      <div class="sk-why">💡 為什麼優先：頻率最高的 PM 雜事，而且格式極度固定。<a href="../tasks/index.html">→ T10</a></div>
     </div>
 
-    <div class="sk-card"><span class="n">3</span><b class="name">interview-extractor</b>
-      <div class="use">訪談逐字稿萃取痛點</div>
-      <div class="io"><em>輸入：</em>多份逐字稿（去識別化）· <em>輸出：</em>痛點主題＋提及頻率＋代表引述</div>
-      <div class="sk-why">→ 每輪研究都要做；先做 <a href="../tasks/index.html">T05 逐字稿萃取</a></div>
+    <div class="sk-card">
+      <span class="n">3</span><b class="name">interview-extractor</b>
+      <div class="use">訪談逐字稿萃取</div>
+      <div class="io"><em>輸入：</em>用戶訪談逐字稿　<em>輸出：</em>痛點／需求／原話引用</div>
+      <div class="sk-why">⚠️ 幻覺風險最高的一個——Skill 裡務必寫死「原話必須可回溯原文」。<a href="../tasks/index.html">→ T05</a></div>
     </div>
 
-    <div class="sk-card"><span class="n">4</span><b class="name">prd-drafter</b>
-      <div class="use">依團隊模板產出 PRD 骨架</div>
-      <div class="io"><em>輸入：</em>問題描述、目標用戶、限制 · <em>輸出：</em>PRD（含目標與非目標、成功指標、分階段範圍）</div>
-      <div class="sk-why">→ 把「你們團隊的 PRD 長什麼樣」固化進去;先做 <a href="../tasks/index.html">T02 PRD 初稿</a></div>
+    <div class="sk-card">
+      <span class="n">4</span><b class="name">prd-drafter</b>
+      <div class="use">PRD 初稿</div>
+      <div class="io"><em>輸入：</em>需求描述　<em>輸出：</em>依你們公司範本的 PRD 骨架</div>
+      <div class="sk-why">💡 為什麼優先：能把「公司格式」固化，省下每次解釋範本的力氣。<a href="../tasks/index.html">→ T02</a></div>
     </div>
 
-    <div class="sk-card"><span class="n">5</span><b class="name">exec-brief</b>
-      <div class="use">長文／研究 → 一頁決策摘要</div>
-      <div class="io"><em>輸入：</em>研究報告、數據、多方意見 · <em>輸出：</em>一頁：結論／依據／選項／建議決定</div>
-      <div class="sk-why">→ 對應官方 <code>exec-decision-brief</code>；向上溝通的固定武器</div>
+    <div class="sk-card">
+      <span class="n">5</span><b class="name">exec-brief</b>
+      <div class="use">給主管的一頁摘要</div>
+      <div class="io"><em>輸入：</em>任何長文件　<em>輸出：</em>結論先行、300 字內、無術語</div>
+      <div class="sk-why">💡 為什麼優先：「換一種聽眾講一次」是 PM 最常做的轉換。<a href="../tasks/index.html">→ T11</a></div>
     </div>
 
-    <div class="sk-card"><span class="n">6</span><b class="name">spec-stress-test</b>
-      <div class="use">規格送審前的四角色壓力測試</div>
-      <div class="io"><em>輸入：</em>你的 PRD · <em>輸出：</em>工程／設計／客服／法務各 3 個尖銳問題＋建議答案</div>
-      <div class="sk-why">→ 每次送審都跑一次；先做 <a href="../tasks/index.html">T03 規格壓力測試</a></div>
+    <div class="sk-card">
+      <span class="n">6</span><b class="name">spec-stress-test</b>
+      <div class="use">規格壓力測試</div>
+      <div class="io"><em>輸入：</em>你的規格　<em>輸出：</em>邊界情境、遺漏、反問清單</div>
+      <div class="sk-why">💡 為什麼優先：這是少數「AI 比你想得周全」的場景，而且每次規格都該跑一次。<a href="../tasks/index.html">→ T03</a></div>
     </div>
 
-    <div class="sk-card"><span class="n">7</span><b class="name">rice-ranker</b>
-      <div class="use">需求清單 → RICE 評分與排序</div>
-      <div class="io"><em>輸入：</em>需求清單與已知資訊 · <em>輸出：</em>RICE 評分表＋排序＋每項的理由與不確定性</div>
-      <div class="sk-why">→ ⚠️ 產出評分是 Skill 的事，<strong>最終排序拍板是你的事</strong>；先做 <a href="../tasks/index.html">T14 RICE 排序</a></div>
+    <div class="sk-card">
+      <span class="n">7</span><b class="name">rice-ranker</b>
+      <div class="use">RICE 排序</div>
+      <div class="io"><em>輸入：</em>需求清單　<em>輸出：</em>RICE 四維評分表＋計算過程</div>
+      <div class="sk-why">⚠️ 只固化「算法」，不要固化「分數」——分數是你的判斷。<a href="../tasks/index.html">→ T14</a></div>
     </div>
 
-    <div class="sk-card"><span class="n">8</span><b class="name">competitor-digest</b>
-      <div class="use">競品動態定期彙整</div>
-      <div class="io"><em>輸入：</em>競品官網／發布說明／新聞 · <em>輸出：</em>變化摘要＋對我方的意涵＋建議關注點</div>
-      <div class="sk-why">→ ⚠️ 事實必查證（<a href="index.html#ch1">第 1 章</a>幻覺）；先做 <a href="../tasks/index.html">T13 競品分析</a></div>
+    <div class="sk-card">
+      <span class="n">8</span><b class="name">competitor-digest</b>
+      <div class="use">競品分析摘要</div>
+      <div class="io"><em>輸入：</em>競品資料／公開資訊　<em>輸出：</em>功能對照＋差異點</div>
+      <div class="sk-why">⚠️ Skill 裡務必寫死「模型既有知識必須標注需查證」——這題翻車過。<a href="../resources/cases.html">→ 見實務案例</a></div>
     </div>
 
-    <div class="checkpoint"><strong>✓ 只做三個的話：</strong><code>weekly-status</code> → <code>meeting-to-actions</code> → <code>prd-drafter</code>。這三個涵蓋 PM 最高頻的重複產出，做完你每週至少省下半天。</div>
+    <div class="sk-warn">
+      <b>⚠️ 絕對不要做成 Skill 的東西：你的判斷</b>
+      <p style="margin:8px 0 0">
+        「該不該做這個功能」、「這個風險能不能接受」、「要不要延期」——
+        <strong>這些不能固化，因為它們每次的答案都該不一樣</strong>。
+        如果你發現自己想把「決策」寫進 Skill，通常代表你正在把責任外包給一個不用負責的系統。
+      </p>
+      <p style="margin:8px 0 0">
+        注意上面 8 個 Skill 的共同點：<strong>它們全都停在「整理好給你看」，沒有一個幫你決定。</strong>
+        <code>weekly-status</code> 把「風險判讀」留空、<code>rice-ranker</code> 只算不排——這是刻意的。
+        <a href="index.html#ch2">AI 指出，PM 決定。</a>
+      </p>
+    </div>
   </div>
 
   <!-- 六、限制 -->
   <div class="chapter" id="limits">
     <div class="ch-num">SECTION 06</div>
-    <h2>使用前必看：3 大限制與安全規範</h2>
-    <ol>
-      <li><strong>不會跨平台同步</strong>：在 ChatGPT 建的 Skill 不會自動出現在 Codex 或其他產品，要手動下載再上傳。</li>
-      <li><strong>外部來源有安全風險</strong>：上傳的 Skill 會經過安全掃描（結果分「可用／需人工確認／封鎖」）。<strong>來路不明的 Skill 不要裝</strong>——它可能導致資料外洩。</li>
-      <li><strong>企業有權限控管</strong>：商用／教育環境中，管理員可決定使用者能不能建立、上傳、分享或安裝 Skill，依你的工作區角色而定。</li>
-    </ol>
-    <div class="sk-warn">
-      <b>⚠️ 帳號限制（截至本文整理時）：</b>ChatGPT Skills 仍在 Beta——目前開放 <strong>Business、Enterprise、Edu、Teachers、Healthcare</strong> 與 Codex／API；
-      <strong>Plus 與 Pro 即將支援</strong>；<strong>免費版與 Go 尚未支援</strong>。<br>
-      也就是說：多數個人帳號現在還用不到——但<strong>概念與做法先學起來</strong>，等開放時直接上手。
-      而且<strong>把流程寫成 SOP 這件事，本身就有價值</strong>（見<a href="index.html#ch8">第 8 章</a>與<a href="../resources/toolkit.html">協作工具包</a>）。
+    <h2>三個你會踩到的坑</h2>
+
+    <table>
+      <tr><th>坑</th><th>症狀</th><th>解法</th></tr>
+      <tr>
+        <td><strong>Skill 叫不出來</strong></td>
+        <td>你設好了，但 AI 完全不理它</td>
+        <td>9 成是 <code>description</code> 太模糊。改成明確寫出觸發關鍵詞。</td>
+      </tr>
+      <tr>
+        <td><strong>Skill 亂觸發</strong></td>
+        <td>你只是閒聊，它硬要幫你寫週報</td>
+        <td><code>description</code> 範圍寫太寬。加上「僅在…時使用」。</td>
+      </tr>
+      <tr>
+        <td><strong>Skill 過期了</strong></td>
+        <td>流程改了，但 Skill 還在照舊做法產出</td>
+        <td><strong>這是最危險的。</strong>Skill 會「錯得很穩定、很準時」。排一個每季檢查。</td>
+      </tr>
+    </table>
+
+    <div class="checkpoint">
+      <strong>✓ 自動化的鐵律（第 7 章講過，這裡再講一次）：</strong>
+      自動化最大的風險不是「做錯」，是<strong>「錯了也每週準時錯」</strong>——
+      而且因為它一直很穩定，沒有人會去檢查。
+      <strong>每個 Skill 都該有一個負責人和一個複查週期。</strong>
     </div>
-    <div class="checkpoint"><strong>✓ 呼應第 8 章：</strong>Skill 裡若寫入公司流程與範例，等於把內部資料放進 AI——<strong>先確認你們的 AI 使用政策與資料分級</strong>再建。</div>
   </div>
 
-  <!-- 七、實戰 -->
-  <div class="chapter" id="practice">
+  <!-- 七、下一步 -->
+  <div class="chapter" id="next">
     <div class="ch-num">SECTION 07</div>
-    <h2>進階應用與下一步</h2>
-    <p>官方與實測案例顯示，Skills 最有感的場景是<strong>日常行政的重複工作</strong>——例如報帳流程、資料分類：輸入格式固定、規則明確、每次都在做同一件事。這正好符合前面的三個條件。</p>
-    <h3>你的行動順序</h3>
+    <h2>你的下一步</h2>
     <ol>
-      <li>翻開<a href="../tasks/index.html">任務實作</a>，挑一個你<strong>每週都在做</strong>的任務（建議 T09 週報或 T10 會議紀錄）。</li>
-      <li>用任務裡的 Prompt <strong>手動跑順三次</strong>，每次微調到產出你滿意。</li>
-      <li>把那個驗證過的 Prompt <strong>存進<a href="../resources/prompts.html">團隊 Prompt 庫</a></strong>（自動化階梯第一階）。</li>
-      <li>等 Skills 開放你的帳號，用<strong>對話式</strong>把它變成 Skill（「幫我建一個 skill…」）。</li>
-      <li>Claude 這邊的等效做法：建一個 <a href="modes.html">Project</a> 放入文件與自訂指令，讓每次對話自帶脈絡。</li>
+      <li><strong>先別建 Skill。</strong>去翻你這個月的 AI 對話紀錄。</li>
+      <li>找出<strong>貼了 3 次以上的同一段 Prompt</strong>。找不到 → 你還不需要 Skill，回去<a href="../tasks/index.html">做任務</a>。</li>
+      <li>找到了 → 把它丟給 AI：「幫我把這段整理成 SKILL.md，<code>description</code> 要明確寫出觸發時機與關鍵詞」。</li>
+      <li><strong>連續用兩週</strong>，記錄它哪裡不準。</li>
+      <li>改一次 <code>description</code>，再用兩週。穩定了才做第二個。</li>
     </ol>
-    <div class="checkpoint"><strong>✓ 核心原則不變：</strong><strong>先手動跑順三次，再自動化。</strong>流程還在變的東西不要急著固定——這跟你對開發團隊說「先驗證再規模化」是同一個道理。</div>
-    <p style="font-size:13.5px;color:var(--text-muted);margin-top:14px">
-      資料來源：OpenAI 官方說明；中文整理參考
-      <a href="https://www.bnext.com.tw/article/91495/chatgpt-skills-tutorial" target="_blank" rel="noopener">數位時代報導 ↗</a>。
-      本頁為 PM 視角的重新編寫與延伸，非原文翻譯。帳號支援範圍與功能可能隨時間變動，請以官方公告為準。
-    </p>
-  </div>
 
-  <div style="text-align:center;margin-top:36px">
-    <a class="btn btn-outline" href="index.html#ch7">← 第 7 章：自動化</a>
-    <a class="btn btn-accent" href="../tasks/index.html">去挑一個每週都做的任務 →</a>
+    <div class="checkpoint">
+      <strong>✓ 自我檢視：</strong>你能說出一個「你這個月至少做過 4 次、步驟穩定、產出格式固定」的工作嗎？
+      如果能——那就是你的第一個 Skill。如果不能——<strong>那你現在最該做的不是 Skill，是先累積夠多的重複。</strong>
+    </div>
+
+    <p style="margin-top:18px">
+      延伸閱讀：<a href="prompt-library.html">Prompt Library（提示詞庫）</a>——
+      Skill 的內容就是好 Prompt，那頁的六條寫法原則直接適用。
+    </p>
   </div>
 </main>
 
 <footer>
   <div class="container">
     <div>Claude PM 入門手冊 — Skill 技能包</div>
-    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+    <div><a href="index.html">← 回概念學習</a></div>
   </div>
 </footer>
 
