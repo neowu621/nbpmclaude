@@ -84,6 +84,38 @@
       模糊版會得到一份「教科書式」的通用 PRD；專業版會得到一份可以直接進評審會修改的初稿。
       差別不在 AI，在輸入。
     </p>
+
+    <details class="example-box" style="border:1px solid var(--border);border-radius:12px;padding:0 16px;margin:14px 0;background:#fbfbfa">
+      <summary style="cursor:pointer;padding:14px 0;font-weight:600;color:var(--accent-dark)">👀 看實際產出差多少（點開）</summary>
+      <div style="padding:0 0 16px">
+        <p style="font-size:13.5px;margin:0 0 6px"><strong>❌ 模糊版的開頭長這樣</strong>——正確，但你早就知道：</p>
+        <blockquote style="border-left:3px solid #e0c4bb;margin:0 0 16px;padding:6px 14px;background:#fdf6f4;font-size:13px;color:#5a4a45;line-height:1.75">
+          # 深色模式 PRD<br>
+          <strong>一、背景</strong><br>
+          隨著使用者對視覺體驗的要求提升，深色模式已成為現代應用程式的標準功能。深色模式可降低眼睛疲勞、節省 OLED 螢幕電量，並提升夜間使用體驗……<br>
+          <strong>二、目標</strong><br>
+          1. 提供使用者切換深色／淺色主題的選項<br>
+          2. 確保所有畫面在深色模式下皆可正常顯示……
+          <br><span style="color:#a53f2f;font-size:12px">（通篇是任何產品都適用的空話，沒有一句跟你的產品有關）</span>
+        </blockquote>
+
+        <p style="font-size:13.5px;margin:0 0 6px"><strong>✓ 專業版的開頭長這樣</strong>——直接可以進評審會：</p>
+        <blockquote style="border-left:3px solid #b8d4bf;margin:0;padding:6px 14px;background:#f4faf5;font-size:13px;color:#3d4a42;line-height:1.75">
+          # 行動端深色模式 PRD（初稿）<br>
+          <strong>問題陳述</strong><br>
+          近一季用戶調查中 <strong>34% 主動提及</strong>缺少深色模式，為前三大體驗抱怨。競品 A、B 均已支援，我方為同類產品中少數未提供者，於夜間使用情境形成明顯劣勢。<br>
+          <strong>目標</strong>｜行動端 App 支援深色主題，覆蓋率 100% 核心畫面，本季內上線。<br>
+          <strong>非目標</strong>｜① Web 端本期不做（另案評估）② 不做自動排程切換（隨系統即可，降低範圍）<br>
+          <strong>成功指標</strong>｜上線 4 週內深色模式開啟率 ≥ 25%；相關體驗抱怨工單下降……<br>
+          <strong>範圍（受 2 人月限制）</strong>｜第一階段：沿用現有設計系統色彩 token……
+          <br><span style="color:#2d6a45;font-size:12px">（每一句都用到你給的脈絡：34%、競品、2 人月、色彩 token）</span>
+        </blockquote>
+        <p style="font-size:12.5px;color:var(--text-muted);margin:12px 0 0">
+          ⚠️ 這是示意產出，讓你知道「好」長什麼樣子。實際跑一次，你的數字和產品名稱會換成真的——
+          但<strong>你有沒有把 34%、2 人月這些餵進去，結果就差這麼多</strong>。
+        </p>
+      </div>
+    </details>
     <p>現在就動手練：<a href="../tools/prompt-builder.html">用 Prompt 組裝器組出你的第一個專業 Prompt →</a></p>
   </div>
 
@@ -100,7 +132,7 @@
   </div>
 </footer>
 
-<script src="../assets/main.js?v=11"></script>
+<script src="../assets/main.js?v=12"></script>
 <script src="/tracker.js"></script>
 </body>
 </html>

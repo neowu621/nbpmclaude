@@ -85,7 +85,51 @@
     <div class="ch-num">CHAPTER 02</div>
     <h2>Claude 在 PM 工作中的定位與邊界</h2>
     <div class="guiding-q">引導問題：哪些工作該交給 Claude，哪些必須留在 PM 手上？</div>
-    <p>一個好用的判斷框架：把 PM 的工作沿著「產出 ↔ 判斷」的光譜排開。</p>
+    <p>一個好用的判斷框架：把 PM 的工作沿著「產出 ↔ 判斷」的光譜排開。<strong>越靠左，越該大膽交給 Claude；越靠右，越是你不能外包的責任。</strong></p>
+
+    <figure class="spectrum-fig" style="margin:18px 0;text-align:center">
+      <svg viewBox="0 0 720 172" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="產出到判斷的光譜：越靠左越適合交給 AI，越靠右越需要 PM 親自判斷">
+        <defs>
+          <linearGradient id="spg" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#dff0e2"/>
+            <stop offset="0.4" stop-color="#eef4e0"/>
+            <stop offset="0.7" stop-color="#faedd8"/>
+            <stop offset="1" stop-color="#f6dcd3"/>
+          </linearGradient>
+          <marker id="spar" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 z" fill="#9aa4b0"/>
+          </marker>
+        </defs>
+
+        <text x="20" y="20" font-size="12.5" font-weight="700" fill="#2d6a45">← Claude 做得多</text>
+        <text x="700" y="20" font-size="12.5" font-weight="700" fill="#a53f2f" text-anchor="end">PM 做得多 →</text>
+
+        <rect x="20" y="30" width="680" height="52" rx="8" fill="url(#spg)" stroke="#e3e6ea"/>
+        <line x1="190" y1="30" x2="190" y2="82" stroke="#fff" stroke-width="2"/>
+        <line x1="360" y1="30" x2="360" y2="82" stroke="#fff" stroke-width="2"/>
+        <line x1="530" y1="30" x2="530" y2="82" stroke="#fff" stroke-width="2"/>
+
+        <text x="105" y="53" font-size="12.5" font-weight="700" text-anchor="middle" fill="#2d6a45">純產出</text>
+        <text x="105" y="70" font-size="10.5" text-anchor="middle" fill="#3d4450">整理・轉檔・初稿</text>
+        <text x="275" y="53" font-size="12.5" font-weight="700" text-anchor="middle" fill="#4a7a3f">產出＋分析</text>
+        <text x="275" y="70" font-size="10.5" text-anchor="middle" fill="#3d4450">萃取・初判・對照</text>
+        <text x="445" y="53" font-size="12.5" font-weight="700" text-anchor="middle" fill="#9a7333">分析＋判斷</text>
+        <text x="445" y="70" font-size="10.5" text-anchor="middle" fill="#3d4450">排序・取捨・設目標</text>
+        <text x="615" y="53" font-size="12.5" font-weight="700" text-anchor="middle" fill="#a53f2f">純判斷</text>
+        <text x="615" y="70" font-size="10.5" text-anchor="middle" fill="#3d4450">願景・承諾・資源</text>
+
+        <line x1="105" y1="92" x2="105" y2="108" stroke="#9aa4b0" stroke-width="1.3" marker-end="url(#spar)"/>
+        <line x1="615" y1="92" x2="615" y2="108" stroke="#9aa4b0" stroke-width="1.3" marker-end="url(#spar)"/>
+        <text x="105" y="126" font-size="10.5" text-anchor="middle" fill="#5a6472">大膽交出去</text>
+        <text x="105" y="140" font-size="10.5" text-anchor="middle" fill="#5a6472">人工快速複核</text>
+        <text x="615" y="126" font-size="10.5" text-anchor="middle" fill="#5a6472">AI 只能陪你演練</text>
+        <text x="615" y="140" font-size="10.5" text-anchor="middle" fill="#5a6472">決定權在你</text>
+
+        <text x="360" y="164" font-size="11.5" font-weight="700" text-anchor="middle" fill="#3d4450">中間這兩格是重點：Claude 給選項與盲點，你做決定</text>
+      </svg>
+      <figcaption style="font-size:12.5px;color:var(--text-muted);margin-top:6px">同一件事該不該交給 AI，先問它落在這條線的哪一段。下表是每一格的細節。</figcaption>
+    </figure>
+
     <table>
       <tr><th>光譜位置</th><th>工作範例</th><th>建議分工</th></tr>
       <tr><td><strong>純產出</strong></td><td>會議紀錄整理、格式轉換、翻譯、初稿撰寫</td><td>大膽交給 Claude，人工快速複核</td></tr>
@@ -340,7 +384,7 @@
   })();
 </script>
 
-<script src="../assets/main.js?v=11"></script>
+<script src="../assets/main.js?v=12"></script>
 <script src="/tracker.js"></script>
 </body>
 </html>
