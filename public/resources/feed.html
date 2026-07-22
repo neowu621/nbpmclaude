@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>(function(){var d=document.documentElement;d.style.visibility="hidden";fetch("/api/auth/me",{credentials:"include"}).then(function(r){if(!r.ok)throw 0;d.style.visibility="";}).catch(function(){location.replace("/login.html?next="+encodeURIComponent(location.pathname));});})();</script>
+<meta charset="UTF-8">
+<title>AI 新知牆 | Claude PM 入門手冊</title>
+<meta name="description" content="持續更新的 AI 新技術與應用資訊牆：官方公告、新功能、應用案例、教學課程與 PM 觀點，以論壇動態的方式呈現。">
+<link rel="stylesheet" href="../assets/style.css?v=11">
+<style>
+  .feed-banner{background:#eef4fb;border:1px solid #cfe0f0;border-radius:12px;padding:14px 16px;margin:0 0 20px;font-size:13.5px;color:#2c5d8f;line-height:1.7}
+  .feed-banner b{color:#204a72}
+  .feed-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+  .ffbtn{padding:7px 14px;border:1px solid var(--border);background:#fff;border-radius:999px;font-family:inherit;
+    font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:.12s}
+  .ffbtn:hover{border-color:var(--accent);color:var(--accent-dark)}
+  .ffbtn.on{background:var(--text);color:#fff;border-color:var(--text)}
+  .feed-count{font-size:12.5px;color:var(--text-muted);margin:0 0 14px}
+  .post{border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px;background:#fff;transition:.12s}
+  .post:hover{border-color:#cdd3db;box-shadow:0 3px 12px rgba(0,0,0,.05)}
+  .post-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+  .cat{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .cat-news{background:#e7f0fb;color:#2c5d8f}
+  .cat-feat{background:#eaf6ec;color:#2d6a45}
+  .cat-case{background:#fbf0e6;color:#9a6a2e}
+  .cat-course{background:#f0eafb;color:#6a4a9a}
+  .cat-view{background:#fdf0ef;color:#a53f2f}
+  .post-src{font-size:12px;color:var(--text-muted)}
+  .post h3{font-size:16px;margin:2px 0 6px;line-height:1.4}
+  .post h3 a{color:var(--text);text-decoration:none}
+  .post h3 a:hover{color:var(--accent-dark);text-decoration:underline}
+  .post h3 a .ext{font-size:12px;color:var(--text-muted);font-weight:400}
+  .post p{font-size:13.5px;color:var(--text);margin:0 0 8px;line-height:1.75}
+  .post .pm{font-size:12.5px;color:var(--accent-dark);background:#faf6f2;border-radius:8px;padding:7px 10px;line-height:1.65}
+  .post .pm b{color:var(--accent-dark)}
+  .feed-foot{border:1px dashed var(--border);border-radius:12px;padding:16px 18px;margin-top:22px;font-size:13px;color:var(--text-muted);line-height:1.75;text-align:center}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">Claude <span>PM</span> 入門手冊</a>
+    <div class="nav-menu">
+      <a class="nav-link" href="../learn/index.html">概念學習</a>
+      <a class="nav-link" href="../tools/index.html">引導式學習</a>
+      <a class="nav-link" href="../tasks/index.html">任務實作</a>
+      <a class="nav-link active" href="index.html">協作資源</a>
+      <a class="nav-link" href="../sitemap.html">網站地圖</a>
+      <a class="nav-link" href="../guide.html">使用說明</a>
+      <a class="nav-cta" href="https://claude.ai" target="_blank" rel="noopener">開啟 Claude ↗</a>
+    </div>
+  </div>
+</nav>
+
+<main class="article container">
+  <div class="crumbs"><a href="../index.html">首頁</a> / <a href="index.html">協作資源</a> / AI 新知牆</div>
+  <h1>AI 新知牆 📡 <small style="font-size:15px;color:var(--text-muted);font-weight:400">新技術與應用・持續更新</small></h1>
+  <p class="lead">
+    AI 的功能每週都在變。這裡用<strong>論壇動態</strong>的方式，把值得 PM 知道的新技術、新功能、應用案例與官方課程收在一起——
+    每一則都附一句「<strong>為什麼 PM 該看</strong>」。有空回來滑一滑，不用怕漏掉重要的變化。
+  </p>
+
+  <div class="feed-banner">
+    <b>📌 這是一面會長大的牆。</b>目前是<strong>策展式</strong>：由我們挑選、每則都寫清楚來源與 PM 觀點。
+    往後收集到的好資料都會往這裡加。看到好東西想推薦？做法見<a href="#contribute">頁尾說明</a>。
+  </div>
+
+  <div class="feed-filters" id="filters">
+    <button class="ffbtn on" data-cat="all">全部</button>
+    <button class="ffbtn" data-cat="news">官方公告</button>
+    <button class="ffbtn" data-cat="feat">新功能</button>
+    <button class="ffbtn" data-cat="case">應用案例</button>
+    <button class="ffbtn" data-cat="course">教學課程</button>
+    <button class="ffbtn" data-cat="view">PM 觀點</button>
+  </div>
+  <div class="feed-count" id="count"></div>
+
+  <div id="feed">
+
+    <article class="post" data-cat="feat">
+      <div class="post-top"><span class="cat cat-feat">新功能</span><span class="post-src">來源：Anthropic Engineering</span></div>
+      <h3><a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills" target="_blank" rel="noopener">Agent Skills 與 SKILL.md 開放標準 <span class="ext">↗</span></a></h3>
+      <p>Anthropic 推出「Agent Skills」——把重複工作打包成 AI 可重用能力的機制，格式 <code>SKILL.md</code> 已成跨工具的開放標準（Claude、Gemini CLI、Cursor 等都讀得懂）。</p>
+      <div class="pm"><b>為什麼 PM 該看：</b>你貼第 12 次的那段 Prompt，可以固化成 Skill。本站有中文入門：<a href="../learn/skills.html">Skill 技能包 →</a></div>
+    </article>
+
+    <article class="post" data-cat="course">
+      <div class="post-top"><span class="cat cat-course">教學課程</span><span class="post-src">來源：Anthropic Academy</span></div>
+      <h3><a href="https://www.anthropic.com/learn" target="_blank" rel="noopener">Anthropic Academy 官方學習中心 <span class="ext">↗</span></a></h3>
+      <p>官方課程總入口，分「Claude for Work（工作應用）」與「Build with Claude（開發者）」兩條線。本站的 4D 框架就出自這裡的 AI Fluency 課程。</p>
+      <div class="pm"><b>為什麼 PM 該看：</b>先讀完本手冊建立中文心智模型，再來這裡挑「Claude for Work」補深度。實際上課在 <a href="https://anthropic.skilljar.com" target="_blank" rel="noopener">Skilljar 平台 ↗</a>。</div>
+    </article>
+
+    <article class="post" data-cat="news">
+      <div class="post-top"><span class="cat cat-news">官方公告</span><span class="post-src">來源：Anthropic News</span></div>
+      <h3><a href="https://www.anthropic.com/news" target="_blank" rel="noopener">Anthropic News：模型更新與研究發布 <span class="ext">↗</span></a></h3>
+      <p>新模型、新能力、安全研究的第一手發布來源。AI 能力邊界一直在移動，這裡是追蹤變化最權威的入口。</p>
+      <div class="pm"><b>為什麼 PM 該看：</b>你的產品規格假設的「AI 做不到」，可能上個月就變成「做得到」了——每月掃一次標題就夠。</div>
+    </article>
+
+    <article class="post" data-cat="case">
+      <div class="post-top"><span class="cat cat-case">應用案例</span><span class="post-src">來源：數位時代 bnext</span></div>
+      <h3><a href="https://www.bnext.com.tw/article/91495/chatgpt-skills-tutorial" target="_blank" rel="noopener">ChatGPT Skills 怎麼用？實作教學 <span class="ext">↗</span></a></h3>
+      <p>中文的 Skills 實作教學，示範怎麼把一段工作流程做成可重用的 Skill。對照著看，能理解「同一個概念、不同工具怎麼落地」。</p>
+      <div class="pm"><b>為什麼 PM 該看：</b>Skill 的概念三家（Claude／ChatGPT／Gemini）通用，看完能加深對本站 <a href="../learn/skills.html">Skill 技能包</a> 的理解。</div>
+    </article>
+
+    <article class="post" data-cat="case">
+      <div class="post-top"><span class="cat cat-case">應用案例</span><span class="post-src">來源：經理人 Manager Today</span></div>
+      <h3><a href="https://www.managertoday.com.tw/articles/view/72527" target="_blank" rel="noopener">如何用 AI 產生簡報？工具與 SOP <span class="ext">↗</span></a></h3>
+      <p>中文的 AI 簡報實作，比較常見工具與從大綱到成品的流程。PM 每週都在做簡報，這是最高頻的省時場景之一。</p>
+      <div class="pm"><b>為什麼 PM 該看：</b>本站任務 <a href="../tasks/index.html">T16 · AI 簡報 SOP</a> 是它的可複製版本，含兩段可複製的 Prompt。</div>
+    </article>
+
+    <article class="post" data-cat="feat">
+      <div class="post-top"><span class="cat cat-feat">新功能</span><span class="post-src">來源：modelcontextprotocol.io</span></div>
+      <h3><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">MCP：讓 AI 安全連接外部工具 <span class="ext">↗</span></a></h3>
+      <p>Model Context Protocol，連接 AI 與外部工具／資料（Jira、Notion、資料庫…）的開放標準，像 AI 世界的 USB 介面。</p>
+      <div class="pm"><b>為什麼 PM 該看：</b>評估 AI 工具時，「支不支援 MCP」決定它能不能接進你的工作流生態。詞彙解釋見 <a href="glossary.html#mcp">詞彙表 · MCP</a>。</div>
+    </article>
+
+    <article class="post" data-cat="view">
+      <div class="post-top"><span class="cat cat-view">PM 觀點</span><span class="post-src">來源：本手冊</span></div>
+      <h3><a href="../learn/pm-decision-chain.html">PM 決策與產品思維鏈建置</a></h3>
+      <p>把「醫師的臨床決策邏輯」轉譯成 PM 的七步思維鏈：從訊號到決策，哪幾步能用 AI 提效率、哪幾步只能你自己扛。</p>
+      <div class="pm"><b>為什麼 PM 該看：</b>這是本站的進階觀點頁——當你已經會用 AI 做事，下一步是用它輔助「決策」而不外包判斷。</div>
+    </article>
+
+  </div>
+
+  <div class="feed-foot" id="contribute">
+    <strong>看到值得收錄的資料？</strong><br>
+    目前這面牆由我們策展維護。想推薦一則 AI 新知或好教材，
+    把<strong>連結＋一句「為什麼 PM 該看」</strong>寄給管理者，或到本站 GitHub 提 issue，我們會挑選加入。<br>
+    <span style="font-size:12px">（日後若需求夠強，這頁可以升級成登入者直接發文的互動版。）</span>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div>Claude PM 入門手冊 — 協作資源</div>
+    <div><a href="../sitemap.html">網站地圖</a> · <a href="../guide.html">使用說明</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btns = document.querySelectorAll('.ffbtn');
+  var posts = document.querySelectorAll('#feed .post');
+  var countEl = document.getElementById('count');
+  function apply(cat){
+    var n = 0;
+    posts.forEach(function(p){
+      var ok = (cat === 'all' || p.dataset.cat === cat);
+      p.style.display = ok ? '' : 'none';
+      if (ok) n++;
+    });
+    countEl.textContent = '顯示 ' + n + ' 則' + (cat === 'all' ? '（全部）' : '');
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      btns.forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      apply(b.dataset.cat);
+    });
+  });
+  apply('all');
+})();
+</script>
+<script src="../assets/main.js?v=12"></script>
+<script src="/tracker.js"></script>
+</body>
+</html>
